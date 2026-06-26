@@ -354,12 +354,12 @@
     async function sendWelcomeEmail(username, emailAddr) {
       try {
         const settings = window.DB.getSystemSettings();
-        const serviceId  = settings.emailjsServiceId;
-        const templateId = settings.emailjsTemplateId;
-        const publicKey  = settings.emailjsPublicKey;
+        const serviceId  = settings.emailjsServiceId  || (window.ENV && window.ENV.emailjsServiceId) || '';
+        const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || '';
+        const publicKey  = settings.emailjsPublicKey  || (window.ENV && window.ENV.emailjsPublicKey) || '';
 
         if (!serviceId || !templateId || !publicKey) {
-          console.warn('[EmailJS] Credentials not yet configured in Admin → Platform Settings.');
+          console.warn('[EmailJS] Credentials not configured.');
           return;
         }
 
