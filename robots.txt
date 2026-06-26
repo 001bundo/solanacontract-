@@ -1,0 +1,11 @@
+# Robots.txt for Solana Contract
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /auth.html
+
+# Do not index authenticated user or admin panels
+Disallow: /dashboard.html
+Disallow: /admin.html
+
+Sitemap: https://solanacontract.com/sitemap.xml

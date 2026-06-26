@@ -1,0 +1,112 @@
+/* Solana Contract Admin Dashboard Styles */
+
+/* Stats counters cards specifically for admin operations */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.admin-stat-card {
+  border-left: 4px solid var(--primary);
+}
+
+.admin-stat-card.pending-alert {
+  border-left-color: var(--warning);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* User management specific layouts */
+.search-bar-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.action-btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Switch styling for account state */
+.switch-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  background-color: var(--text-muted);
+  border-radius: 99px;
+  transition: background-color var(--transition-fast);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+
+.switch-checkbox {
+  display: none;
+}
+
+.switch-checkbox:checked + .toggle-switch {
+  background-color: var(--secondary);
+}
+
+.switch-checkbox:checked + .toggle-switch::after {
+  transform: translateX(22px);
+}
+
+/* Modal details */
+.receipt-preview-box {
+  background: rgba(8, 9, 12, 0.4);
+  border: 1px dashed var(--border-glass);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.receipt-img-mock {
+  width: 100%;
+  max-width: 250px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 12px auto;
+  display: block;
+  border: 2px solid var(--border-glass);
+}
+
+/* Ticket panel admin support layout */
+.admin-ticket-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: var(--shadow-sm), 0 0 0px rgba(255, 184, 0, 0); }
+  50% { box-shadow: var(--shadow-md), 0 0 15px rgba(255, 184, 0, 0.2); }
+  100% { box-shadow: var(--shadow-sm), 0 0 0px rgba(255, 184, 0, 0); }
+}
+
+@media (max-width: 992px) {
+  .admin-ticket-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Sign Up | Solana Contract</title>
+  <meta name="description" content="Access your Solana Contract account. Log in or create a new account to stake SOL or USDT in daily automated yield smart contracts.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    
+    .auth-logo {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    
+    .auth-card {
+      width: 100%;
+      max-width: 450px;
+    }
+    
+    .tabs-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-glass);
+      padding-bottom: 12px;
+    }
+    
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      padding: 8px;
+      position: relative;
+      transition: color var(--transition-fast);
+    }
+    
+    .tab-btn.active {
+      color: #fff;
+    }
+    
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -13px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 99px;
+    }
+    
+    .form-panel {
+      display: none;
+    }
+    
+    .form-panel.active {
+      display: block;
+      animation: fadeIn 0.3s forwards ease;
+    }
+    
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-top: 24px;
+      transition: color var(--transition-fast);
+    }
+    
+    .back-home:hover {
+      color: #fff;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Preloader Overlay -->
+  <div id="preloader" class="preloader-overlay">
+    <div class="preloader-content">
+      <div class="preloader-logo">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+          <defs>
+            <linearGradient id="solGradPre" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#9945FF" />
+              <stop offset="50%" stop-color="#00C2FF" />
+              <stop offset="100%" stop-color="#14F195" />
+            </linearGradient>
+          </defs>
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradPre)" />
+          <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradPre)" />
+          <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradPre)" opacity="0.9" />
+        </svg>
+      </div>
+      <div class="preloader-brand">Solana<span>Contract</span></div>
+      <div class="preloader-progress-bg">
+        <div class="preloader-progress-bar"></div>
+      </div>
+      <div class="preloader-status">Securing connection...</div>
+    </div>
+  </div>
+
+  <script>
+    // 1-second Minimum Preloader Logic
+    (function() {
+      const startTime = Date.now();
+      window.addEventListener('load', () => {
+        const elapsed = Date.now() - startTime;
+        const delay = Math.max(0, 1000 - elapsed);
+        setTimeout(() => {
+          const preloader = document.getElementById('preloader');
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => preloader.remove(), 500);
+          }
+        }, delay);
+      });
+    })();
+  </script>
+
+  <!-- Toast Notification Wrapper -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="auth-logo">
+    <a href="index.html" class="logo" style="justify-content: center;">
+      <div class="logo-icon">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="solGradAuth" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#9945FF" />
+              <stop offset="50%" stop-color="#00C2FF" />
+              <stop offset="100%" stop-color="#14F195" />
+            </linearGradient>
+          </defs>
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradAuth)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradAuth)" />
+          <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradAuth)" />
+          <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradAuth)" opacity="0.9" />
+        </svg>
+      </div>
+      <div class="logo-text">Solana<span>Contract</span></div>
+    </a>
+  </div>
+
+  <div class="glass-card auth-card">
+    <div class="tabs-header">
+      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
+      <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')" style="color: var(--accent); font-size: 0.85rem;">
+        <i class="fa-solid fa-toolbox" style="font-size: 0.75rem;"></i> Admin
+      </button>
+    </div>
+
+    <!-- Login Panel -->
+    <div class="form-panel active" id="loginPanel">
+      <form onsubmit="handleSignIn(event)">
+        <div class="form-group">
+          <label for="loginUser"><i class="fa-solid fa-user"></i> Username or Email</label>
+          <input type="text" id="loginUser" class="form-control" placeholder="Enter username or email" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPass"><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          <i class="fa-solid fa-right-to-bracket"></i> Access Dashboard
+        </button>
+      </form>
+    </div>
+
+    <!-- Signup Panel -->
+    <div class="form-panel" id="signupPanel">
+      <form onsubmit="handleSignUp(event)">
+        <div class="form-group">
+          <label for="regUser"><i class="fa-solid fa-user-plus"></i> Choose Username</label>
+          <input type="text" id="regUser" class="form-control" placeholder="e.g. soluser" required>
+        </div>
+        <div class="form-group">
+          <label for="regEmail"><i class="fa-solid fa-envelope"></i> Email Address</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="e.g. you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="regPass"><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="regPass" class="form-control" placeholder="Min 6 characters" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="regRef"><i class="fa-solid fa-user-group"></i> Sponsor Referral Code (Optional)</label>
+          <input type="text" id="regRef" class="form-control" placeholder="e.g. ADMINREF">
+        </div>
+        <button type="submit" class="btn btn-secondary" style="width: 100%; margin-top: 10px; color: #0c0d12;">
+          <i class="fa-solid fa-user-check"></i> Register Account
+        </button>
+      </form>
+    </div>
+
+    <!-- Admin Portal Panel -->
+    <div class="form-panel" id="adminPanel">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--accent), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.3rem;">
+          <i class="fa-solid fa-toolbox" style="color: #0c0d12;"></i>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">Restricted auditor access.<br>Authorized administrators only.</p>
+      </div>
+      <form onsubmit="handleAdminSignIn(event)">
+        <div class="form-group">
+          <label for="adminUser"><i class="fa-solid fa-user-shield"></i> Admin Username</label>
+          <input type="text" id="adminUser" class="form-control" placeholder="Enter admin username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="adminPass"><i class="fa-solid fa-key"></i> Admin Password</label>
+          <input type="password" id="adminPass" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, var(--accent), var(--primary)); color: #0c0d12; font-weight: 700;">
+          <i class="fa-solid fa-right-to-bracket"></i> Enter Auditor Portal
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Panel indicator badge -->
+  <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; opacity: 0.5; font-size: 0.75rem; color: var(--text-muted);">
+    <i class="fa-solid fa-shield-halved" style="color: var(--accent);"></i>
+    Auditor access via the Admin tab above
+  </div>
+
+  <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Return to Homepage</a>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- Firebase SDK Compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/store.js"></script>
+  <script>
+    // Toast helper
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <span>${message}</span>
+        <button style="background:transparent;border:none;color:#fff;cursor:pointer;" onclick="this.parentElement.remove()">&times;</button>
+      `;
+      container.appendChild(toast);
+      
+      // Auto remove
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Switch Tabs
+    function switchTab(tabName) {
+      const loginTabBtn  = document.getElementById('loginTabBtn');
+      const signupTabBtn = document.getElementById('signupTabBtn');
+      const adminTabBtn  = document.getElementById('adminTabBtn');
+      const loginPanel   = document.getElementById('loginPanel');
+      const signupPanel  = document.getElementById('signupPanel');
+      const adminPanel   = document.getElementById('adminPanel');
+
+      // Reset all
+      [loginTabBtn, signupTabBtn, adminTabBtn].forEach(b => b.classList.remove('active'));
+      [loginPanel, signupPanel, adminPanel].forEach(p => p.classList.remove('active'));
+
+      if (tabName === 'login') {
+        loginTabBtn.classList.add('active');
+        loginPanel.classList.add('active');
+      } else if (tabName === 'signup') {
+        signupTabBtn.classList.add('active');
+        signupPanel.classList.add('active');
+      } else {
+        adminTabBtn.classList.add('active');
+        adminPanel.classList.add('active');
+      }
+    }
+
+    // Read URL query params AFTER switchTab is defined
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('signup') === 'true') switchTab('signup');
+    if (params.get('admin')  === 'true') switchTab('admin');
+    if (params.get('ref')) {
+      document.getElementById('regRef').value = params.get('ref').toUpperCase();
+    }
+
+    // Form handlers
+    function handleSignIn(e) {
+      e.preventDefault();
+      const userVal = document.getElementById('loginUser').value;
+      const passVal = document.getElementById('loginPass').value;
+
+      const res = window.DB.signIn(userVal, passVal);
+      if (res.success) {
+        showToast('Login successful! Redirecting...', 'success');
+        setTimeout(() => {
+          if (res.user.isAdmin) {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'dashboard.html';
+          }
+        }, 1200);
+      } else {
+        showToast(res.message, 'error');
+      }
+    }
+
+    async function sendWelcomeEmail(username, emailAddr) {
+      try {
+        const settings = window.DB.getSystemSettings();
+        const serviceId  = settings.emailjsServiceId;
+        const templateId = settings.emailjsTemplateId;
+        const publicKey  = settings.emailjsPublicKey;
+
+        if (!serviceId || !templateId || !publicKey) {
+          console.warn('[EmailJS] Credentials not yet configured in Admin → Platform Settings.');
+          return;
+        }
+
+        // Build verification link pointing to dashboard with verify-email param
+        const base = window.location.href.replace('auth.html', 'dashboard.html').split('?')[0];
+        const verificationUrl = `${base}?verify-email=${encodeURIComponent(username)}`;
+
+        const templateParams = {
+          name:              username,
+          email:             emailAddr,
+          verification_url:  verificationUrl,
+          year:              new Date().getFullYear().toString()
+        };
+
+        emailjs.init({ publicKey: publicKey });
+        await emailjs.send(serviceId, templateId, templateParams);
+        console.log('[EmailJS] Welcome email dispatched successfully ✓');
+      } catch (err) {
+        console.error('[EmailJS] Send error:', err);
+      }
+    }
+
+    function handleSignUp(e) {
+      e.preventDefault();
+      const userVal  = document.getElementById('regUser').value;
+      const emailVal = document.getElementById('regEmail').value;
+      const passVal  = document.getElementById('regPass').value;
+      const refVal   = document.getElementById('regRef').value;
+
+      const res = window.DB.signUp(userVal, emailVal, passVal, refVal);
+      if (res.success) {
+        showToast('Registration successful! Sending welcome email...', 'success');
+        // Fire welcome + verification email (non-blocking)
+        sendWelcomeEmail(userVal, emailVal);
+        // Auto sign-in
+        window.DB.signIn(userVal, passVal);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } else {
+        showToast(res.message, 'error');
+      }
+    }
+
+    // Admin Sign-In Handler — only accepts users with isAdmin: true
+    function handleAdminSignIn(e) {
+      e.preventDefault();
+      const userVal = document.getElementById('adminUser').value;
+      const passVal = document.getElementById('adminPass').value;
+
+      const res = window.DB.signIn(userVal, passVal);
+      if (res.success && res.user.isAdmin) {
+        showToast('Administrator authenticated. Loading portal...', 'success');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 1200);
+      } else if (res.success && !res.user.isAdmin) {
+        // Signed in as a regular user via admin tab — reject
+        window.DB.signOut();
+        showToast('Access denied. This account does not have admin privileges.', 'error');
+      } else {
+        showToast(res.message || 'Invalid admin credentials.', 'error');
+      }
+    }
+
+    // Check if user already logged in
+    const currentUser = window.DB.getCurrentUser();
+    if (currentUser) {
+      if (currentUser.isAdmin) {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }
+  </script>
+</body>
+</html>
