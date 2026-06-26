@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkAuth() {
   currentAdmin = window.DB.getCurrentUser();
   if (!currentAdmin) {
-    window.location.href = 'auth.html';
+    window.location.href = 'auth.html?admin=true';
     return;
   }
   if (!currentAdmin.isAdmin) {

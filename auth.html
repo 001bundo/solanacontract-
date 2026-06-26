@@ -169,7 +169,7 @@
     <div class="tabs-header">
       <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Sign In</button>
       <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
-      <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')" style="color: var(--accent); font-size: 0.85rem;">
+      <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')" style="color: var(--accent); font-size: 0.85rem; display: none;">
         <i class="fa-solid fa-toolbox" style="font-size: 0.75rem;"></i> Admin
       </button>
     </div>
@@ -241,7 +241,7 @@
   </div>
 
   <!-- Admin Panel indicator badge -->
-  <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; opacity: 0.5; font-size: 0.75rem; color: var(--text-muted);">
+  <div id="adminBadge" style="margin-top: 16px; display: none; align-items: center; gap: 8px; opacity: 0.5; font-size: 0.75rem; color: var(--text-muted);">
     <i class="fa-solid fa-shield-halved" style="color: var(--accent);"></i>
     Auditor access via the Admin tab above
   </div>
@@ -303,7 +303,29 @@
     // Read URL query params AFTER switchTab is defined
     const params = new URLSearchParams(window.location.search);
     if (params.get('signup') === 'true') switchTab('signup');
-    if (params.get('admin')  === 'true') switchTab('admin');
+    if (params.get('admin')  === 'true') {
+      const loginTabBtn  = document.getElementById('loginTabBtn');
+      const signupTabBtn = document.getElementById('signupTabBtn');
+      const adminTabBtn  = document.getElementById('adminTabBtn');
+      const adminBadge   = document.getElementById('adminBadge');
+      
+      if (adminTabBtn) {
+        adminTabBtn.style.display = 'inline-block';
+        if (loginTabBtn)  loginTabBtn.style.display = 'none';
+        if (signupTabBtn) signupTabBtn.style.display = 'none';
+        
+        // Center the single active tab header visually
+        const tabsHeader = document.querySelector('.tabs-header');
+        if (tabsHeader) {
+          tabsHeader.style.gridTemplateColumns = '1fr';
+          tabsHeader.style.textAlign = 'center';
+        }
+      }
+      
+      if (adminBadge) adminBadge.style.display = 'none';
+      
+      switchTab('admin');
+    }
     if (params.get('ref')) {
       document.getElementById('regRef').value = params.get('ref').toUpperCase();
     }
