@@ -1085,9 +1085,9 @@ function startMicroAccrual() {
 // ── EmailJS Resend Verification ──────────────────────────────
 async function resendVerificationEmail() {
   const settings = window.DB.getSystemSettings();
-  const serviceId  = settings.emailjsServiceId  || (window.ENV && window.ENV.emailjsServiceId) || '';
-  const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || '';
-  const publicKey  = settings.emailjsPublicKey  || (window.ENV && window.ENV.emailjsPublicKey) || '';
+  const serviceId  = settings.emailjsServiceId  || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
+  const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl';
+  const publicKey  = settings.emailjsPublicKey  || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
 
   if (!serviceId || !templateId || !publicKey) {
     console.warn("[EmailJS] Credentials not configured in settings. Faking success.");
@@ -1121,9 +1121,9 @@ window.resendVerificationEmail = resendVerificationEmail;
 (function patchEmailjsCredentials() {
   const settings = window.DB.getSystemSettings();
   if (!settings.emailjsServiceId || !settings.emailjsTemplateId || !settings.emailjsPublicKey) {
-    const fallbackService = window.ENV && window.ENV.emailjsServiceId;
-    const fallbackTemplate = window.ENV && window.ENV.emailjsTemplateId;
-    const fallbackPublic = window.ENV && window.ENV.emailjsPublicKey;
+    const fallbackService = (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
+    const fallbackTemplate = (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl';
+    const fallbackPublic = (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
     if (fallbackService && fallbackTemplate && fallbackPublic) {
       window.DB.updateSystemSettings(
         settings.solDepositAddress,

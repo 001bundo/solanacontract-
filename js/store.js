@@ -238,9 +238,9 @@ const initialData = {
     usdtSolDepositQR: '',
     usdtEvmDepositQR: '',
     btcDepositQR: '',
-    emailjsServiceId: (window.ENV && window.ENV.emailjsServiceId) || '',
-    emailjsTemplateId: (window.ENV && window.ENV.emailjsTemplateId) || '',
-    emailjsPublicKey: (window.ENV && window.ENV.emailjsPublicKey) || '',
+    emailjsServiceId: (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7',
+    emailjsTemplateId: (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl',
+    emailjsPublicKey: (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw',
     plans: {
       starter: { name: 'SC Basic', rate: 3.5, min: 1, max: 10, duration: 2, unit: 'SOL' },
       pro: { name: 'SC Plus', rate: 5.0, min: 70, max: 350, duration: 14, unit: 'SOL' },
