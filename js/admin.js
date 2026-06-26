@@ -630,6 +630,27 @@ function handleEmailSettingsUpdate(e) {
   initData();
 }
 
+// ── Admin Change Password Handler ──────────────────────────────
+function handleAdminPasswordUpdate(e) {
+  e.preventDefault();
+  const currentPass = document.getElementById('adminOldPassword').value;
+  const newPass = document.getElementById('adminNewPassword').value;
+  const confirmPass = document.getElementById('adminConfirmPassword').value;
+
+  if (newPass !== confirmPass) {
+    showToast('New passwords do not match.', 'error');
+    return;
+  }
+
+  const success = window.DB.changePassword(currentAdmin.username, currentPass, newPass);
+  if (success) {
+    showToast('Password updated successfully!', 'success');
+    document.getElementById('settingsPasswordForm').reset();
+  } else {
+    showToast('Incorrect current password.', 'error');
+  }
+}
+
 // ── Admin Direct Adding Customer Modals ────────────────────────
 function openAddMemberModal() {
   document.getElementById('addMemberModal').classList.add('show');

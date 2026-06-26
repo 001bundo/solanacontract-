@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +11,15 @@
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <!-- Preloader Overlay -->
   <div id="preloader" class="preloader-overlay">
     <div class="preloader-content">
       <div class="preloader-logo">
-        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="width: 100%; height: 100%;">
           <defs>
             <linearGradient id="solGradPre" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#9945FF" />
@@ -24,7 +27,8 @@
               <stop offset="100%" stop-color="#14F195" />
             </linearGradient>
           </defs>
-          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5"
+            stroke-linejoin="round" opacity="0.8" />
           <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradPre)" />
           <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradPre)" />
           <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradPre)" opacity="0.9" />
@@ -40,7 +44,7 @@
 
   <script>
     // 1-second Minimum Preloader Logic
-    (function() {
+    (function () {
       const startTime = Date.now();
       window.addEventListener('load', () => {
         const elapsed = Date.now() - startTime;
@@ -60,7 +64,7 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <div class="dashboard-layout">
-    
+
     <!-- Sidebar Overlay for mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
@@ -68,16 +72,20 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <a href="index.html" class="logo">
-          <div class="logo-icon" style="border-color: rgba(0, 194, 255, 0.3); background: rgba(0, 194, 255, 0.05); box-shadow: 0 0 15px rgba(0, 194, 255, 0.15);">
-            <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;">
+          <div class="logo-icon"
+            style="border-color: rgba(0, 194, 255, 0.3); background: rgba(0, 194, 255, 0.05); box-shadow: 0 0 15px rgba(0, 194, 255, 0.15);">
+            <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+              style="width: 24px; height: 24px;">
               <defs>
                 <linearGradient id="adminGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#00C2FF" />
                   <stop offset="100%" stop-color="#14F195" />
                 </linearGradient>
               </defs>
-              <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#adminGrad)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
-              <path d="M12 18L16 22L24 14" stroke="url(#adminGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#adminGrad)" stroke-width="2.5"
+                stroke-linejoin="round" opacity="0.8" />
+              <path d="M12 18L16 22L24 14" stroke="url(#adminGrad)" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
             </svg>
           </div>
           <div class="logo-text" style="font-size: 1.1rem; color: #fff;">Auditor<span>Portal</span></div>
@@ -96,20 +104,23 @@
           </li>
           <li class="menu-item" data-tab="deposits">
             <a href="#deposits">
-              <i class="fa-solid fa-circle-down"></i> Deposit Approvals 
-              <span id="badgePendingDeposits" class="badge badge-pending" style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
+              <i class="fa-solid fa-circle-down"></i> Deposit Approvals
+              <span id="badgePendingDeposits" class="badge badge-pending"
+                style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
             </a>
           </li>
           <li class="menu-item" data-tab="withdrawals">
             <a href="#withdrawals">
               <i class="fa-solid fa-circle-up"></i> Withdrawal Approvals
-              <span id="badgePendingWithdrawals" class="badge badge-pending" style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
+              <span id="badgePendingWithdrawals" class="badge badge-pending"
+                style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
             </a>
           </li>
           <li class="menu-item" data-tab="tickets">
             <a href="#tickets">
               <i class="fa-solid fa-comments"></i> Support Desk
-              <span id="badgeOpenTickets" class="badge badge-pending" style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
+              <span id="badgeOpenTickets" class="badge badge-pending"
+                style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; display: none;">0</span>
             </a>
           </li>
           <li class="menu-item" data-tab="settings">
@@ -125,7 +136,7 @@
 
     <!-- Main Auditor Screen -->
     <main class="main-content">
-      
+
       <!-- Top header bar -->
       <header class="dash-navbar">
         <div class="navbar-left">
@@ -152,7 +163,7 @@
 
       <!-- Panel contents -->
       <div class="dash-body">
-        
+
         <!-- 1. OVERVIEW PANEL -->
         <section class="tab-panel active" id="panel-overview">
           <div class="admin-stats-grid">
@@ -177,13 +188,15 @@
           <!-- Pending transactions tables overview -->
           <div class="dashboard-grid">
             <div class="glass-card" style="height: 380px; display: flex; flex-direction: column;">
-              <h3 style="color:#fff; margin-bottom:16px;"><i class="fa-solid fa-circle-down text-gradient-solana"></i> Pending Deposits</h3>
+              <h3 style="color:#fff; margin-bottom:16px;"><i class="fa-solid fa-circle-down text-gradient-solana"></i>
+                Pending Deposits</h3>
               <div style="flex:1; overflow-y:auto;" id="overviewDepositsList">
                 <!-- Renders JS -->
               </div>
             </div>
             <div class="glass-card" style="height: 380px; display: flex; flex-direction: column;">
-              <h3 style="color:#fff; margin-bottom:16px;"><i class="fa-solid fa-circle-up glow-text-purple"></i> Pending Withdrawals</h3>
+              <h3 style="color:#fff; margin-bottom:16px;"><i class="fa-solid fa-circle-up glow-text-purple"></i> Pending
+                Withdrawals</h3>
               <div style="flex:1; overflow-y:auto;" id="overviewWithdrawalsList">
                 <!-- Renders JS -->
               </div>
@@ -196,9 +209,12 @@
           <div class="glass-card">
             <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px;">
               <div class="search-bar-wrapper" style="flex:1; margin-bottom:0;">
-                <input type="text" id="userSearchInput" class="form-control" placeholder="Search members by username or email..." oninput="filterUserTable()">
+                <input type="text" id="userSearchInput" class="form-control"
+                  placeholder="Search members by username or email..." oninput="filterUserTable()">
               </div>
-              <button class="btn btn-secondary" onclick="openAddMemberModal()" style="color:#0c0d12; white-space:nowrap; padding: 10px 20px;"><i class="fa-solid fa-user-plus"></i> Add New Member</button>
+              <button class="btn btn-secondary" onclick="openAddMemberModal()"
+                style="color:#0c0d12; white-space:nowrap; padding: 10px 20px;"><i class="fa-solid fa-user-plus"></i> Add
+                New Member</button>
             </div>
 
             <div class="table-responsive">
@@ -226,7 +242,8 @@
         <!-- 3. DEPOSIT APPROVALS PANEL -->
         <section class="tab-panel" id="panel-deposits">
           <div class="glass-card">
-            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> Pending Deposit Requests</h3>
+            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> Pending Deposit Requests
+            </h3>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -250,7 +267,8 @@
         <!-- 4. WITHDRAWAL APPROVALS PANEL -->
         <section class="tab-panel" id="panel-withdrawals">
           <div class="glass-card">
-            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Pending Withdrawals Requests</h3>
+            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Pending
+              Withdrawals Requests</h3>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -289,23 +307,28 @@
                     <h4 id="adminChatSubject" style="color: #fff;">Ticket Subject</h4>
                     <span id="adminChatUser" style="font-size:0.8rem; color:var(--text-secondary);">User: soluser</span>
                   </div>
-                  <button class="btn btn-outline btn-sm" onclick="handleAdminCloseTicket()"><i class="fa-solid fa-check"></i> Resolve & Close</button>
+                  <button class="btn btn-outline btn-sm" onclick="handleAdminCloseTicket()"><i
+                      class="fa-solid fa-check"></i> Resolve & Close</button>
                 </div>
                 <div class="chat-messages" id="adminChatMessagesBox">
                   <!-- Messages dialogue -->
                 </div>
                 <form class="chat-input-wrapper" onsubmit="handleAdminSendChatMessage(event)">
-                  <input type="text" id="adminChatInput" class="form-control" placeholder="Type response message..." required>
-                  <button type="submit" class="btn btn-secondary btn-sm" style="color: #0c0d12;"><i class="fa-solid fa-reply"></i> Send</button>
+                  <input type="text" id="adminChatInput" class="form-control" placeholder="Type response message..."
+                    required>
+                  <button type="submit" class="btn btn-secondary btn-sm" style="color: #0c0d12;"><i
+                      class="fa-solid fa-reply"></i> Send</button>
                 </form>
               </div>
             </div>
 
             <!-- Help screen placeholder -->
-            <div class="glass-card" id="adminChatPlaceholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <div class="glass-card" id="adminChatPlaceholder"
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
               <i class="fa-solid fa-message text-gradient-solana" style="font-size: 3rem; margin-bottom: 16px;"></i>
               <h4 style="color:#fff; margin-bottom:8px;">Select User Ticket</h4>
-              <p style="color:var(--text-secondary); font-size:0.85rem; max-width:240px;">Choose an active help ticket from the panel lists to load details and communicate with platform members.</p>
+              <p style="color:var(--text-secondary); font-size:0.85rem; max-width:240px;">Choose an active help ticket
+                from the panel lists to load details and communicate with platform members.</p>
             </div>
           </div>
         </section>
@@ -315,145 +338,188 @@
           <div class="dashboard-grid">
             <div class="glass-card">
               <h3 style="color:#fff; margin-bottom:6px;"><i class="fa-solid fa-wallet"></i> Target Platform Wallets</h3>
-              <p style="color:var(--text-secondary); font-size:0.82rem; margin-bottom:20px;">Set the deposit address and optionally upload a QR/barcode image. Users can choose between copying the address or scanning the code.</p>
+              <p style="color:var(--text-secondary); font-size:0.82rem; margin-bottom:20px;">Set the deposit address and
+                optionally upload a QR/barcode image. Users can choose between copying the address or scanning the code.
+              </p>
               <form id="settingsWalletForm" onsubmit="handleSettingsUpdate(event)">
 
                 <!-- SOL -->
-                <div style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(153,69,255,0.04);">
+                <div
+                  style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(153,69,255,0.04);">
                   <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
                     <i class="fa-brands fa-solana" style="color:var(--primary);"></i>
                     <strong style="color:#fff;">SOL Deposit</strong>
                   </div>
                   <div class="form-group">
                     <label for="setSolAddr">SOL Deposit Address</label>
-                    <input type="text" id="setSolAddr" class="form-control" style="font-family:monospace; font-size:0.82rem;" required>
+                    <input type="text" id="setSolAddr" class="form-control"
+                      style="font-family:monospace; font-size:0.82rem;" required>
                   </div>
                   <div class="form-group">
-                    <label>SOL QR / Barcode Image <span style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
-                    <div class="file-upload-wrapper" style="cursor:pointer;" onclick="document.getElementById('setSolQR').click()">
-                      <div class="file-upload-btn" id="setSolQRBtn"><i class="fa-solid fa-qrcode"></i> Upload SOL QR / Barcode</div>
-                      <input type="file" id="setSolQR" accept="image/*" style="display:none" onchange="previewQR('setSolQR','solQRThumb','solQRPreviewBox','setSolQRBtn')">
+                    <label>SOL QR / Barcode Image <span
+                        style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
+                    <div class="file-upload-wrapper" style="cursor:pointer;"
+                      onclick="document.getElementById('setSolQR').click()">
+                      <div class="file-upload-btn" id="setSolQRBtn"><i class="fa-solid fa-qrcode"></i> Upload SOL QR /
+                        Barcode</div>
+                      <input type="file" id="setSolQR" accept="image/*" style="display:none"
+                        onchange="previewQR('setSolQR','solQRThumb','solQRPreviewBox','setSolQRBtn')">
                     </div>
                     <div id="solQRPreviewBox" style="display:none; margin-top:10px; text-align:center;">
                       <div style="display:inline-block; background:#fff; padding:8px; border-radius:10px;">
-                        <img id="solQRThumb" src="" alt="SOL QR" style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
+                        <img id="solQRThumb" src="" alt="SOL QR"
+                          style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
                       </div>
-                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i class="fa-solid fa-check-circle"></i> New QR ready to save</div>
+                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i
+                          class="fa-solid fa-check-circle"></i> New QR ready to save</div>
                     </div>
                     <div id="solQRCurrentBox" style="display:none; margin-top:10px; text-align:center;">
                       <p style="font-size:0.73rem; color:var(--text-muted); margin-bottom:6px;">Currently active QR:</p>
                       <div style="display:inline-block; background:#fff; padding:6px; border-radius:8px;">
-                        <img id="solQRCurrent" src="" alt="Active SOL QR" style="max-width:110px; max-height:110px; display:block;">
+                        <img id="solQRCurrent" src="" alt="Active SOL QR"
+                          style="max-width:110px; max-height:110px; display:block;">
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- USDT SOL (Solana) -->
-                <div style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(20,241,149,0.03);">
+                <div
+                  style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(20,241,149,0.03);">
                   <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
                     <i class="fa-solid fa-coins" style="color:var(--secondary);"></i>
                     <strong style="color:#fff;">USDT Deposit (Solana SPL Network)</strong>
                   </div>
                   <div class="form-group">
                     <label for="setUsdtSolAddr">USDT Solana Address</label>
-                    <input type="text" id="setUsdtSolAddr" class="form-control" style="font-family:monospace; font-size:0.82rem;" required>
+                    <input type="text" id="setUsdtSolAddr" class="form-control"
+                      style="font-family:monospace; font-size:0.82rem;" required>
                   </div>
                   <div class="form-group">
-                    <label>USDT Solana QR / Barcode Image <span style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
-                    <div class="file-upload-wrapper" style="cursor:pointer;" onclick="document.getElementById('setUsdtSolQR').click()">
-                      <div class="file-upload-btn" id="setUsdtSolQRBtn"><i class="fa-solid fa-qrcode"></i> Upload USDT Solana QR / Barcode</div>
-                      <input type="file" id="setUsdtSolQR" accept="image/*" style="display:none" onchange="previewQR('setUsdtSolQR','usdtSolQRThumb','usdtSolQRPreviewBox','setUsdtSolQRBtn')">
+                    <label>USDT Solana QR / Barcode Image <span
+                        style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
+                    <div class="file-upload-wrapper" style="cursor:pointer;"
+                      onclick="document.getElementById('setUsdtSolQR').click()">
+                      <div class="file-upload-btn" id="setUsdtSolQRBtn"><i class="fa-solid fa-qrcode"></i> Upload USDT
+                        Solana QR / Barcode</div>
+                      <input type="file" id="setUsdtSolQR" accept="image/*" style="display:none"
+                        onchange="previewQR('setUsdtSolQR','usdtSolQRThumb','usdtSolQRPreviewBox','setUsdtSolQRBtn')">
                     </div>
                     <div id="usdtSolQRPreviewBox" style="display:none; margin-top:10px; text-align:center;">
                       <div style="display:inline-block; background:#fff; padding:8px; border-radius:10px;">
-                        <img id="usdtSolQRThumb" src="" alt="USDT Solana QR" style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
+                        <img id="usdtSolQRThumb" src="" alt="USDT Solana QR"
+                          style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
                       </div>
-                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i class="fa-solid fa-check-circle"></i> New QR ready to save</div>
+                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i
+                          class="fa-solid fa-check-circle"></i> New QR ready to save</div>
                     </div>
                     <div id="usdtSolQRCurrentBox" style="display:none; margin-top:10px; text-align:center;">
                       <p style="font-size:0.73rem; color:var(--text-muted); margin-bottom:6px;">Currently active QR:</p>
                       <div style="display:inline-block; background:#fff; padding:6px; border-radius:8px;">
-                        <img id="usdtSolQRCurrent" src="" alt="Active USDT Solana QR" style="max-width:110px; max-height:110px; display:block;">
+                        <img id="usdtSolQRCurrent" src="" alt="Active USDT Solana QR"
+                          style="max-width:110px; max-height:110px; display:block;">
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- USDT EVM (ERC-20/BEP-20) -->
-                <div style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(0,194,255,0.03);">
+                <div
+                  style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:14px; background:rgba(0,194,255,0.03);">
                   <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
                     <i class="fa-solid fa-circle-nodes" style="color:var(--info);"></i>
                     <strong style="color:#fff;">USDT Deposit (EVM ERC-20/BEP-20 Networks)</strong>
                   </div>
                   <div class="form-group">
                     <label for="setUsdtEvmAddr">USDT EVM Address</label>
-                    <input type="text" id="setUsdtEvmAddr" class="form-control" style="font-family:monospace; font-size:0.82rem;" required>
+                    <input type="text" id="setUsdtEvmAddr" class="form-control"
+                      style="font-family:monospace; font-size:0.82rem;" required>
                   </div>
                   <div class="form-group">
-                    <label>USDT EVM QR / Barcode Image <span style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
-                    <div class="file-upload-wrapper" style="cursor:pointer;" onclick="document.getElementById('setUsdtEvmQR').click()">
-                      <div class="file-upload-btn" id="setUsdtEvmQRBtn"><i class="fa-solid fa-qrcode"></i> Upload USDT EVM QR / Barcode</div>
-                      <input type="file" id="setUsdtEvmQR" accept="image/*" style="display:none" onchange="previewQR('setUsdtEvmQR','usdtEvmQRThumb','usdtEvmQRPreviewBox','setUsdtEvmQRBtn')">
+                    <label>USDT EVM QR / Barcode Image <span
+                        style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
+                    <div class="file-upload-wrapper" style="cursor:pointer;"
+                      onclick="document.getElementById('setUsdtEvmQR').click()">
+                      <div class="file-upload-btn" id="setUsdtEvmQRBtn"><i class="fa-solid fa-qrcode"></i> Upload USDT
+                        EVM QR / Barcode</div>
+                      <input type="file" id="setUsdtEvmQR" accept="image/*" style="display:none"
+                        onchange="previewQR('setUsdtEvmQR','usdtEvmQRThumb','usdtEvmQRPreviewBox','setUsdtEvmQRBtn')">
                     </div>
                     <div id="usdtEvmQRPreviewBox" style="display:none; margin-top:10px; text-align:center;">
                       <div style="display:inline-block; background:#fff; padding:8px; border-radius:10px;">
-                        <img id="usdtEvmQRThumb" src="" alt="USDT EVM QR" style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
+                        <img id="usdtEvmQRThumb" src="" alt="USDT EVM QR"
+                          style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
                       </div>
-                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i class="fa-solid fa-check-circle"></i> New QR ready to save</div>
+                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i
+                          class="fa-solid fa-check-circle"></i> New QR ready to save</div>
                     </div>
                     <div id="usdtEvmQRCurrentBox" style="display:none; margin-top:10px; text-align:center;">
                       <p style="font-size:0.73rem; color:var(--text-muted); margin-bottom:6px;">Currently active QR:</p>
                       <div style="display:inline-block; background:#fff; padding:6px; border-radius:8px;">
-                        <img id="usdtEvmQRCurrent" src="" alt="Active USDT EVM QR" style="max-width:110px; max-height:110px; display:block;">
+                        <img id="usdtEvmQRCurrent" src="" alt="Active USDT EVM QR"
+                          style="max-width:110px; max-height:110px; display:block;">
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- BTC -->
-                <div style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:18px; background:rgba(255,184,0,0.03);">
+                <div
+                  style="border:1px solid var(--border-glass); border-radius:10px; padding:16px; margin-bottom:18px; background:rgba(255,184,0,0.03);">
                   <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
                     <i class="fa-brands fa-bitcoin" style="color:var(--warning);"></i>
                     <strong style="color:#fff;">BTC Deposit (Bitcoin Native Network)</strong>
                   </div>
                   <div class="form-group">
                     <label for="setBtcAddr">BTC Deposit Address</label>
-                    <input type="text" id="setBtcAddr" class="form-control" style="font-family:monospace; font-size:0.82rem;" required>
+                    <input type="text" id="setBtcAddr" class="form-control"
+                      style="font-family:monospace; font-size:0.82rem;" required>
                   </div>
                   <div class="form-group">
-                    <label>BTC QR / Barcode Image <span style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
-                    <div class="file-upload-wrapper" style="cursor:pointer;" onclick="document.getElementById('setBtcQR').click()">
-                      <div class="file-upload-btn" id="setBtcQRBtn"><i class="fa-solid fa-qrcode"></i> Upload BTC QR / Barcode</div>
-                      <input type="file" id="setBtcQR" accept="image/*" style="display:none" onchange="previewQR('setBtcQR','btcQRThumb','btcQRPreviewBox','setBtcQRBtn')">
+                    <label>BTC QR / Barcode Image <span
+                        style="color:var(--text-muted); font-size:0.73rem;">(optional)</span></label>
+                    <div class="file-upload-wrapper" style="cursor:pointer;"
+                      onclick="document.getElementById('setBtcQR').click()">
+                      <div class="file-upload-btn" id="setBtcQRBtn"><i class="fa-solid fa-qrcode"></i> Upload BTC QR /
+                        Barcode</div>
+                      <input type="file" id="setBtcQR" accept="image/*" style="display:none"
+                        onchange="previewQR('setBtcQR','btcQRThumb','btcQRPreviewBox','setBtcQRBtn')">
                     </div>
                     <div id="btcQRPreviewBox" style="display:none; margin-top:10px; text-align:center;">
                       <div style="display:inline-block; background:#fff; padding:8px; border-radius:10px;">
-                        <img id="btcQRThumb" src="" alt="BTC QR" style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
+                        <img id="btcQRThumb" src="" alt="BTC QR"
+                          style="max-width:140px; max-height:140px; display:block; border-radius:4px;">
                       </div>
-                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i class="fa-solid fa-check-circle"></i> New QR ready to save</div>
+                      <div style="margin-top:6px; font-size:0.75rem; color:var(--secondary);"><i
+                          class="fa-solid fa-check-circle"></i> New QR ready to save</div>
                     </div>
                     <div id="btcQRCurrentBox" style="display:none; margin-top:10px; text-align:center;">
                       <p style="font-size:0.73rem; color:var(--text-muted); margin-bottom:6px;">Currently active QR:</p>
                       <div style="display:inline-block; background:#fff; padding:6px; border-radius:8px;">
-                        <img id="btcQRCurrent" src="" alt="Active BTC QR" style="max-width:110px; max-height:110px; display:block;">
+                        <img id="btcQRCurrent" src="" alt="Active BTC QR"
+                          style="max-width:110px; max-height:110px; display:block;">
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-secondary" style="width:100%; color:#0c0d12;"><i class="fa-solid fa-floppy-disk"></i> Save Wallet Settings</button>
+                <button type="submit" class="btn btn-secondary" style="width:100%; color:#0c0d12;"><i
+                    class="fa-solid fa-floppy-disk"></i> Save Wallet Settings</button>
               </form>
             </div>
 
             <div>
               <div class="glass-card">
-                <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-scale-balanced"></i> Investment Rates Control</h3>
-                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">Adjust contract yield daily ROI percentage globally. Updates will only apply to contracts purchased after settings modification.</p>
+                <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-scale-balanced"></i> Investment
+                  Rates Control</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">Adjust contract yield
+                  daily ROI percentage globally. Updates will only apply to contracts purchased after settings
+                  modification.</p>
                 <form id="settingsRatesForm" onsubmit="handleRatesUpdate(event)">
                   <div class="form-group">
                     <label for="rateStarter">SC Basic ROI (%) — Default: 3.5%</label>
-                    <input type="number" id="rateStarter" class="form-control" step="any" placeholder="e.g. 3.5" required>
+                    <input type="number" id="rateStarter" class="form-control" step="any" placeholder="e.g. 3.5"
+                      required>
                   </div>
                   <div class="form-group">
                     <label for="ratePro">SC Plus ROI (%) — Default: 5.0%</label>
@@ -463,12 +529,13 @@
                     <label for="rateWhale">SC Premium ROI (%) — Default: 7.5%</label>
                     <input type="number" id="rateWhale" class="form-control" step="any" placeholder="e.g. 7.5" required>
                   </div>
-                  <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-sliders"></i> Modify Yield Rates</button>
+                  <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-sliders"></i>
+                    Modify Yield Rates</button>
                 </form>
               </div>
 
               <!-- EmailJS Integration Settings Card -->
-              <div class="glass-card" style="margin-top: 24px;">
+              <!-- <div class="glass-card" style="margin-top: 24px;">
                 <h3 style="color:#fff; margin-bottom:6px;"><i class="fa-solid fa-envelope"></i> EmailJS Notification Integration</h3>
                 <p style="color:var(--text-secondary); font-size:0.82rem; margin-bottom:20px;">Configure your EmailJS Service, Template and Public Key parameters to automate Welcome / KYC verification emails on registration.</p>
                 <form id="settingsEmailForm" onsubmit="handleEmailSettingsUpdate(event)">
@@ -485,6 +552,32 @@
                     <input type="text" id="setEmailPublicKey" class="form-control" style="font-family:monospace; font-size:0.82rem;" required placeholder="e.g. 5xG-bXo...">
                   </div>
                   <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-floppy-disk"></i> Save Email Settings</button>
+                </form>
+              </div> -->
+
+              <!-- Change Password Settings Card -->
+              <div class="glass-card" style="margin-top: 24px;">
+                <h3 style="color:#fff; margin-bottom:6px;"><i class="fa-solid fa-key"></i> Change Admin Password</h3>
+                <p style="color:var(--text-secondary); font-size:0.82rem; margin-bottom:20px;">Update your administrator
+                  credentials for accessing the Auditor Portal.</p>
+                <form id="settingsPasswordForm" onsubmit="handleAdminPasswordUpdate(event)">
+                  <div class="form-group">
+                    <label for="adminOldPassword">Current Password</label>
+                    <input type="password" id="adminOldPassword" class="form-control" required
+                      placeholder="Enter current password">
+                  </div>
+                  <div class="form-group">
+                    <label for="adminNewPassword">New Password</label>
+                    <input type="password" id="adminNewPassword" class="form-control" required
+                      placeholder="Enter new password" minlength="6">
+                  </div>
+                  <div class="form-group">
+                    <label for="adminConfirmPassword">Confirm New Password</label>
+                    <input type="password" id="adminConfirmPassword" class="form-control" required
+                      placeholder="Confirm new password" minlength="6">
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-lock"></i>
+                    Update Password</button>
                 </form>
               </div>
             </div>
@@ -516,7 +609,8 @@
           <label for="balanceValue">New Balance Amount</label>
           <input type="number" id="balanceValue" class="form-control" step="any" required>
         </div>
-        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i class="fa-solid fa-pen-to-square"></i> Confirm Balance Override</button>
+        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i
+            class="fa-solid fa-pen-to-square"></i> Confirm Balance Override</button>
       </form>
     </div>
   </div>
@@ -533,7 +627,8 @@
           <strong style="color: var(--secondary);">Country:</strong> <span id="viewKycCountry">United States</span>
         </div>
         <div>
-          <strong style="color: var(--secondary);">Document Info:</strong> <span id="viewKycDocDetails">Passport (No: N12345)</span>
+          <strong style="color: var(--secondary);">Document Info:</strong> <span id="viewKycDocDetails">Passport (No:
+            N12345)</span>
         </div>
         <div class="receipt-preview-box">
           <strong style="color: #fff;">Uploaded Scan File</strong>
@@ -541,8 +636,10 @@
         </div>
         <input type="hidden" id="viewKycUsername">
         <div class="action-btn-group" style="margin-top:10px;">
-          <button class="btn btn-secondary" style="flex:1; color:#0c0d12;" onclick="handleVerifyKYC('verified')"><i class="fa-solid fa-check"></i> Verify Pass</button>
-          <button class="btn btn-outline" style="flex:1; color:var(--danger); border-color:rgba(255,74,74,0.3);" onclick="handleVerifyKYC('rejected')"><i class="fa-solid fa-xmark"></i> Reject ID</button>
+          <button class="btn btn-secondary" style="flex:1; color:#0c0d12;" onclick="handleVerifyKYC('verified')"><i
+              class="fa-solid fa-check"></i> Verify Pass</button>
+          <button class="btn btn-outline" style="flex:1; color:var(--danger); border-color:rgba(255,74,74,0.3);"
+            onclick="handleVerifyKYC('rejected')"><i class="fa-solid fa-xmark"></i> Reject ID</button>
         </div>
       </div>
     </div>
@@ -561,8 +658,10 @@
       </div>
       <input type="hidden" id="receiptViewerId">
       <div class="action-btn-group" style="margin-top:20px;">
-        <button class="btn btn-secondary" style="flex:1; color:#0c0d12;" onclick="handleApproveReceipt()"><i class="fa-solid fa-check"></i> Approve Deposit</button>
-        <button class="btn btn-outline" style="flex:1; color:var(--danger); border-color:rgba(255,74,74,0.3);" onclick="handleRejectReceipt()"><i class="fa-solid fa-xmark"></i> Reject Deposit</button>
+        <button class="btn btn-secondary" style="flex:1; color:#0c0d12;" onclick="handleApproveReceipt()"><i
+            class="fa-solid fa-check"></i> Approve Deposit</button>
+        <button class="btn btn-outline" style="flex:1; color:var(--danger); border-color:rgba(255,74,74,0.3);"
+          onclick="handleRejectReceipt()"><i class="fa-solid fa-xmark"></i> Reject Deposit</button>
       </div>
     </div>
   </div>
@@ -585,7 +684,8 @@
         </div>
         <div class="form-group">
           <label for="addMemPass">Password</label>
-          <input type="password" id="addMemPass" class="form-control" placeholder="Min 6 characters" required minlength="6">
+          <input type="password" id="addMemPass" class="form-control" placeholder="Min 6 characters" required
+            minlength="6">
         </div>
         <div class="form-group">
           <label for="addMemKyc">Initial KYC Status</label>
@@ -594,7 +694,8 @@
             <option value="verified">Verified</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i class="fa-solid fa-plus"></i> Create Member Account</button>
+        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i
+            class="fa-solid fa-plus"></i> Create Member Account</button>
       </form>
     </div>
   </div>
@@ -617,7 +718,8 @@
             <option value="rejected">Rejected</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i class="fa-solid fa-user-shield"></i> Update KYC Audit Status</button>
+        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i
+            class="fa-solid fa-user-shield"></i> Update KYC Audit Status</button>
       </form>
     </div>
   </div>
@@ -631,4 +733,5 @@
   <script src="js/store.js"></script>
   <script src="js/admin.js"></script>
 </body>
+
 </html>
