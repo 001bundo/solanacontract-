@@ -452,16 +452,16 @@
                 <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">Adjust contract yield daily ROI percentage globally. Updates will only apply to contracts purchased after settings modification.</p>
                 <form id="settingsRatesForm" onsubmit="handleRatesUpdate(event)">
                   <div class="form-group">
-                    <label for="rateStarter">SOL/USDT/BTC Starter ROI (%)</label>
-                    <input type="number" id="rateStarter" class="form-control" step="any" required>
+                    <label for="rateStarter">SC Basic ROI (%) — Default: 3.5%</label>
+                    <input type="number" id="rateStarter" class="form-control" step="any" placeholder="e.g. 3.5" required>
                   </div>
                   <div class="form-group">
-                    <label for="ratePro">SOL/USDT/BTC Premium ROI (%)</label>
-                    <input type="number" id="ratePro" class="form-control" step="any" required>
+                    <label for="ratePro">SC Plus ROI (%) — Default: 5.0%</label>
+                    <input type="number" id="ratePro" class="form-control" step="any" placeholder="e.g. 5.0" required>
                   </div>
                   <div class="form-group">
-                    <label for="rateWhale">SOL/USDT/BTC Elite ROI (%)</label>
-                    <input type="number" id="rateWhale" class="form-control" step="any" required>
+                    <label for="rateWhale">SC Premium ROI (%) — Default: 7.5%</label>
+                    <input type="number" id="rateWhale" class="form-control" step="any" placeholder="e.g. 7.5" required>
                   </div>
                   <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-sliders"></i> Modify Yield Rates</button>
                 </form>

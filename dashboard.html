@@ -401,29 +401,46 @@
 
           <!-- Staking Grid selector -->
           <div class="stats-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 32px;">
+            <!-- SC Basic -->
             <div class="glass-card">
-              <h4 style="color: #fff; font-size: 1.15rem;">SOL Starter</h4>
-              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">2.2% / Daily</div>
-              <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px;">Duration: 15 Days | Min: 1 SOL | Max: 20 SOL</p>
-              <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="openInvestModal('starter', 'SOL')">Invest SOL</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_usdt', 'USDT')">Invest USDT (Min 50)</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_btc', 'BTC')">Invest BTC (Min 0.01)</button>
+              <h4 style="color: #fff; font-size: 1.15rem;">SC Basic</h4>
+              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">3.5% / Daily</div>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 2 Days</p>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 1–10 | USDT: 100–1,000 | BTC: 0.002–0.02</p>
+              <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="openInvestModal('starter', 'SOL')">Invest SOL (Min 1)</button>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_usdt', 'USDT')">Invest USDT (Min 100)</button>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_btc', 'BTC')">Invest BTC (Min 0.002)</button>
             </div>
+
+            <!-- SC Plus -->
+            <div class="glass-card" style="border-color: var(--secondary);">
+              <div style="margin-bottom: 8px;">
+                <span style="background: rgba(20,241,149,0.1); color: var(--secondary); border: 1px solid rgba(20,241,149,0.25); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700;">
+                  ★ Recommended
+                </span>
+              </div>
+              <h4 style="color: #fff; font-size: 1.15rem;">SC Plus</h4>
+              <div class="glow-text-green" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">5.0% / Daily</div>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 2 Weeks (14 Days)</p>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 70–350 | USDT: 10K–50K | BTC: 0.2–1.0</p>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; color: #0c0d12;" onclick="openInvestModal('pro', 'SOL')">Invest SOL (Min 70)</button>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;" onclick="openInvestModal('pro_usdt', 'USDT')">Invest USDT (Min 10,000)</button>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;" onclick="openInvestModal('pro_btc', 'BTC')">Invest BTC (Min 0.2)</button>
+            </div>
+
+            <!-- SC Premium -->
             <div class="glass-card" style="border-color: var(--primary);">
-              <h4 style="color: #fff; font-size: 1.15rem;">SOL Premium</h4>
-              <div class="glow-text-green" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">3.5% / Daily</div>
-              <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px;">Duration: 30 Days | Min: 20.1 SOL | Max: 200 SOL</p>
-              <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="openInvestModal('pro', 'SOL')">Invest SOL</button>
-              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('pro_usdt', 'USDT')">Invest USDT (Min 1001)</button>
-              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('pro_btc', 'BTC')">Invest BTC (Min 0.21)</button>
-            </div>
-            <div class="glass-card">
-              <h4 style="color: #fff; font-size: 1.15rem;">SOL Elite</h4>
-              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">5.0% / Daily</div>
-              <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px;">Duration: 45 Days | Min: 200.1 SOL | Max: 10,000 SOL</p>
-              <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="openInvestModal('whale', 'SOL')">Invest SOL</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_usdt', 'USDT')">Invest USDT (Min 10001)</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_btc', 'BTC')">Invest BTC (Min 2.01)</button>
+              <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px;">
+                <span style="background: rgba(153,69,255,0.1); color: var(--primary); border: 1px solid rgba(153,69,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">Partnership</span>
+                <span style="background: rgba(0,194,255,0.1); color: var(--info); border: 1px solid rgba(0,194,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">CDs</span>
+              </div>
+              <h4 style="color: #fff; font-size: 1.15rem;">SC Premium</h4>
+              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">7.5% / Daily</div>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 4 Weeks (28 Days)</p>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 700–7K | USDT: 100K–1M | BTC: 2–20</p>
+              <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="openInvestModal('whale', 'SOL')">Invest SOL (Min 700)</button>
+              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_usdt', 'USDT')">Invest USDT (Min 100,000)</button>
+              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_btc', 'BTC')">Invest BTC (Min 2.0)</button>
             </div>
           </div>
 

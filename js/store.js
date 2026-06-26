@@ -242,15 +242,15 @@ const initialData = {
     emailjsTemplateId: (window.ENV && window.ENV.emailjsTemplateId) || '',
     emailjsPublicKey: (window.ENV && window.ENV.emailjsPublicKey) || '',
     plans: {
-      starter: { name: 'SOL Starter', rate: 2.2, min: 1, max: 20, duration: 15, unit: 'SOL' },
-      pro: { name: 'SOL Premium', rate: 3.5, min: 20.1, max: 200, duration: 30, unit: 'SOL' },
-      whale: { name: 'SOL Elite', rate: 5.0, min: 200.1, max: 10000, duration: 45, unit: 'SOL' },
-      starter_usdt: { name: 'USDT Starter', rate: 2.2, min: 50, max: 1000, duration: 15, unit: 'USDT' },
-      pro_usdt: { name: 'USDT Premium', rate: 3.5, min: 1001, max: 10000, duration: 30, unit: 'USDT' },
-      whale_usdt: { name: 'USDT Elite', rate: 5.0, min: 10001, max: 100000, duration: 45, unit: 'USDT' },
-      starter_btc: { name: 'BTC Starter', rate: 2.2, min: 0.01, max: 0.2, duration: 15, unit: 'BTC' },
-      pro_btc: { name: 'BTC Premium', rate: 3.5, min: 0.21, max: 2.0, duration: 30, unit: 'BTC' },
-      whale_btc: { name: 'BTC Elite', rate: 5.0, min: 2.01, max: 100.0, duration: 45, unit: 'BTC' }
+      starter: { name: 'SC Basic', rate: 3.5, min: 1, max: 10, duration: 2, unit: 'SOL' },
+      pro: { name: 'SC Plus', rate: 5.0, min: 70, max: 350, duration: 14, unit: 'SOL' },
+      whale: { name: 'SC Premium', rate: 7.5, min: 700, max: 7000, duration: 28, unit: 'SOL' },
+      starter_usdt: { name: 'SC Basic', rate: 3.5, min: 100, max: 1000, duration: 2, unit: 'USDT' },
+      pro_usdt: { name: 'SC Plus', rate: 5.0, min: 10000, max: 50000, duration: 14, unit: 'USDT' },
+      whale_usdt: { name: 'SC Premium', rate: 7.5, min: 100000, max: 1000000, duration: 28, unit: 'USDT' },
+      starter_btc: { name: 'SC Basic', rate: 3.5, min: 0.002, max: 0.02, duration: 2, unit: 'BTC' },
+      pro_btc: { name: 'SC Plus', rate: 5.0, min: 0.2, max: 1.0, duration: 14, unit: 'BTC' },
+      whale_btc: { name: 'SC Premium', rate: 7.5, min: 2.0, max: 20.0, duration: 28, unit: 'BTC' }
     }
   }
 };
@@ -269,7 +269,17 @@ function getDB() {
     localStorage.setItem(STORE_KEY, JSON.stringify(initialData));
     return initialData;
   }
-  return JSON.parse(data);
+  const db = JSON.parse(data);
+  // Migrate plans if they contain the old names or old minimum limits
+  if (db && db.systemSettings && db.systemSettings.plans) {
+    const plans = db.systemSettings.plans;
+    if (!plans.starter || plans.starter.name === 'SOL Starter' || (plans.starter_usdt && plans.starter_usdt.min === 50)) {
+      db.systemSettings.plans = initialData.systemSettings.plans;
+      localStorage.setItem(STORE_KEY, JSON.stringify(db));
+      console.log('[Store] Migrated stale system plans cache to new SC Basic, SC Plus, SC Premium layout ✓');
+    }
+  }
+  return db;
 }
 
 /**
