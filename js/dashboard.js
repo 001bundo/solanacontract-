@@ -605,7 +605,11 @@ function renderActiveContracts() {
     if (item.status === 'active') {
       statusBadgeClass = 'badge-success';
       statusLabel = 'Active';
-      statusNote = '';
+      const lastPayoutMs = new Date(item.lastPayout).getTime();
+      const nextPayoutMs = isNaN(lastPayoutMs) ? Date.now() + (24 * 60 * 60 * 1000) : lastPayoutMs + (24 * 60 * 60 * 1000);
+      statusNote = `<div style="font-size:0.72rem; color:var(--info); margin-top:4px; font-style:italic;">
+        <i class="fa-solid fa-hourglass-start"></i> Payout: <span class="payout-countdown-timer" data-next-payout="${nextPayoutMs}">--:--:--</span>
+      </div>`;
     } else if (item.status === 'in_progress') {
       statusBadgeClass = 'badge-pending';
       statusLabel = 'Finishing up';
@@ -1199,6 +1203,25 @@ function startMicroAccrual() {
     if (navSol) navSol.innerHTML = `${liveSolBalance.toFixed(4)} SOL <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(~$${liveSolUsd.toFixed(2)})</span>`;
     if (navUsdt) navUsdt.innerHTML = `${liveUsdtBalance.toFixed(2)} USDT <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(~$${liveUsdtUsd.toFixed(2)})</span>`;
     if (navBtc) navBtc.innerHTML = `${liveBtcBalance.toFixed(4)} BTC <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(~$${liveBtcUsd.toFixed(2)})</span>`;
+
+    // Real-time payout countdown timers
+    const countdowns = document.querySelectorAll('.payout-countdown-timer');
+    countdowns.forEach(el => {
+      const nextPayout = parseInt(el.getAttribute('data-next-payout'), 10);
+      if (isNaN(nextPayout)) return;
+
+      const diff = nextPayout - Date.now();
+      if (diff <= 0) {
+        el.textContent = 'Processing...';
+      } else {
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+        
+        const pad = (num) => num.toString().padStart(2, '0');
+        el.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+      }
+    });
 
   }, 250);
 }
