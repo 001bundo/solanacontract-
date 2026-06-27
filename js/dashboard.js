@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Wire KYC file input onchange for live preview
   const kycFileInput = document.getElementById('kycDocFile');
   if (kycFileInput) {
-    kycFileInput.addEventListener('change', function() { handleKycFilePreview(this); });
+    kycFileInput.addEventListener('change', function () { handleKycFilePreview(this); });
     // Make the wrapper div trigger the hidden file input
     const wrapper = document.getElementById('kycUploadWrapper');
     if (wrapper) wrapper.addEventListener('click', () => kycFileInput.click());
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Wire Deposit file input onchange for live feedback
   const depReceiptInput = document.getElementById('depReceipt');
   if (depReceiptInput) {
-    depReceiptInput.addEventListener('change', function() {
+    depReceiptInput.addEventListener('change', function () {
       const file = this.files[0];
       const btn = this.previousElementSibling;
       if (file && btn) {
@@ -83,7 +83,7 @@ function setupNavigation() {
 
   function handleTabChange(hash) {
     let targetTab = hash.replace('#', '') || 'overview';
-    
+
     // Find matching menu item
     let found = false;
     menuItems.forEach(item => {
@@ -160,7 +160,7 @@ function showToast(message, type = 'info') {
     <button style="background:transparent;border:none;color:#fff;cursor:pointer;" onclick="this.parentElement.remove()">&times;</button>
   `;
   container.appendChild(toast);
-  
+
   setTimeout(() => {
     toast.style.animation = 'slideIn 0.3s reverse';
     setTimeout(() => toast.remove(), 300);
@@ -253,7 +253,7 @@ function loadChartData(contracts) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-    
+
     // Accrue yield growth curve mockup based on active contracts
     baseVal += contracts.length > 0 ? (contracts.reduce((sum, c) => sum + (c.amount * (c.dailyRate / 100)), 0) / 7) * (7 - i) : (0.12 * (7 - i));
     chartData.push(baseVal);
@@ -315,7 +315,7 @@ function renderRecentActivity() {
   merged.slice(0, 5).forEach(item => {
     let statusClass = item.statusBadge === 'approved' ? 'badge-success' : (item.statusBadge === 'pending' ? 'badge-pending' : 'badge-danger');
     let colorClass = item.type === 'Deposit' ? 'var(--secondary)' : 'var(--danger)';
-    
+
     html += `
       <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:rgba(8,9,12,0.3); border:1px solid var(--border-glass); border-radius:10px;">
         <div>
@@ -362,10 +362,10 @@ function updateDepositDetails() {
     savedQR = settings.btcDepositQR;
   }
 
-  const qrImage     = document.getElementById('depQrCode');
+  const qrImage = document.getElementById('depQrCode');
   const addressInput = document.getElementById('depAddressInput');
-  const titleEl      = document.getElementById('depAddressTitle');
-  const scanTabNote  = document.getElementById('depScanNote');
+  const titleEl = document.getElementById('depAddressTitle');
+  const scanTabNote = document.getElementById('depScanNote');
 
   titleEl.innerHTML = `Transfer ${coin} to Target Wallet`;
   addressInput.value = address || '';
@@ -384,18 +384,18 @@ function updateDepositDetails() {
 // Toggle between Address view and QR/Barcode view on deposit card
 function switchDepositView(mode) {
   const addrView = document.getElementById('depAddressView');
-  const qrView   = document.getElementById('depQrView');
-  const tabAddr  = document.getElementById('depTabAddr');
-  const tabQr    = document.getElementById('depTabQr');
+  const qrView = document.getElementById('depQrView');
+  const tabAddr = document.getElementById('depTabAddr');
+  const tabQr = document.getElementById('depTabQr');
 
   if (mode === 'address') {
     addrView.style.display = 'block';
-    qrView.style.display   = 'none';
+    qrView.style.display = 'none';
     tabAddr.classList.add('active');
     tabQr.classList.remove('active');
   } else {
     addrView.style.display = 'none';
-    qrView.style.display   = 'block';
+    qrView.style.display = 'block';
     tabQr.classList.add('active');
     tabAddr.classList.remove('active');
   }
@@ -414,7 +414,7 @@ function handleDepositSubmit(e) {
   e.preventDefault();
   const currency = document.getElementById('depCurrency').value;
   const amount = document.getElementById('depAmount').value;
-  
+
   const txHashEl = document.getElementById('depTxHash');
   let hash = '';
   if (txHashEl) {
@@ -430,7 +430,7 @@ function handleDepositSubmit(e) {
 
   window.DB.createDeposit(currentUser.username, amount, currency, hash, fileName);
   showToast('Deposit receipt submitted successfully! Verification pending.', 'success');
-  
+
   // reset form
   document.getElementById('depositForm').reset();
   const depReceiptInput = document.getElementById('depReceipt');
@@ -448,7 +448,7 @@ function handleDepositSubmit(e) {
 function renderDepositHistory() {
   const tbody = document.getElementById('depositHistoryBody');
   const list = window.DB.getAllDeposits().filter(d => d.username === currentUser.username)
-    .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   if (list.length === 0) {
     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No deposits submitted yet.</td></tr>`;
@@ -460,7 +460,7 @@ function renderDepositHistory() {
     return `
       <tr>
         <td>${new Date(item.timestamp).toLocaleString()}</td>
-        <td style="font-family:monospace; font-size:0.8rem;" title="${item.txHash}">${item.txHash.substr(0,10)}...</td>
+        <td style="font-family:monospace; font-size:0.8rem;" title="${item.txHash}">${item.txHash.substr(0, 10)}...</td>
         <td><strong>${item.currency}</strong></td>
         <td>${item.amount.toFixed(2)}</td>
         <td><span class="badge ${statusClass}">${item.status}</span></td>
@@ -477,10 +477,10 @@ function openInvestModal(planId, currency) {
   const currencyInput = document.getElementById('investCurrency');
   const balanceInput = document.getElementById('investModalBalance');
   const limitEl = document.getElementById('investLimitInfo');
-  
+
   const settings = window.DB.getSystemSettings();
   const plan = settings.plans[planId];
-  
+
   if (!plan) return;
 
   const currentBal = currency === 'SOL' ? currentUser.balanceSOL : (currency === 'USDT' ? currentUser.balanceUSDT : currentUser.balanceBTC);
@@ -490,7 +490,7 @@ function openInvestModal(planId, currency) {
   currencyInput.value = currency;
   balanceInput.value = `${currentBal.toFixed(currency === 'BTC' ? 4 : 2)} ${currency}`;
   limitEl.textContent = `Limits: Min ${plan.min} / Max ${plan.max} ${currency} | ROI: ${plan.rate}% daily for ${plan.duration} days.`;
-  
+
   document.getElementById('investAmount').value = plan.min;
   document.getElementById('investAmount').min = plan.min;
   document.getElementById('investAmount').max = plan.max;
@@ -521,7 +521,7 @@ function handleInvestSubmit(e) {
 function renderActiveContracts() {
   const container = document.getElementById('activeContractsList');
   const list = window.DB.getAllContracts().filter(c => c.username === currentUser.username)
-    .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   if (list.length === 0) {
     container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 24px;">You have no active contracts. Choose a plan above to start staking.</p>`;
@@ -577,7 +577,7 @@ function renderActiveContracts() {
       statusNote = '';
     } else if (item.status === 'in_progress') {
       statusBadgeClass = 'badge-pending';
-      statusLabel = 'In Progress';
+      statusLabel = 'Running';
       statusNote = `<div style="font-size:0.72rem; color:var(--warning); margin-top:4px; font-style:italic;">
         <i class="fa-solid fa-clock"></i> Awaiting admin review
       </div>`;
@@ -658,7 +658,7 @@ function handleWithdrawalSubmit(e) {
 function renderWithdrawalHistory() {
   const tbody = document.getElementById('withdrawalHistoryBody');
   const list = window.DB.getAllWithdrawals().filter(w => w.username === currentUser.username)
-    .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   if (list.length === 0) {
     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No withdrawals logged.</td></tr>`;
@@ -670,7 +670,7 @@ function renderWithdrawalHistory() {
     return `
       <tr>
         <td>${new Date(item.timestamp).toLocaleString()}</td>
-        <td style="font-family:monospace; font-size:0.8rem;" title="${item.walletAddress}">${item.walletAddress.substr(0,12)}...</td>
+        <td style="font-family:monospace; font-size:0.8rem;" title="${item.walletAddress}">${item.walletAddress.substr(0, 12)}...</td>
         <td><strong>${item.currency}</strong></td>
         <td>${item.amount.toFixed(2)}</td>
         <td><span class="badge ${statusClass}">${item.status}</span></td>
@@ -716,12 +716,12 @@ function renderReferralSystem() {
       tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No referral logs recorded.</td></tr>`;
       return;
     }
-    
+
     tbody.innerHTML = referrals.map(ref => {
       // Determine ref active contract levels
       const contracts = window.DB.getAllContracts().filter(c => c.username === ref.username && c.status === 'active');
       const planName = contracts.length > 0 ? contracts[0].planName.split('(')[0] : 'None';
-      
+
       return `
         <tr>
           <td><strong>${ref.username}</strong></td>
@@ -790,10 +790,10 @@ function renderVerificationPanel() {
 function handleKYCSubmit(e) {
   e.preventDefault();
   const country = document.getElementById('kycCountry').value;
-  const type    = document.getElementById('kycDocType').value;
-  const num     = document.getElementById('kycDocNumber').value;
-  const file    = document.getElementById('kycDocFile').files[0];
-  const name    = file ? file.name : 'id_scan.png';
+  const type = document.getElementById('kycDocType').value;
+  const num = document.getElementById('kycDocNumber').value;
+  const file = document.getElementById('kycDocFile').files[0];
+  const name = file ? file.name : 'id_scan.png';
 
   window.DB.submitKYC(currentUser.username, country, type, num, name);
   showToast('KYC document packet submitted successfully!', 'success');
@@ -804,11 +804,11 @@ function handleKYCSubmit(e) {
 // ── KYC File Preview ────────────────────────────────────
 // Called by onchange on the kycDocFile input (wired in DOMContentLoaded)
 function handleKycFilePreview(input) {
-  const file    = input.files[0];
+  const file = input.files[0];
   const preview = document.getElementById('kycFilePreview');
-  const thumb   = document.getElementById('kycThumb');
-  const nameEl  = document.getElementById('kycFileName');
-  const btn     = document.getElementById('kycUploadBtn');
+  const thumb = document.getElementById('kycThumb');
+  const nameEl = document.getElementById('kycFileName');
+  const btn = document.getElementById('kycUploadBtn');
 
   if (!file) { clearKycFile(); return; }
 
@@ -823,12 +823,12 @@ function handleKycFilePreview(input) {
 }
 
 function clearKycFile() {
-  const input   = document.getElementById('kycDocFile');
+  const input = document.getElementById('kycDocFile');
   const preview = document.getElementById('kycFilePreview');
-  const btn     = document.getElementById('kycUploadBtn');
-  if (input)   input.value = '';
+  const btn = document.getElementById('kycUploadBtn');
+  if (input) input.value = '';
   if (preview) preview.style.display = 'none';
-  if (btn)     btn.innerHTML = '<i class="fa-solid fa-camera"></i> Click to Upload Passport/ID Scan';
+  if (btn) btn.innerHTML = '<i class="fa-solid fa-camera"></i> Click to Upload Passport/ID Scan';
 }
 
 // Security 2FA Lock
@@ -868,8 +868,8 @@ function loadPrintLedger() {
   const withdrawals = window.DB.getAllWithdrawals().filter(w => w.username === currentUser.username);
 
   const merged = [
-    ...deposits.map(d => ({ timestamp: d.timestamp, type: 'Deposit', amount: `+${d.amount.toFixed(2)} ${d.currency}`, detail: `Tx Hash: ${d.txHash.substr(0,15)}...`, status: d.status })),
-    ...withdrawals.map(w => ({ timestamp: w.timestamp, type: 'Withdrawal', amount: `-${w.amount.toFixed(2)} ${w.currency}`, detail: `Wallet: ${w.walletAddress.substr(0,15)}...`, status: w.status }))
+    ...deposits.map(d => ({ timestamp: d.timestamp, type: 'Deposit', amount: `+${d.amount.toFixed(2)} ${d.currency}`, detail: `Tx Hash: ${d.txHash.substr(0, 15)}...`, status: d.status })),
+    ...withdrawals.map(w => ({ timestamp: w.timestamp, type: 'Withdrawal', amount: `-${w.amount.toFixed(2)} ${w.currency}`, detail: `Wallet: ${w.walletAddress.substr(0, 15)}...`, status: w.status }))
   ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   if (merged.length === 0) {
@@ -915,7 +915,7 @@ function handleCreateTicket(e) {
 function loadSupportTickets() {
   const container = document.getElementById('ticketsListContainer');
   const tickets = window.DB.getAllTickets().filter(t => t.username === currentUser.username)
-    .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   if (tickets.length === 0) {
     container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 24px;">No support tickets opened.</p>`;
@@ -952,7 +952,7 @@ function selectTicket(ticketId) {
 
   document.getElementById('chatSubjectText').textContent = ticket.subject;
   document.getElementById('chatCategoryText').textContent = `Category: ${ticket.category}`;
-  
+
   const closeBtn = document.getElementById('btnCloseTicket');
   if (ticket.status === 'closed') {
     closeBtn.style.display = 'none';
@@ -966,7 +966,7 @@ function selectTicket(ticketId) {
     return `
       <div class="chat-msg ${m.sender === 'user' ? 'user' : 'admin'}">
         <div>${m.text}</div>
-        <div style="font-size:0.7rem; opacity:0.7; text-align:right; margin-top:4px;">${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        <div style="font-size:0.7rem; opacity:0.7; text-align:right; margin-top:4px;">${new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
       </div>
     `;
   }).join('');
@@ -1044,7 +1044,7 @@ function renderDashboardPrices() {
 
     const usd = coin.usd;
     const chg = coin.usd_24h_change || 0;
-    
+
     pEl.textContent = `$${usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     cEl.textContent = `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}%`;
     cEl.style.color = chg >= 0 ? 'var(--secondary)' : 'var(--danger)';
@@ -1175,9 +1175,9 @@ function startMicroAccrual() {
 // ── EmailJS Resend Verification ──────────────────────────────
 async function resendVerificationEmail() {
   const settings = window.DB.getSystemSettings();
-  const serviceId  = settings.emailjsServiceId  || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
+  const serviceId = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
   const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl';
-  const publicKey  = settings.emailjsPublicKey  || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
+  const publicKey = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
 
   if (!serviceId || !templateId || !publicKey) {
     console.warn("[EmailJS] Credentials not configured in settings. Faking success.");
@@ -1188,10 +1188,10 @@ async function resendVerificationEmail() {
   // Construct absolute verification URL
   const verificationUrl = `${window.location.origin}${window.location.pathname}?verify-email=${currentUser.username}`;
   const templateParams = {
-    name:              currentUser.username,
-    email:             currentUser.email,
-    verification_url:  verificationUrl,
-    year:              new Date().getFullYear().toString()
+    name: currentUser.username,
+    email: currentUser.email,
+    verification_url: verificationUrl,
+    year: new Date().getFullYear().toString()
   };
 
   try {
