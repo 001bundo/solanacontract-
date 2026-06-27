@@ -36,6 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wrapper) wrapper.addEventListener('click', () => kycFileInput.click());
   }
 
+  // Wire Deposit file input onchange for live feedback
+  const depReceiptInput = document.getElementById('depReceipt');
+  if (depReceiptInput) {
+    depReceiptInput.addEventListener('change', function() {
+      const file = this.files[0];
+      const btn = this.previousElementSibling;
+      if (file && btn) {
+        btn.innerHTML = `<i class="fa-solid fa-check" style="color: var(--secondary);"></i> File Selected: ${file.name}`;
+        btn.style.borderColor = 'var(--secondary)';
+      }
+    });
+  }
+
   // Start live price ticker
   fetchDashboardPrices();
   setInterval(fetchDashboardPrices, 4000); // refresh prices/usd balances every 4 seconds
@@ -401,7 +414,17 @@ function handleDepositSubmit(e) {
   e.preventDefault();
   const currency = document.getElementById('depCurrency').value;
   const amount = document.getElementById('depAmount').value;
-  const hash = document.getElementById('depTxHash').value;
+  
+  const txHashEl = document.getElementById('depTxHash');
+  let hash = '';
+  if (txHashEl) {
+    hash = txHashEl.value;
+  } else {
+    // Generate a mock blockchain transaction hash (e.g. for user demo experience)
+    const randPart = () => Math.random().toString(36).substring(2, 10).toUpperCase();
+    hash = (currency === 'USDT' || currency === 'BTC' ? '0x' : '') + randPart() + randPart() + randPart();
+  }
+
   const file = document.getElementById('depReceipt').files[0];
   const fileName = file ? file.name : 'uploaded_receipt.jpg';
 
@@ -410,6 +433,14 @@ function handleDepositSubmit(e) {
   
   // reset form
   document.getElementById('depositForm').reset();
+  const depReceiptInput = document.getElementById('depReceipt');
+  if (depReceiptInput) {
+    const btn = depReceiptInput.previousElementSibling;
+    if (btn) {
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Click to Upload Receipt Image';
+      btn.style.borderColor = '';
+    }
+  }
   updateDepositDetails();
   initData();
 }
