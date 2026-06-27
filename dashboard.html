@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,15 @@
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <!-- Preloader Overlay -->
   <div id="preloader" class="preloader-overlay">
     <div class="preloader-content">
       <div class="preloader-logo">
-        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="width: 100%; height: 100%;">
           <defs>
             <linearGradient id="solGradPre" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#9945FF" />
@@ -23,7 +26,8 @@
               <stop offset="100%" stop-color="#14F195" />
             </linearGradient>
           </defs>
-          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5"
+            stroke-linejoin="round" opacity="0.8" />
           <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradPre)" />
           <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradPre)" />
           <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradPre)" opacity="0.9" />
@@ -39,7 +43,7 @@
 
   <script>
     // 1-second Minimum Preloader Logic
-    (function() {
+    (function () {
       const startTime = Date.now();
       window.addEventListener('load', () => {
         const elapsed = Date.now() - startTime;
@@ -59,7 +63,7 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <div class="dashboard-layout">
-    
+
     <!-- Sidebar Overlay for mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
@@ -76,7 +80,8 @@
                   <stop offset="100%" stop-color="#14F195" />
                 </linearGradient>
               </defs>
-              <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradSide)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+              <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradSide)" stroke-width="2.5"
+                stroke-linejoin="round" opacity="0.8" />
               <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradSide)" />
               <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradSide)" />
               <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradSide)" opacity="0.9" />
@@ -100,16 +105,20 @@
         <div class="menu-category">Finance & Fund</div>
         <ul class="menu-list">
           <li class="menu-item" data-tab="deposit">
-            <a href="#deposit"><i class="fa-solid fa-money-bill-wave"></i> Deposit <i class="fa-solid fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i></a>
+            <a href="#deposit"><i class="fa-solid fa-money-bill-wave"></i> Deposit <i class="fa-solid fa-chevron-right"
+                style="margin-left: auto; font-size: 0.75rem;"></i></a>
           </li>
           <li class="menu-item" data-tab="investment">
-            <a href="#investment"><i class="fa-solid fa-chart-line"></i> Investment <i class="fa-solid fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i></a>
+            <a href="#investment"><i class="fa-solid fa-chart-line"></i> Investment <i class="fa-solid fa-chevron-right"
+                style="margin-left: auto; font-size: 0.75rem;"></i></a>
           </li>
           <li class="menu-item" data-tab="transfer">
-            <a href="#transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> Fund Transfer <i class="fa-solid fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i></a>
+            <a href="#transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> Fund Transfer <i
+                class="fa-solid fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i></a>
           </li>
           <li class="menu-item" data-tab="withdrawal">
-            <a href="#withdrawal"><i class="fa-solid fa-wallet"></i> Withdrawal <i class="fa-solid fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i></a>
+            <a href="#withdrawal"><i class="fa-solid fa-wallet"></i> Withdrawal <i class="fa-solid fa-chevron-right"
+                style="margin-left: auto; font-size: 0.75rem;"></i></a>
           </li>
         </ul>
 
@@ -181,7 +190,8 @@
             <div class="avatar" id="navAvatar">U</div>
             <div class="profile-info">
               <span class="profile-name" id="navUsername">User</span>
-              <span id="navKycBadge" class="badge badge-danger" style="font-size: 0.65rem; padding: 2px 6px;">Unverified</span>
+              <span id="navKycBadge" class="badge badge-danger"
+                style="font-size: 0.65rem; padding: 2px 6px;">Unverified</span>
             </div>
           </div>
         </div>
@@ -189,15 +199,21 @@
 
       <!-- Panel Content Body -->
       <div class="dash-body">
-        
+
         <!-- Email Verification Required Alert -->
-        <div id="emailVerifyAlert" class="overview-welcome" style="display:none; background: rgba(255, 74, 74, 0.05); border-color: rgba(255, 74, 74, 0.15); margin-bottom: 20px; align-items: center;">
-          <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap: 16px; flex-wrap: wrap;">
+        <div id="emailVerifyAlert" class="overview-welcome"
+          style="display:none; background: rgba(255, 74, 74, 0.05); border-color: rgba(255, 74, 74, 0.15); margin-bottom: 20px; align-items: center;">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; width:100%; gap: 16px; flex-wrap: wrap;">
             <div>
-              <h4 style="color:#fff; margin-bottom:4px;"><i class="fa-solid fa-envelope-circle-check" style="color:var(--danger); margin-right:8px;"></i> Email Verification Pending</h4>
-              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">Please check your inbox for the welcome verification email to verify your account credentials.</p>
+              <h4 style="color:#fff; margin-bottom:4px;"><i class="fa-solid fa-envelope-circle-check"
+                  style="color:var(--danger); margin-right:8px;"></i> Email Verification Pending</h4>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">Please check your inbox for the
+                welcome verification email to verify your account credentials.</p>
             </div>
-            <button class="btn btn-outline btn-sm" onclick="resendVerificationEmail()" style="color: var(--secondary); border-color: var(--secondary); font-size: 0.8rem; padding: 6px 12px;"><i class="fa-solid fa-rotate-right"></i> Resend Email</button>
+            <button class="btn btn-outline btn-sm" onclick="resendVerificationEmail()"
+              style="color: var(--secondary); border-color: var(--secondary); font-size: 0.8rem; padding: 6px 12px;"><i
+                class="fa-solid fa-rotate-right"></i> Resend Email</button>
           </div>
         </div>
 
@@ -205,61 +221,87 @@
         <section class="tab-panel active" id="panel-overview">
           <div class="overview-welcome">
             <h2>Welcome back, <span class="glow-text-green" id="welcomeUser">Investor</span>!</h2>
-            <p>Your Solana smart contracts are generating rewards automatically. Monitor your portfolio balance below.</p>
+            <p>Your Solana smart contracts are generating rewards automatically. Monitor your portfolio balance below.
+            </p>
           </div>
 
           <!-- Live Prices Ticker Grid -->
-          <div class="dash-price-ticker-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px;">
-            <div class="glass-card price-ticker-card" style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
+          <div class="dash-price-ticker-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px;">
+            <div class="glass-card price-ticker-card"
+              style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; background: rgba(153, 69, 255, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;"><i class="fa-brands fa-solana"></i></div>
+                <div
+                  style="width: 32px; height: 32px; background: rgba(153, 69, 255, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;">
+                  <i class="fa-brands fa-solana"></i>
+                </div>
                 <div>
                   <div style="font-weight: 700; font-size: 0.85rem; color: #fff;">SOL</div>
                   <div style="font-size: 0.72rem; color: var(--text-secondary);">Solana</div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <div id="dashSolPrice" style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
-                <div id="dashSolChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%</div>
+                <div id="dashSolPrice"
+                  style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
+                <div id="dashSolChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%
+                </div>
               </div>
             </div>
-            <div class="glass-card price-ticker-card" style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
+            <div class="glass-card price-ticker-card"
+              style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; background: rgba(20, 241, 149, 0.1); color: var(--secondary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+                <div
+                  style="width: 32px; height: 32px; background: rgba(20, 241, 149, 0.1); color: var(--secondary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;">
+                  <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                </div>
                 <div>
                   <div style="font-weight: 700; font-size: 0.85rem; color: #fff;">USDT</div>
                   <div style="font-size: 0.72rem; color: var(--text-secondary);">Tether</div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <div id="dashUsdtPrice" style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$1.00</div>
-                <div id="dashUsdtChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%</div>
+                <div id="dashUsdtPrice"
+                  style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$1.00</div>
+                <div id="dashUsdtChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%
+                </div>
               </div>
             </div>
-            <div class="glass-card price-ticker-card" style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
+            <div class="glass-card price-ticker-card"
+              style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; background: rgba(255, 184, 0, 0.1); color: var(--warning); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;"><i class="fa-brands fa-bitcoin"></i></div>
+                <div
+                  style="width: 32px; height: 32px; background: rgba(255, 184, 0, 0.1); color: var(--warning); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;">
+                  <i class="fa-brands fa-bitcoin"></i>
+                </div>
                 <div>
                   <div style="font-weight: 700; font-size: 0.85rem; color: #fff;">BTC</div>
                   <div style="font-size: 0.72rem; color: var(--text-secondary);">Bitcoin</div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <div id="dashBtcPrice" style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
-                <div id="dashBtcChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%</div>
+                <div id="dashBtcPrice"
+                  style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
+                <div id="dashBtcChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%
+                </div>
               </div>
             </div>
-            <div class="glass-card price-ticker-card" style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
+            <div class="glass-card price-ticker-card"
+              style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 0;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; background: rgba(0, 194, 255, 0.1); color: var(--info); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;"><i class="fa-brands fa-ethereum"></i></div>
+                <div
+                  style="width: 32px; height: 32px; background: rgba(0, 194, 255, 0.1); color: var(--info); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem;">
+                  <i class="fa-brands fa-ethereum"></i>
+                </div>
                 <div>
                   <div style="font-weight: 700; font-size: 0.85rem; color: #fff;">ETH</div>
                   <div style="font-size: 0.72rem; color: var(--text-secondary);">Ethereum</div>
                 </div>
               </div>
               <div style="text-align: right;">
-                <div id="dashEthPrice" style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
-                <div id="dashEthChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%</div>
+                <div id="dashEthPrice"
+                  style="font-family: monospace; font-weight: 700; font-size: 0.95rem; color: #fff;">$0.00</div>
+                <div id="dashEthChange" style="font-size: 0.75rem; font-weight: 600; color: var(--secondary);">0.00%
+                </div>
               </div>
             </div>
           </div>
@@ -278,7 +320,9 @@
             <div class="glass-card">
               <div class="stat-icon" style="color: var(--warning);"><i class="fa-brands fa-bitcoin"></i></div>
               <p style="color: var(--text-secondary); font-size: 0.85rem;">BTC Balance</p>
-              <div class="stat-val" id="cardBalanceBtc" style="background: linear-gradient(135deg, #FFB800, #F7931A); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">0.0000 BTC</div>
+              <div class="stat-val" id="cardBalanceBtc"
+                style="background: linear-gradient(135deg, #FFB800, #F7931A); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                0.0000 BTC</div>
             </div>
             <div class="glass-card">
               <div class="stat-icon" style="color: var(--accent);"><i class="fa-solid fa-file-contract"></i></div>
@@ -295,7 +339,8 @@
           <div class="dashboard-grid">
             <!-- Chart panel -->
             <div class="glass-card chart-card">
-              <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-chart-line"></i> Yield Accrual Growth</h3>
+              <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-chart-line"></i> Yield Accrual Growth
+              </h3>
               <div style="position: relative; height: 260px;">
                 <canvas id="earningsChart"></canvas>
               </div>
@@ -304,7 +349,8 @@
             <div class="glass-card" style="height: 380px; display: flex; flex-direction: column;">
               <h3 style="color: #fff; margin-bottom: 16px;"><i class="fa-solid fa-receipt"></i> Recent Activity</h3>
               <div style="flex: 1; overflow-y: auto;" id="recentActivityList">
-                <p style="color: var(--text-muted); text-align: center; margin-top: 50px;">No transactions logged yet.</p>
+                <p style="color: var(--text-muted); text-align: center; margin-top: 50px;">No transactions logged yet.
+                </p>
               </div>
             </div>
           </div>
@@ -314,7 +360,8 @@
         <section class="tab-panel" id="panel-deposit">
           <div class="dashboard-grid">
             <div class="glass-card">
-              <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-plus-minus"></i> Create New Deposit</h3>
+              <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-plus-minus"></i> Create New Deposit
+              </h3>
               <form id="depositForm" onsubmit="handleDepositSubmit(event)">
                 <div class="form-group">
                   <label for="depCurrency">Deposit Currency</label>
@@ -333,46 +380,57 @@
                 </div>
                 <div class="form-group">
                   <label for="depAmount">Deposit Amount</label>
-                  <input type="number" id="depAmount" class="form-control" step="any" placeholder="Enter amount to deposit" required>
+                  <input type="number" id="depAmount" class="form-control" step="any"
+                    placeholder="Enter amount to deposit" required>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="depTxHash">Blockchain Transaction Hash (Tx ID)</label>
                   <input type="text" id="depTxHash" class="form-control" placeholder="Paste signature hash" required>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <label>Proof of Deposit Receipt File</label>
                   <div class="file-upload-wrapper">
-                    <div class="file-upload-btn"><i class="fa-solid fa-cloud-arrow-up"></i> Click to Upload Receipt Image</div>
+                    <div class="file-upload-btn"><i class="fa-solid fa-cloud-arrow-up"></i> Click to Upload Receipt
+                      Image</div>
                     <input type="file" id="depReceipt" accept="image/*">
                   </div>
                 </div>
-                <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i class="fa-solid fa-paper-plane"></i> Submit Receipt</button>
+                <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i
+                    class="fa-solid fa-paper-plane"></i> Submit Receipt</button>
               </form>
             </div>
 
             <!-- Address instructions card -->
-            <div class="glass-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <div class="glass-card"
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
               <h3 id="depAddressTitle" style="color: #fff; margin-bottom: 16px;">Transfer SOL to Address</h3>
-              
+
               <!-- QR Code Mock -->
               <div style="background: #fff; padding: 12px; border-radius: 12px; margin-bottom: 16px;">
-                <img id="depQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS" alt="Deposit QR Code" style="width: 150px; height: 150px; display: block;">
+                <img id="depQrCode"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS"
+                  alt="Deposit QR Code" style="width: 150px; height: 150px; display: block;">
               </div>
 
               <!-- Address copy row -->
               <div class="form-group" style="width: 100%;">
                 <div style="display: flex; gap: 8px;">
-                  <input type="text" id="depAddressInput" class="form-control" style="font-family: monospace; font-size: 0.8rem; text-align: center;" readonly value="SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS">
-                  <button type="button" class="btn btn-primary btn-sm" onclick="copyDepositAddress()"><i class="fa-solid fa-copy"></i></button>
+                  <input type="text" id="depAddressInput" class="form-control"
+                    style="font-family: monospace; font-size: 0.8rem; text-align: center;" readonly
+                    value="SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="copyDepositAddress()"><i
+                      class="fa-solid fa-copy"></i></button>
                 </div>
               </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 320px;">Send only your selected cryptocurrency asset to this address. Sending unlisted assets will cause loss of funds.</p>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 320px;">Send only your selected
+                cryptocurrency asset to this address. Sending unlisted assets will cause loss of funds.</p>
             </div>
           </div>
 
           <!-- Deposit history table -->
           <div class="glass-card" style="margin-top: 32px;">
-            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Deposit History</h3>
+            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Deposit History
+            </h3>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -394,59 +452,83 @@
 
         <!-- 3. INVESTMENT PANEL -->
         <section class="tab-panel" id="panel-investment">
-          <div class="overview-welcome" style="background: rgba(20, 241, 149, 0.05); border-color: rgba(20, 241, 149, 0.15);">
+          <div class="overview-welcome"
+            style="background: rgba(20, 241, 149, 0.05); border-color: rgba(20, 241, 149, 0.15);">
             <h2>Purchase Yield <span class="glow-text-green">Staking Agreements</span></h2>
-            <p>Deploy your deposits into certified staking contracts. Earnings will accrue daily and are instantly withdrawable.</p>
+            <p>Deploy your deposits into certified staking contracts. Earnings will accrue daily and are instantly
+              withdrawable.</p>
           </div>
 
           <!-- Staking Grid selector -->
-          <div class="stats-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 32px;">
+          <div class="stats-cards-grid"
+            style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 32px;">
             <!-- SC Basic -->
             <div class="glass-card">
               <h4 style="color: #fff; font-size: 1.15rem;">SC Basic</h4>
-              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">3.5% / Daily</div>
+              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">3.5% / Daily
+              </div>
               <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 2 Days</p>
-              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 1–10 | USDT: 100–1,000 | BTC: 0.002–0.02</p>
-              <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="openInvestModal('starter', 'SOL')">Invest SOL (Min 1)</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_usdt', 'USDT')">Invest USDT (Min 100)</button>
-              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('starter_btc', 'BTC')">Invest BTC (Min 0.002)</button>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 1–10 | USDT:
+                100–1,000 | BTC: 0.002–0.02</p>
+              <button class="btn btn-outline btn-sm" style="width: 100%;"
+                onclick="openInvestModal('starter', 'SOL')">Invest SOL (Min 1)</button>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;"
+                onclick="openInvestModal('starter_usdt', 'USDT')">Invest USDT (Min 100)</button>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 6px;"
+                onclick="openInvestModal('starter_btc', 'BTC')">Invest BTC (Min 0.002)</button>
             </div>
 
             <!-- SC Plus -->
             <div class="glass-card" style="border-color: var(--secondary);">
               <div style="margin-bottom: 8px;">
-                <span style="background: rgba(20,241,149,0.1); color: var(--secondary); border: 1px solid rgba(20,241,149,0.25); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700;">
+                <span
+                  style="background: rgba(20,241,149,0.1); color: var(--secondary); border: 1px solid rgba(20,241,149,0.25); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700;">
                   ★ Recommended
                 </span>
               </div>
               <h4 style="color: #fff; font-size: 1.15rem;">SC Plus</h4>
-              <div class="glow-text-green" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">5.0% / Daily</div>
-              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 2 Weeks (14 Days)</p>
-              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 70–350 | USDT: 10K–50K | BTC: 0.2–1.0</p>
-              <button class="btn btn-secondary btn-sm" style="width: 100%; color: #0c0d12;" onclick="openInvestModal('pro', 'SOL')">Invest SOL (Min 70)</button>
-              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;" onclick="openInvestModal('pro_usdt', 'USDT')">Invest USDT (Min 10,000)</button>
-              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;" onclick="openInvestModal('pro_btc', 'BTC')">Invest BTC (Min 0.2)</button>
+              <div class="glow-text-green" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">5.0% / Daily
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 2 Weeks (14
+                Days)</p>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 70–350 | USDT:
+                10K–50K | BTC: 0.2–1.0</p>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; color: #0c0d12;"
+                onclick="openInvestModal('pro', 'SOL')">Invest SOL (Min 70)</button>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;"
+                onclick="openInvestModal('pro_usdt', 'USDT')">Invest USDT (Min 10,000)</button>
+              <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 6px; color: #0c0d12;"
+                onclick="openInvestModal('pro_btc', 'BTC')">Invest BTC (Min 0.2)</button>
             </div>
 
             <!-- SC Premium -->
             <div class="glass-card" style="border-color: var(--primary);">
               <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px;">
-                <span style="background: rgba(153,69,255,0.1); color: var(--primary); border: 1px solid rgba(153,69,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">Partnership</span>
-                <span style="background: rgba(0,194,255,0.1); color: var(--info); border: 1px solid rgba(0,194,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">CDs</span>
+                <span
+                  style="background: rgba(153,69,255,0.1); color: var(--primary); border: 1px solid rgba(153,69,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">Partnership</span>
+                <span
+                  style="background: rgba(0,194,255,0.1); color: var(--info); border: 1px solid rgba(0,194,255,0.25); border-radius: 20px; padding: 3px 8px; font-size: 0.68rem; font-weight: 700;">CDs</span>
               </div>
               <h4 style="color: #fff; font-size: 1.15rem;">SC Premium</h4>
-              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">7.5% / Daily</div>
-              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 4 Weeks (28 Days)</p>
-              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 700–7K | USDT: 100K–1M | BTC: 2–20</p>
-              <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="openInvestModal('whale', 'SOL')">Invest SOL (Min 700)</button>
-              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_usdt', 'USDT')">Invest USDT (Min 100,000)</button>
-              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;" onclick="openInvestModal('whale_btc', 'BTC')">Invest BTC (Min 2.0)</button>
+              <div class="glow-text-purple" style="font-size: 1.75rem; font-weight: 800; margin: 10px 0;">7.5% / Daily
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 4px;">Duration: 4 Weeks (28
+                Days)</p>
+              <p style="color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">SOL: 700–7K | USDT:
+                100K–1M | BTC: 2–20</p>
+              <button class="btn btn-primary btn-sm" style="width: 100%;"
+                onclick="openInvestModal('whale', 'SOL')">Invest SOL (Min 700)</button>
+              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;"
+                onclick="openInvestModal('whale_usdt', 'USDT')">Invest USDT (Min 100,000)</button>
+              <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 6px;"
+                onclick="openInvestModal('whale_btc', 'BTC')">Invest BTC (Min 2.0)</button>
             </div>
           </div>
 
           <!-- Active investment list -->
           <div class="glass-card">
-            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-briefcase"></i> Active Staking Contracts</h3>
+            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-briefcase"></i> Active Staking Contracts
+            </h3>
             <div id="activeContractsList">
               <!-- Render via JS -->
             </div>
@@ -456,9 +538,12 @@
         <!-- 4. FUND TRANSFER PANEL -->
         <section class="tab-panel" id="panel-transfer">
           <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
-            <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Send Internal Funds</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Transfer SOL or USDT instantly to other registered members of Solana Contract. No transaction fees are assessed for internal operations.</p>
-            
+            <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Send
+              Internal Funds</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Transfer SOL or USDT
+              instantly to other registered members of Solana Contract. No transaction fees are assessed for internal
+              operations.</p>
+
             <form id="transferForm" onsubmit="handleTransferSubmit(event)">
               <div class="form-group">
                 <label for="trfReceiver">Recipient Username</label>
@@ -474,9 +559,11 @@
               </div>
               <div class="form-group">
                 <label for="trfAmount">Transfer Amount</label>
-                <input type="number" id="trfAmount" class="form-control" step="any" placeholder="Enter amount to send" required>
+                <input type="number" id="trfAmount" class="form-control" step="any" placeholder="Enter amount to send"
+                  required>
               </div>
-              <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Execute Transfer</button>
+              <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i>
+                Execute Transfer</button>
             </form>
           </div>
         </section>
@@ -485,7 +572,8 @@
         <section class="tab-panel" id="panel-withdrawal">
           <div class="dashboard-grid">
             <div class="glass-card">
-              <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-circle-minus"></i> Create Withdrawal Request</h3>
+              <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-circle-minus"></i> Create Withdrawal
+                Request</h3>
               <form id="withdrawalForm" onsubmit="handleWithdrawalSubmit(event)">
                 <div class="form-group">
                   <label for="wthCurrency">Select Asset</label>
@@ -497,34 +585,42 @@
                 </div>
                 <div class="form-group">
                   <label for="wthAmount">Withdrawal Amount</label>
-                  <input type="number" id="wthAmount" class="form-control" step="any" placeholder="Enter amount to withdraw" required>
+                  <input type="number" id="wthAmount" class="form-control" step="any"
+                    placeholder="Enter amount to withdraw" required>
                 </div>
                 <div class="form-group">
                   <label for="wthAddress">Destination Blockchain Wallet Address</label>
-                  <input type="text" id="wthAddress" class="form-control" placeholder="Paste your recipient address" required>
+                  <input type="text" id="wthAddress" class="form-control" placeholder="Paste your recipient address"
+                    required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-cash-register"></i> Submit Withdrawal</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i
+                    class="fa-solid fa-cash-register"></i> Submit Withdrawal</button>
               </form>
             </div>
 
             <!-- Limit Info Card -->
             <div class="glass-card">
-              <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-circle-info"></i> Withdrawal Rules</h3>
+              <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-circle-info"></i> Withdrawal Rules
+              </h3>
               <ul class="plan-features">
                 <li><i class="fa-solid fa-circle-check"></i> Minimum cashout: 0.1 SOL / 10 USDT</li>
                 <li><i class="fa-solid fa-circle-check"></i> Manual auditor review: 1-12 hours</li>
                 <li><i class="fa-solid fa-circle-check"></i> Gas fees: Covered by platform</li>
                 <li><i class="fa-solid fa-circle-check"></i> KYC: Needed only for large withdrawals (>50 SOL)</li>
               </ul>
-              <div style="background: rgba(153, 69, 255, 0.05); padding: 16px; border-radius: 8px; margin-top: 24px; border: 1px solid var(--border-glass);">
-                <p style="font-size: 0.85rem; color: var(--text-secondary);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i> Notice: Ensure target address networks matches. SOL withdrawals require Solana native key formatting.</p>
+              <div
+                style="background: rgba(153, 69, 255, 0.05); padding: 16px; border-radius: 8px; margin-top: 24px; border: 1px solid var(--border-glass);">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);"><i class="fa-solid fa-triangle-exclamation"
+                    style="color: var(--warning);"></i> Notice: Ensure target address networks matches. SOL withdrawals
+                  require Solana native key formatting.</p>
               </div>
             </div>
           </div>
 
           <!-- Withdrawal history -->
           <div class="glass-card" style="margin-top: 32px;">
-            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Withdrawal History</h3>
+            <h3 style="color: #fff; margin-bottom: 20px;"><i class="fa-solid fa-clock-rotate-left"></i> Withdrawal
+              History</h3>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -547,7 +643,8 @@
         <!-- 6. PROFILE PANEL -->
         <section class="tab-panel" id="panel-profile">
           <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
-            <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-user-pen"></i> Update Member Profile</h3>
+            <h3 style="color: #fff; margin-bottom: 24px;"><i class="fa-solid fa-user-pen"></i> Update Member Profile
+            </h3>
             <form id="profileForm" onsubmit="handleProfileUpdate(event)">
               <div class="form-group">
                 <label>Username</label>
@@ -563,13 +660,16 @@
               </div>
               <div class="form-group">
                 <label for="profWalletUSDT">Default USDT Payout Address</label>
-                <input type="text" id="profWalletUSDT" class="form-control" placeholder="Paste USDT (ERC-20/SPL) wallet address">
+                <input type="text" id="profWalletUSDT" class="form-control"
+                  placeholder="Paste USDT (ERC-20/SPL) wallet address">
               </div>
               <div class="form-group">
                 <label for="profWalletBTC">Default BTC Payout Address</label>
-                <input type="text" id="profWalletBTC" class="form-control" placeholder="Paste BTC native wallet address">
+                <input type="text" id="profWalletBTC" class="form-control"
+                  placeholder="Paste BTC native wallet address">
               </div>
-              <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i class="fa-solid fa-floppy-disk"></i> Save Profile Details</button>
+              <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i
+                  class="fa-solid fa-floppy-disk"></i> Save Profile Details</button>
             </form>
           </div>
         </section>
@@ -578,11 +678,15 @@
         <section class="tab-panel" id="panel-referral">
           <div class="glass-card" style="margin-bottom: 32px;">
             <h3 style="color: #fff; margin-bottom: 16px;"><i class="fa-solid fa-link"></i> Affiliate Referral Link</h3>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">Invite partners to Solana Contract and receive a direct 5.0% commission on any contract yield program they stake.</p>
-            
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">Invite partners to Solana
+              Contract and receive a direct 5.0% commission on any contract yield program they stake.</p>
+
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="referralLinkInput" class="form-control" style="font-family: monospace; font-size: 0.85rem;" readonly value="https://solanacontract.com/auth.html?ref=CODE">
-              <button class="btn btn-primary" onclick="copyReferralLink()"><i class="fa-solid fa-copy"></i> Copy</button>
+              <input type="text" id="referralLinkInput" class="form-control"
+                style="font-family: monospace; font-size: 0.85rem;" readonly
+                value="https://solanacontract.com/auth.html?ref=CODE">
+              <button class="btn btn-primary" onclick="copyReferralLink()"><i class="fa-solid fa-copy"></i>
+                Copy</button>
             </div>
           </div>
 
@@ -629,13 +733,15 @@
               </div>
               <div class="form-group">
                 <label for="passNew">New Password</label>
-                <input type="password" id="passNew" class="form-control" placeholder="Min 6 characters" required minlength="6">
+                <input type="password" id="passNew" class="form-control" placeholder="Min 6 characters" required
+                  minlength="6">
               </div>
               <div class="form-group">
                 <label for="passConfirm">Confirm New Password</label>
                 <input type="password" id="passConfirm" class="form-control" required minlength="6">
               </div>
-              <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-lock"></i> Update Password</button>
+              <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-lock"></i> Update
+                Password</button>
             </form>
           </div>
         </section>
@@ -643,10 +749,13 @@
         <!-- 9. VERIFICATION PANEL -->
         <section class="tab-panel" id="panel-verification">
           <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
-            <h3 style="color: #fff; margin-bottom: 12px;"><i class="fa-solid fa-id-card"></i> Member KYC Verification</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">To comply with global standard cryptocurrency operations and prevent security exploits, verify your identity details below.</p>
-            
-            <div id="kycStatusBox" class="overview-welcome" style="background: rgba(255, 74, 74, 0.05); border-color: rgba(255, 74, 74, 0.15); margin-bottom: 24px; text-align: center;">
+            <h3 style="color: #fff; margin-bottom: 12px;"><i class="fa-solid fa-id-card"></i> Member KYC Verification
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">To comply with global
+              standard cryptocurrency operations and prevent security exploits, verify your identity details below.</p>
+
+            <div id="kycStatusBox" class="overview-welcome"
+              style="background: rgba(255, 74, 74, 0.05); border-color: rgba(255, 74, 74, 0.15); margin-bottom: 24px; text-align: center;">
               Status: <span id="kycStatusText" class="badge badge-danger">Unverified</span>
             </div>
 
@@ -671,23 +780,32 @@
                 <label>Upload Document ID photo</label>
                 <div id="kycUploadWrapper" style="cursor:pointer;">
                   <div class="file-upload-wrapper">
-                    <div class="file-upload-btn" id="kycUploadBtn"><i class="fa-solid fa-camera"></i> Click to Upload Passport/ID Scan</div>
+                    <div class="file-upload-btn" id="kycUploadBtn"><i class="fa-solid fa-camera"></i> Click to Upload
+                      Passport/ID Scan</div>
                     <input type="file" id="kycDocFile" accept="image/*" style="display:none">
                   </div>
                 </div>
                 <!-- Live preview appears after file selection -->
-                <div id="kycFilePreview" style="display:none; margin-top:12px; padding:12px; background:rgba(20,241,149,0.06); border:1px solid rgba(20,241,149,0.25); border-radius:10px;">
+                <div id="kycFilePreview"
+                  style="display:none; margin-top:12px; padding:12px; background:rgba(20,241,149,0.06); border:1px solid rgba(20,241,149,0.25); border-radius:10px;">
                   <div style="display:flex; align-items:center; gap:12px;">
-                    <img id="kycThumb" src="" alt="ID Preview" style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:2px solid var(--secondary);">
+                    <img id="kycThumb" src="" alt="ID Preview"
+                      style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:2px solid var(--secondary);">
                     <div style="flex:1; min-width:0;">
-                      <div style="color:var(--secondary); font-size:0.83rem; font-weight:700; margin-bottom:3px;"><i class="fa-solid fa-circle-check"></i> File selected &mdash; ready to submit</div>
-                      <div id="kycFileName" style="color:var(--text-secondary); font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+                      <div style="color:var(--secondary); font-size:0.83rem; font-weight:700; margin-bottom:3px;"><i
+                          class="fa-solid fa-circle-check"></i> File selected &mdash; ready to submit</div>
+                      <div id="kycFileName"
+                        style="color:var(--text-secondary); font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      </div>
                     </div>
-                    <button type="button" onclick="clearKycFile()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:4px;"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="clearKycFile()"
+                      style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:4px;"><i
+                        class="fa-solid fa-xmark"></i></button>
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i class="fa-solid fa-upload"></i> Submit Documents</button>
+              <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12;"><i
+                  class="fa-solid fa-upload"></i> Submit Documents</button>
             </form>
           </div>
         </section>
@@ -695,30 +813,39 @@
         <!-- 10. GOOGLE 2FA PANEL -->
         <section class="tab-panel" id="panel-2fa">
           <div class="glass-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
-            <h3 style="color: #fff; margin-bottom: 16px;"><i class="fa-solid fa-shield-halved"></i> Google Authenticator 2FA</h3>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">Activate two-factor protection on your dashboard transactions and payout authorization.</p>
+            <h3 style="color: #fff; margin-bottom: 16px;"><i class="fa-solid fa-shield-halved"></i> Google Authenticator
+              2FA</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">Activate two-factor
+              protection on your dashboard transactions and payout authorization.</p>
 
-            <div style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 16px;">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth://totp/SolanaContract?secret=SOLANA2FASECRETKEYDEMO" alt="2FA QR Code" style="width: 150px; height: 150px; display: block;">
+            <div
+              style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 16px;">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth://totp/SolanaContract?secret=SOLANA2FASECRETKEYDEMO"
+                alt="2FA QR Code" style="width: 150px; height: 150px; display: block;">
             </div>
 
             <div class="form-group" style="max-width: 320px; margin: 0 auto 24px;">
               <label>Backup Key Secret</label>
-              <input type="text" class="form-control text-center" style="font-family: monospace; font-size: 0.85rem; text-align: center;" value="SOLANA2FASECRETKEYDEMO" readonly>
+              <input type="text" class="form-control text-center"
+                style="font-family: monospace; font-size: 0.85rem; text-align: center;" value="SOLANA2FASECRETKEYDEMO"
+                readonly>
             </div>
 
             <div id="2faStatusBox" style="margin-bottom: 24px;">
               Status: <span id="2faStatusText" class="badge badge-danger">Deactivated</span>
             </div>
 
-            <button class="btn btn-primary" id="btn2faToggle" onclick="handle2FAToggle()">Activate 2FA Secure Lock</button>
+            <button class="btn btn-primary" id="btn2faToggle" onclick="handle2FAToggle()">Activate 2FA Secure
+              Lock</button>
           </div>
         </section>
 
         <!-- 11. PRINT REPORT PANEL -->
         <section class="tab-panel" id="panel-print">
           <div class="glass-card" id="printStatementArea">
-            <div class="sidebar-header" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 20px; margin-bottom: 24px;">
+            <div class="sidebar-header"
+              style="border-bottom: 1px solid var(--border-glass); padding-bottom: 20px; margin-bottom: 24px;">
               <div class="logo">
                 <div class="logo-icon">
                   <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -729,7 +856,8 @@
                         <stop offset="100%" stop-color="#14F195" />
                       </linearGradient>
                     </defs>
-                    <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPrint)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+                    <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPrint)" stroke-width="2.5"
+                      stroke-linejoin="round" opacity="0.8" />
                     <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradPrint)" />
                     <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradPrint)" />
                     <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradPrint)" opacity="0.9" />
@@ -756,7 +884,9 @@
               </div>
             </div>
 
-            <h4 style="color: #fff; margin-bottom: 12px; border-bottom: 1px solid var(--border-glass); padding-bottom: 8px;">Staking Transaction Logs</h4>
+            <h4
+              style="color: #fff; margin-bottom: 12px; border-bottom: 1px solid var(--border-glass); padding-bottom: 8px;">
+              Staking Transaction Logs</h4>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -773,26 +903,29 @@
                 </tbody>
               </table>
             </div>
-            
-            <div style="margin-top: 40px; border-top: 1px solid var(--border-glass); padding-top: 16px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+
+            <div
+              style="margin-top: 40px; border-top: 1px solid var(--border-glass); padding-top: 16px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
               This ledger represents certified record summaries processed by Solana Contract platform nodes.
             </div>
           </div>
-          
+
           <div class="text-center no-print" style="margin-top: 24px; text-align: center;">
-            <button class="btn btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Account Statement (PDF)</button>
+            <button class="btn btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Account
+              Statement (PDF)</button>
           </div>
         </section>
 
         <!-- 12. SUPPORT TICKETS PANEL -->
         <section class="tab-panel" id="panel-tickets">
           <div class="dashboard-grid">
-            
+
             <!-- Left panel: tickets list -->
             <div class="glass-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h3 style="color: #fff;"><i class="fa-solid fa-folder-open"></i> Support Tickets</h3>
-                <button class="btn btn-primary btn-sm" onclick="openCreateTicketModal()"><i class="fa-solid fa-plus"></i> Open Ticket</button>
+                <button class="btn btn-primary btn-sm" onclick="openCreateTicketModal()"><i
+                    class="fa-solid fa-plus"></i> Open Ticket</button>
               </div>
               <div id="ticketsListContainer" style="max-height: 450px; overflow-y: auto;">
                 <!-- JS Render -->
@@ -807,7 +940,8 @@
                     <h4 id="chatSubjectText" style="color: #fff;">Ticket Subject</h4>
                     <span id="chatCategoryText" style="font-size: 0.8rem; color: var(--text-secondary);">Category</span>
                   </div>
-                  <button class="btn btn-outline btn-sm" id="btnCloseTicket" onclick="handleCloseTicket()"><i class="fa-solid fa-check"></i> Close Ticket</button>
+                  <button class="btn btn-outline btn-sm" id="btnCloseTicket" onclick="handleCloseTicket()"><i
+                      class="fa-solid fa-check"></i> Close Ticket</button>
                 </div>
                 <div class="chat-messages" id="chatMessagesBox">
                   <!-- Chat history render -->
@@ -820,10 +954,12 @@
             </div>
 
             <!-- Help instruction banner -->
-            <div class="glass-card" id="chatPlaceholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <div class="glass-card" id="chatPlaceholder"
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
               <i class="fa-solid fa-headset text-gradient-solana" style="font-size: 3rem; margin-bottom: 16px;"></i>
               <h4 style="color: #fff; margin-bottom: 8px;">Select a Ticket</h4>
-              <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 240px;">Select an existing ticket from the history list to message our support engineers, or open a new help request.</p>
+              <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 240px;">Select an existing ticket
+                from the history list to message our support engineers, or open a new help request.</p>
             </div>
           </div>
         </section>
@@ -849,9 +985,11 @@
         <div class="form-group">
           <label for="investAmount">Investment Amount</label>
           <input type="number" id="investAmount" class="form-control" step="any" required>
-          <small id="investLimitInfo" style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; display: block;"></small>
+          <small id="investLimitInfo"
+            style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; display: block;"></small>
         </div>
-        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i class="fa-solid fa-cart-shopping"></i> Purchase Contract</button>
+        <button type="submit" class="btn btn-secondary" style="width: 100%; color: #0c0d12; margin-top: 10px;"><i
+            class="fa-solid fa-cart-shopping"></i> Purchase Contract</button>
       </form>
     </div>
   </div>
@@ -879,9 +1017,11 @@
         </div>
         <div class="form-group">
           <label for="tktMessage">Details Message</label>
-          <textarea id="tktMessage" class="form-control" rows="4" placeholder="Explain your inquiry in detail..." required></textarea>
+          <textarea id="tktMessage" class="form-control" rows="4" placeholder="Explain your inquiry in detail..."
+            required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-envelope-open"></i> Submit Ticket</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;"><i
+            class="fa-solid fa-envelope-open"></i> Submit Ticket</button>
       </form>
     </div>
   </div>
@@ -899,16 +1039,17 @@
   <script src="js/dashboard.js"></script>
   <!--Start of Tawk.to Script-->
   <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/6a3ee8713097c41d3eca5bec/1js2rnvai';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6a3ee8713097c41d3eca5bec/1js2rnvai';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
     })();
   </script>
   <!--End of Tawk.to Script-->
 </body>
+
 </html>
