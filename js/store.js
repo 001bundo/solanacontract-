@@ -800,6 +800,15 @@ const DB = {
     return user.isActive;
   },
 
+  approveContract(contractId) {
+    const db = getDB();
+    const contract = db.contracts.find(c => c.id === contractId);
+    if (!contract || contract.status !== 'in_progress') return false;
+    contract.status = 'completed';
+    saveDB(db);
+    return true;
+  },
+
   // ── Daily Yield Simulation ────────────────────────────────
   processDailyInterest() {
     const db = getDB();
@@ -820,7 +829,8 @@ const DB = {
           }
 
           if (contract.daysElapsed >= contract.durationDays) {
-            contract.status = 'completed';
+            // Mark as 'in_progress' — awaiting admin approval to set as 'completed'
+            contract.status = 'in_progress';
           }
           interestPaid = true;
         }

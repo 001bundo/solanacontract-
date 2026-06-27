@@ -68,6 +68,8 @@ function setupNavigation() {
       loadSupportTickets();
     } else if (targetTab === 'settings') {
       loadPlatformSettings();
+    } else if (targetTab === 'contracts') {
+      renderContractsPanel();
     }
   }
 
@@ -123,6 +125,7 @@ function initData() {
   const pendingDeps = deposits.filter(d => d.status === 'pending');
   const pendingWths = withdrawals.filter(w => w.status === 'pending');
   const openTkts = tickets.filter(t => t.status === 'open');
+  const inProgressContracts = contracts.filter(c => c.status === 'in_progress');
 
   const pendingCount = pendingDeps.length + pendingWths.length;
 
@@ -130,6 +133,7 @@ function initData() {
   updateBadgeCount('badgePendingDeposits', pendingDeps.length);
   updateBadgeCount('badgePendingWithdrawals', pendingWths.length);
   updateBadgeCount('badgeOpenTickets', openTkts.length);
+  updateBadgeCount('badgeInProgressContracts', inProgressContracts.length);
 
   // Overview Stats
   const approvedDepositsSOL = deposits.filter(d => d.status === 'approved' && d.currency === 'SOL').reduce((sum, d) => sum + d.amount, 0);
@@ -349,6 +353,48 @@ function handleVerifyKYC(status) {
   showToast(`KYC status for ${username} set to ${status.toUpperCase()}!`, 'success');
   closeDocViewerModal();
   initData();
+}
+
+// Staking Contracts Panel — In Progress (Awaiting Admin Approval)
+function renderContractsPanel() {
+  const tbody = document.getElementById('adminContractsTableBody');
+  if (!tbody) return;
+
+  const all = window.DB.getAllContracts();
+  const inProgress = all.filter(c => c.status === 'in_progress')
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  if (inProgress.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No contracts currently awaiting approval.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = inProgress.map(item => `
+    <tr>
+      <td>${new Date(item.timestamp).toLocaleDateString()}</td>
+      <td><strong>${item.username}</strong></td>
+      <td style="color:var(--secondary); font-weight:600;">${item.planName}</td>
+      <td><strong style="color:var(--primary);">${item.amount.toFixed(2)} ${item.currency}</strong></td>
+      <td><strong style="color:var(--secondary);">${item.earnings.toFixed(4)} ${item.currency}</strong></td>
+      <td><span class="badge badge-pending">In Progress</span></td>
+      <td>
+        <button class="btn btn-secondary btn-sm" style="color:#0c0d12;" onclick="approveContractDirect('${item.id}')">
+          <i class="fa-solid fa-circle-check"></i> Mark Completed
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function approveContractDirect(id) {
+  const success = window.DB.approveContract(id);
+  if (success) {
+    showToast('Contract marked as completed successfully!', 'success');
+    initData();
+    renderContractsPanel();
+  } else {
+    showToast('Failed to approve contract.', 'error');
+  }
 }
 
 // Deposits Auditing Panel

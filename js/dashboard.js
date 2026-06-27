@@ -528,10 +528,66 @@ function renderActiveContracts() {
     return;
   }
 
-  container.innerHTML = list.map(item => {
-    let percent = Math.min(100, (item.daysElapsed / item.durationDays) * 100);
-    let statusBadgeClass = item.status === 'active' ? 'badge-success' : 'badge-info';
-    
+  // ── Pending Profit Summary Banner ──────────────────────────
+  const pendingProfitByAsset = {};
+  list.forEach(item => {
+    if (item.status === 'active' || item.status === 'in_progress') {
+      const remainingDays = Math.max(0, item.durationDays - item.daysElapsed);
+      const pendingProfit = item.amount * (item.dailyRate / 100) * remainingDays;
+      if (!pendingProfitByAsset[item.currency]) pendingProfitByAsset[item.currency] = 0;
+      pendingProfitByAsset[item.currency] += pendingProfit;
+    }
+  });
+
+  const profitEntries = Object.entries(pendingProfitByAsset);
+  let summaryHTML = '';
+  if (profitEntries.length > 0) {
+    const profitItems = profitEntries.map(([cur, amt]) =>
+      `<span style="font-family:monospace; font-weight:800; font-size:1.05rem; color:var(--secondary);">${amt.toFixed(cur === 'BTC' ? 5 : 3)} <span style="font-size:0.85rem;">${cur}</span></span>`
+    ).join('<span style="color:var(--border-glass); margin:0 10px;">|</span>');
+
+    summaryHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+                  background: linear-gradient(135deg, rgba(20,241,149,0.07), rgba(153,69,255,0.07));
+                  border: 1px solid rgba(20,241,149,0.2); border-radius:12px;
+                  padding:16px 20px; margin-bottom:20px;">
+        <div>
+          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:4px;">
+            <i class="fa-solid fa-hourglass-half" style="color:var(--warning);"></i> Pending Profit (Estimated Remaining)
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            ${profitItems}
+          </div>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-muted); text-align:right; max-width:200px; line-height:1.4;">
+          Based on your active plan rates &amp; remaining contract duration.
+        </div>
+      </div>
+    `;
+  }
+
+  // ── Contract Cards ─────────────────────────────────────────
+  const cardsHTML = list.map(item => {
+    const percent = Math.min(100, (item.daysElapsed / item.durationDays) * 100);
+
+    let statusBadgeClass, statusLabel, statusNote;
+    if (item.status === 'active') {
+      statusBadgeClass = 'badge-success';
+      statusLabel = 'Active';
+      statusNote = '';
+    } else if (item.status === 'in_progress') {
+      statusBadgeClass = 'badge-pending';
+      statusLabel = 'In Progress';
+      statusNote = `<div style="font-size:0.72rem; color:var(--warning); margin-top:4px; font-style:italic;">
+        <i class="fa-solid fa-clock"></i> Awaiting admin review
+      </div>`;
+    } else {
+      // completed
+      statusBadgeClass = 'badge-info';
+      statusLabel = 'Completed';
+      statusNote = '';
+    }
+
     return `
       <div class="contract-item">
         <div class="contract-header">
@@ -540,7 +596,8 @@ function renderActiveContracts() {
             <div style="font-size:0.8rem; color:var(--text-muted);">Amount: ${item.amount.toFixed(2)} ${item.currency}</div>
           </div>
           <div style="text-align:right;">
-            <span class="badge ${statusBadgeClass}">${item.status}</span>
+            <span class="badge ${statusBadgeClass}">${statusLabel}</span>
+            ${statusNote}
             <div style="font-family:monospace; font-weight:700; color:var(--secondary); font-size:0.95rem; margin-top:4px;">Earned: ${item.earnings.toFixed(4)} ${item.currency}</div>
           </div>
         </div>
@@ -554,6 +611,8 @@ function renderActiveContracts() {
       </div>
     `;
   }).join('');
+
+  container.innerHTML = summaryHTML + cardsHTML;
 }
 
 // Internal Transfers
