@@ -528,39 +528,70 @@ function renderActiveContracts() {
     return;
   }
 
-  // ── Pending Profit Summary Banner ──────────────────────────
-  const pendingProfitByAsset = {};
+  // ── Staking Profit Summary Banner ──────────────────────────
+  // totalEarned  = sum of contract.earnings (real profit credited day-by-day)
+  // futureProfit = projected profit from remaining days on still-active contracts
+  const totalEarnedByAsset = {};
+  const futureProfitByAsset = {};
+
   list.forEach(item => {
-    if (item.status === 'active' || item.status === 'in_progress') {
+    const cur = item.currency;
+
+    // Accrued earnings from all contracts (active, in_progress, completed)
+    if (!totalEarnedByAsset[cur]) totalEarnedByAsset[cur] = 0;
+    totalEarnedByAsset[cur] += (item.earnings || 0);
+
+    // Future / remaining projected profit — only for still-active contracts
+    if (item.status === 'active') {
       const remainingDays = Math.max(0, item.durationDays - item.daysElapsed);
-      const pendingProfit = item.amount * (item.dailyRate / 100) * remainingDays;
-      if (!pendingProfitByAsset[item.currency]) pendingProfitByAsset[item.currency] = 0;
-      pendingProfitByAsset[item.currency] += pendingProfit;
+      const future = item.amount * (item.dailyRate / 100) * remainingDays;
+      if (!futureProfitByAsset[cur]) futureProfitByAsset[cur] = 0;
+      futureProfitByAsset[cur] += future;
     }
   });
 
-  const profitEntries = Object.entries(pendingProfitByAsset);
   let summaryHTML = '';
-  if (profitEntries.length > 0) {
-    const profitItems = profitEntries.map(([cur, amt]) =>
-      `<span style="font-family:monospace; font-weight:800; font-size:1.05rem; color:var(--secondary);">${amt.toFixed(cur === 'BTC' ? 5 : 3)} <span style="font-size:0.85rem;">${cur}</span></span>`
-    ).join('<span style="color:var(--border-glass); margin:0 10px;">|</span>');
+  const earnedEntries = Object.entries(totalEarnedByAsset).filter(([, v]) => v > 0);
+
+  if (earnedEntries.length > 0) {
+    const fmt = (cur, amt) => `
+      <span style="font-family:monospace; font-weight:800; font-size:1.05rem; color:var(--secondary);">
+        ${amt.toFixed(cur === 'BTC' ? 5 : 4)}
+        <span style="font-size:0.82rem;">${cur}</span>
+      </span>`;
+
+    const earnedItems = earnedEntries.map(([cur, amt]) => fmt(cur, amt))
+      .join('<span style="color:var(--border-glass); margin:0 8px;">|</span>');
+
+    const futureEntries = Object.entries(futureProfitByAsset).filter(([, v]) => v > 0);
+    const futureRow = futureEntries.length > 0
+      ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.05);">
+           <div style="font-size:0.7rem; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;">
+             <i class="fa-solid fa-hourglass-half" style="color:var(--warning);"></i>&nbsp;Projected Remaining
+           </div>
+           <div style="display:flex; gap:12px; flex-wrap:wrap;">
+             ${futureEntries.map(([cur, amt]) => fmt(cur, amt)).join('<span style="color:var(--border-glass); margin:0 8px;">|</span>')}
+           </div>
+         </div>`
+      : '';
 
     summaryHTML = `
-      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-                  background: linear-gradient(135deg, rgba(20,241,149,0.07), rgba(153,69,255,0.07));
-                  border: 1px solid rgba(20,241,149,0.2); border-radius:12px;
+      <div style="background:linear-gradient(135deg,rgba(20,241,149,0.07),rgba(153,69,255,0.07));
+                  border:1px solid rgba(20,241,149,0.2); border-radius:12px;
                   padding:16px 20px; margin-bottom:20px;">
-        <div>
-          <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:4px;">
-            <i class="fa-solid fa-hourglass-half" style="color:var(--warning);"></i> Pending Profit (Estimated Remaining)
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <div style="flex:1;">
+            <div style="font-size:0.72rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px;">
+              <i class="fa-solid fa-chart-line" style="color:var(--secondary);"></i>&nbsp;Total Earned from Staking
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+              ${earnedItems}
+            </div>
+            ${futureRow}
           </div>
-          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
-            ${profitItems}
+          <div style="font-size:0.75rem; color:var(--text-muted); text-align:right; max-width:180px; line-height:1.5; align-self:center;">
+            Profits accrued daily from your active staking plans.
           </div>
-        </div>
-        <div style="font-size:0.78rem; color:var(--text-muted); text-align:right; max-width:200px; line-height:1.4;">
-          Based on your active plan rates &amp; remaining contract duration.
         </div>
       </div>
     `;
@@ -577,9 +608,9 @@ function renderActiveContracts() {
       statusNote = '';
     } else if (item.status === 'in_progress') {
       statusBadgeClass = 'badge-pending';
-      statusLabel = 'Running';
+      statusLabel = 'Finishing up';
       statusNote = `<div style="font-size:0.72rem; color:var(--warning); margin-top:4px; font-style:italic;">
-        <i class="fa-solid fa-clock"></i> Awaiting admin review
+        <i class="fa-solid fa-clock"></i> Reviewing
       </div>`;
     } else {
       // completed

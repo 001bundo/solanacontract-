@@ -28,10 +28,10 @@ const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 
 // Firestore document reference — the entire app DB lives in one document
-const FIRESTORE_DOC = firestore.collection('platform').doc('database');
+const FIRESTORE_DOC = firestore.collection('platform').doc('database_v2');
 
 // localStorage key (used as a fast read cache)
-const STORE_KEY = 'solanacontract_db';
+const STORE_KEY = 'solanacontract_db_v2';
 
 // ── Helper: Generate Unique IDs ───────────────────────────────
 function generateId(prefix = 'id') {
@@ -809,18 +809,34 @@ const DB = {
     return true;
   },
 
-  // ── Daily Yield Simulation ────────────────────────────────
+  // ── Daily Yield Engine ────────────────────────────────
+  // A day is only credited once every 24 real hours since lastPayout.
+  // The 30-second interval still polls frequently for real-time balance
+  // sync across tabs, but the gate here prevents same-day double-counting.
   processDailyInterest() {
     const db = getDB();
     let interestPaid = false;
+    const now = Date.now();
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 86 400 000 ms
 
     db.contracts.forEach(contract => {
       if (contract.status === 'active') {
         if (contract.daysElapsed < contract.durationDays) {
+          // Verify lastPayout is a valid date to prevent NaN bypasses
+          let lastPayoutMs = new Date(contract.lastPayout).getTime();
+          if (isNaN(lastPayoutMs)) {
+            lastPayoutMs = contract.timestamp ? new Date(contract.timestamp).getTime() : now;
+            if (isNaN(lastPayoutMs)) lastPayoutMs = now;
+            contract.lastPayout = new Date(lastPayoutMs).toISOString();
+          }
+
+          // Only proceed if a full 24-hour period has elapsed since last payout
+          if ((now - lastPayoutMs) < ONE_DAY_MS) return; // too soon
+
           const payoutAmount = contract.amount * (contract.dailyRate / 100);
           contract.earnings += payoutAmount;
           contract.daysElapsed += 1;
-          contract.lastPayout = new Date().toISOString();
+          contract.lastPayout = new Date(now).toISOString();
 
           const user = db.users.find(u => u.username === contract.username);
           if (user) {
@@ -829,7 +845,7 @@ const DB = {
           }
 
           if (contract.daysElapsed >= contract.durationDays) {
-            // Mark as 'in_progress' — awaiting admin approval to set as 'completed'
+            // Duration elapsed — awaiting admin approval to mark as 'completed'
             contract.status = 'in_progress';
           }
           interestPaid = true;

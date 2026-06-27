@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login & Sign Up | Solana Contract</title>
-  <meta name="description" content="Access your Solana Contract account. Log in or create a new account to stake SOL or USDT in daily automated yield smart contracts.">
+  <meta name="description"
+    content="Access your Solana Contract account. Log in or create a new account to stake SOL or USDT in daily automated yield smart contracts.">
   <meta name="robots" content="index, follow">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,17 +19,17 @@
       align-items: center;
       padding: 24px;
     }
-    
+
     .auth-logo {
       margin-bottom: 32px;
       text-align: center;
     }
-    
+
     .auth-card {
       width: 100%;
       max-width: 450px;
     }
-    
+
     .tabs-header {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -35,7 +37,7 @@
       border-bottom: 1px solid var(--border-glass);
       padding-bottom: 12px;
     }
-    
+
     .tab-btn {
       background: transparent;
       border: none;
@@ -49,11 +51,11 @@
       position: relative;
       transition: color var(--transition-fast);
     }
-    
+
     .tab-btn.active {
       color: #fff;
     }
-    
+
     .tab-btn.active::after {
       content: '';
       position: absolute;
@@ -64,16 +66,16 @@
       background: linear-gradient(90deg, var(--primary), var(--secondary));
       border-radius: 99px;
     }
-    
+
     .form-panel {
       display: none;
     }
-    
+
     .form-panel.active {
       display: block;
       animation: fadeIn 0.3s forwards ease;
     }
-    
+
     .back-home {
       display: inline-flex;
       align-items: center;
@@ -84,24 +86,33 @@
       margin-top: 24px;
       transition: color var(--transition-fast);
     }
-    
+
     .back-home:hover {
       color: #fff;
     }
-    
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Preloader Overlay -->
   <div id="preloader" class="preloader-overlay">
     <div class="preloader-content">
       <div class="preloader-logo">
-        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+        <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="width: 100%; height: 100%;">
           <defs>
             <linearGradient id="solGradPre" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#9945FF" />
@@ -109,13 +120,14 @@
               <stop offset="100%" stop-color="#14F195" />
             </linearGradient>
           </defs>
-          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradPre)" stroke-width="2.5"
+            stroke-linejoin="round" opacity="0.8" />
           <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradPre)" />
           <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradPre)" />
           <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradPre)" opacity="0.9" />
         </svg>
       </div>
-      <div class="preloader-brand">Solana<span>Contract</span></div>
+      <!-- <div class="preloader-brand">Solana<span>Contract</span></div> -->
       <div class="preloader-progress-bg">
         <div class="preloader-progress-bar"></div>
       </div>
@@ -125,7 +137,7 @@
 
   <script>
     // 1-second Minimum Preloader Logic
-    (function() {
+    (function () {
       const startTime = Date.now();
       window.addEventListener('load', () => {
         const elapsed = Date.now() - startTime;
@@ -155,7 +167,8 @@
               <stop offset="100%" stop-color="#14F195" />
             </linearGradient>
           </defs>
-          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradAuth)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradAuth)" stroke-width="2.5"
+            stroke-linejoin="round" opacity="0.8" />
           <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradAuth)" />
           <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradAuth)" />
           <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradAuth)" opacity="0.9" />
@@ -169,7 +182,8 @@
     <div class="tabs-header">
       <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Sign In</button>
       <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
-      <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')" style="color: var(--accent); font-size: 0.85rem; display: none;">
+      <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')"
+        style="color: var(--accent); font-size: 0.85rem; display: none;">
         <i class="fa-solid fa-toolbox" style="font-size: 0.75rem;"></i> Admin
       </button>
     </div>
@@ -204,7 +218,8 @@
         </div>
         <div class="form-group">
           <label for="regPass"><i class="fa-solid fa-lock"></i> Password</label>
-          <input type="password" id="regPass" class="form-control" placeholder="Min 6 characters" required minlength="6">
+          <input type="password" id="regPass" class="form-control" placeholder="Min 6 characters" required
+            minlength="6">
         </div>
         <div class="form-group">
           <label for="regRef"><i class="fa-solid fa-user-group"></i> Sponsor Referral Code (Optional)</label>
@@ -219,21 +234,26 @@
     <!-- Admin Portal Panel -->
     <div class="form-panel" id="adminPanel">
       <div style="text-align: center; margin-bottom: 24px;">
-        <div style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--accent), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.3rem;">
+        <div
+          style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--accent), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.3rem;">
           <i class="fa-solid fa-toolbox" style="color: #0c0d12;"></i>
         </div>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">Restricted auditor access.<br>Authorized administrators only.</p>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">Restricted auditor
+          access.<br>Authorized administrators only.</p>
       </div>
       <form onsubmit="handleAdminSignIn(event)">
         <div class="form-group">
           <label for="adminUser"><i class="fa-solid fa-user-shield"></i> Admin Username</label>
-          <input type="text" id="adminUser" class="form-control" placeholder="Enter admin username" required autocomplete="username">
+          <input type="text" id="adminUser" class="form-control" placeholder="Enter admin username" required
+            autocomplete="username">
         </div>
         <div class="form-group">
           <label for="adminPass"><i class="fa-solid fa-key"></i> Admin Password</label>
-          <input type="password" id="adminPass" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          <input type="password" id="adminPass" class="form-control" placeholder="••••••••" required
+            autocomplete="current-password">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, var(--accent), var(--primary)); color: #0c0d12; font-weight: 700;">
+        <button type="submit" class="btn btn-primary"
+          style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, var(--accent), var(--primary)); color: #0c0d12; font-weight: 700;">
           <i class="fa-solid fa-right-to-bracket"></i> Enter Auditor Portal
         </button>
       </form>
@@ -241,7 +261,8 @@
   </div>
 
   <!-- Admin Panel indicator badge -->
-  <div id="adminBadge" style="margin-top: 16px; display: none; align-items: center; gap: 8px; opacity: 0.5; font-size: 0.75rem; color: var(--text-muted);">
+  <div id="adminBadge"
+    style="margin-top: 16px; display: none; align-items: center; gap: 8px; opacity: 0.5; font-size: 0.75rem; color: var(--text-muted);">
     <i class="fa-solid fa-shield-halved" style="color: var(--accent);"></i>
     Auditor access via the Admin tab above
   </div>
@@ -267,7 +288,7 @@
         <button style="background:transparent;border:none;color:#fff;cursor:pointer;" onclick="this.parentElement.remove()">&times;</button>
       `;
       container.appendChild(toast);
-      
+
       // Auto remove
       setTimeout(() => {
         toast.style.animation = 'slideIn 0.3s reverse';
@@ -277,12 +298,12 @@
 
     // Switch Tabs
     function switchTab(tabName) {
-      const loginTabBtn  = document.getElementById('loginTabBtn');
+      const loginTabBtn = document.getElementById('loginTabBtn');
       const signupTabBtn = document.getElementById('signupTabBtn');
-      const adminTabBtn  = document.getElementById('adminTabBtn');
-      const loginPanel   = document.getElementById('loginPanel');
-      const signupPanel  = document.getElementById('signupPanel');
-      const adminPanel   = document.getElementById('adminPanel');
+      const adminTabBtn = document.getElementById('adminTabBtn');
+      const loginPanel = document.getElementById('loginPanel');
+      const signupPanel = document.getElementById('signupPanel');
+      const adminPanel = document.getElementById('adminPanel');
 
       // Reset all
       [loginTabBtn, signupTabBtn, adminTabBtn].forEach(b => b.classList.remove('active'));
@@ -303,17 +324,17 @@
     // Read URL query params AFTER switchTab is defined
     const params = new URLSearchParams(window.location.search);
     if (params.get('signup') === 'true') switchTab('signup');
-    if (params.get('admin')  === 'true') {
-      const loginTabBtn  = document.getElementById('loginTabBtn');
+    if (params.get('admin') === 'true') {
+      const loginTabBtn = document.getElementById('loginTabBtn');
       const signupTabBtn = document.getElementById('signupTabBtn');
-      const adminTabBtn  = document.getElementById('adminTabBtn');
-      const adminBadge   = document.getElementById('adminBadge');
-      
+      const adminTabBtn = document.getElementById('adminTabBtn');
+      const adminBadge = document.getElementById('adminBadge');
+
       if (adminTabBtn) {
         adminTabBtn.style.display = 'inline-block';
-        if (loginTabBtn)  loginTabBtn.style.display = 'none';
+        if (loginTabBtn) loginTabBtn.style.display = 'none';
         if (signupTabBtn) signupTabBtn.style.display = 'none';
-        
+
         // Center the single active tab header visually
         const tabsHeader = document.querySelector('.tabs-header');
         if (tabsHeader) {
@@ -321,9 +342,9 @@
           tabsHeader.style.textAlign = 'center';
         }
       }
-      
+
       if (adminBadge) adminBadge.style.display = 'none';
-      
+
       switchTab('admin');
     }
     if (params.get('ref')) {
@@ -354,9 +375,9 @@
     async function sendWelcomeEmail(username, emailAddr) {
       try {
         const settings = window.DB.getSystemSettings();
-        const serviceId  = settings.emailjsServiceId  || (window.ENV && window.ENV.emailjsServiceId) || '';
+        const serviceId = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || '';
         const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || '';
-        const publicKey  = settings.emailjsPublicKey  || (window.ENV && window.ENV.emailjsPublicKey) || '';
+        const publicKey = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || '';
 
         if (!serviceId || !templateId || !publicKey) {
           console.warn('[EmailJS] Credentials not configured.');
@@ -368,10 +389,10 @@
         const verificationUrl = `${base}?verify-email=${encodeURIComponent(username)}`;
 
         const templateParams = {
-          name:              username,
-          email:             emailAddr,
-          verification_url:  verificationUrl,
-          year:              new Date().getFullYear().toString()
+          name: username,
+          email: emailAddr,
+          verification_url: verificationUrl,
+          year: new Date().getFullYear().toString()
         };
 
         emailjs.init({ publicKey: publicKey });
@@ -384,10 +405,10 @@
 
     function handleSignUp(e) {
       e.preventDefault();
-      const userVal  = document.getElementById('regUser').value;
+      const userVal = document.getElementById('regUser').value;
       const emailVal = document.getElementById('regEmail').value;
-      const passVal  = document.getElementById('regPass').value;
-      const refVal   = document.getElementById('regRef').value;
+      const passVal = document.getElementById('regPass').value;
+      const refVal = document.getElementById('regRef').value;
 
       const res = window.DB.signUp(userVal, emailVal, passVal, refVal);
       if (res.success) {
@@ -435,16 +456,17 @@
   </script>
   <!--Start of Tawk.to Script-->
   <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/6a3ee8713097c41d3eca5bec/1js2rnvai';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6a3ee8713097c41d3eca5bec/1js2rnvai';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
     })();
   </script>
   <!--End of Tawk.to Script-->
 </body>
+
 </html>
