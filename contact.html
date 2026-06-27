@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Support | SolStaking Protocol</title>
+  <meta name="description" content="Get in touch with SolStaking Protocol support. Submit support inquiries or log support tickets directly to our admin panel.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .legal-content {
+      padding: 120px 0 80px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 32px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .info-card i {
+      font-size: 1.5rem;
+      color: var(--secondary);
+      margin-bottom: 12px;
+    }
+    .info-card h4 {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .info-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;">
+            <defs>
+              <linearGradient id="solGradHead" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#9945FF" />
+                <stop offset="50%" stop-color="#00C2FF" />
+                <stop offset="100%" stop-color="#14F195" />
+              </linearGradient>
+            </defs>
+            <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradHead)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+            <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradHead)" />
+            <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradHead)" />
+            <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradHead)" opacity="0.9" />
+          </svg>
+        </div>
+        <div class="logo-text">Sol<span>Staking</span></div>
+      </a>
+      <ul class="nav-links" id="mainNav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#plans">Staking Plans</a></li>
+        <li><a href="index.html#calculator">Calculator</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li id="navGetStarted"><a href="auth.html?signup=true" class="btn btn-secondary btn-sm">Get Started</a></li>
+        <li id="navDashboard" style="display:none;"><a href="dashboard.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <section class="legal-content container">
+    <div class="section-header" style="margin-bottom: 50px;">
+      <h2>Contact <span class="glow-text-purple">Support Desk</span></h2>
+      <p style="max-width: 600px; margin: 0 auto;">Have any inquiries or platform suggestions? Fill out the contact form below or reach our global DeFi assistance network.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Left Info column -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="glass-card info-card" style="padding: 24px;">
+          <i class="fa-solid fa-envelope"></i>
+          <h4>Email Correspondence</h4>
+          <p>For support inquiries, partnerships, or administrative compliance queries: <br><strong style="color: #fff; font-family: monospace;">support@solanacontract.com</strong></p>
+        </div>
+
+        <div class="glass-card info-card" style="padding: 24px;">
+          <i class="fa-solid fa-comments"></i>
+          <h4>Internal Help Tickets</h4>
+          <p>Signed-in members can open support tickets directly on their dashboard page. Admin portal auditors monitor issues and respond in real time.</p>
+        </div>
+
+        <div class="glass-card info-card" style="padding: 24px;">
+          <i class="fa-solid fa-clock"></i>
+          <h4>Help Desk Availability</h4>
+          <p>Our decentralized technical assistants are online 24/7/365 to handle network queries, transaction audits, and KYC ledger approvals.</p>
+        </div>
+      </div>
+
+      <!-- Right Form column -->
+      <div class="glass-card" style="padding: 32px;">
+        <h3 style="color:#fff; margin-bottom: 16px; font-size: 1.25rem;">Submit Support Query</h3>
+        <form onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent successfully. Our support desk will reach out shortly.'); this.reset();">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="color:var(--text-secondary); font-size:0.85rem; display:block; margin-bottom:6px;">Full Name</label>
+            <input type="text" class="form-control" placeholder="Enter your name" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-glass); background:rgba(8,9,12,0.6); color:#fff;">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="color:var(--text-secondary); font-size:0.85rem; display:block; margin-bottom:6px;">Email Address</label>
+            <input type="email" class="form-control" placeholder="you@example.com" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-glass); background:rgba(8,9,12,0.6); color:#fff;">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="color:var(--text-secondary); font-size:0.85rem; display:block; margin-bottom:6px;">Message Description</label>
+            <textarea class="form-control" rows="5" placeholder="How can we assist you?" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-glass); background:rgba(8,9,12,0.6); color:#fff; resize:vertical; font-family:inherit;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight:600;"><i class="fa-solid fa-paper-plane"></i> Dispatch Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-logo-desc">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="solGradFoot" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#9945FF" />
+                  <stop offset="50%" stop-color="#00C2FF" />
+                  <stop offset="100%" stop-color="#14F195" />
+                </linearGradient>
+              </defs>
+              <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" stroke="url(#solGradFoot)" stroke-width="2.5" stroke-linejoin="round" opacity="0.8" />
+              <path d="M10 11H26L22 15H6L10 11Z" fill="url(#solGradFoot)" />
+              <path d="M14 17H30L26 21H10L14 17Z" fill="url(#solGradFoot)" />
+              <path d="M18 23H34L30 27H14L18 23Z" fill="url(#solGradFoot)" opacity="0.9" />
+            </svg>
+          </div>
+          <div class="logo-text">Sol<span>Staking</span></div>
+        </a>
+        <p>Next-generation, high-performance automated validator node reward distribution system running on the Solana blockchain. Stake, delegate, and withdraw rewards with ease.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Staking Plans</h4>
+        <ul>
+          <li><a href="index.html#plans">SC Basic</a></li>
+          <li><a href="index.html#plans">SC Plus</a></li>
+          <li><a href="index.html#plans">SC Premium</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html#calculator">Profit Calculator</a></li>
+          <li><a href="index.html#stats">Platform Statistics</a></li>
+          <li><a href="index.html#faq">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support & Legal</h4>
+        <ul>
+          <li><a href="auth.html">Account Login</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact Support</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom" style="display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center;">
+      <p>&copy; 2026 SolStaking Inc. All Rights Reserved. Smart contracts audited and certified.</p>
+      <p style="color: var(--text-muted); font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i> Risk warning: Staking digital assets involves market fluctuations and technological risks. Allocate assets responsibly.</p>
+      <p style="color: var(--text-muted); font-size: 0.75rem; max-width: 800px; margin-top: 2px;">
+        Disclaimer: SolStaking is an independent decentralized DeFi delegation service. We are not affiliated with, sponsored by, or endorsed by Solana Foundation, Solana Labs, or Solana Ltd.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function updateNavAuth() {
+      const session = localStorage.getItem('solanacontract_session');
+      if (session) {
+        document.getElementById('navGetStarted').style.display = 'none';
+        document.getElementById('navDashboard').style.display = 'list-item';
+      } else {
+        document.getElementById('navGetStarted').style.display = 'list-item';
+        document.getElementById('navDashboard').style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+
+</html>
