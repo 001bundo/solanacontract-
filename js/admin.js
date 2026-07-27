@@ -70,6 +70,8 @@ function setupNavigation() {
       loadPlatformSettings();
     } else if (targetTab === 'contracts') {
       renderContractsPanel();
+    } else if (targetTab === 'visitors') {
+      renderVisitorLogsPanel();
     }
   }
 
@@ -161,6 +163,7 @@ function initData() {
   renderUserDatabase(users);
   renderDepositsPanel(pendingDeps);
   renderWithdrawalsPanel(pendingWths);
+  renderVisitorLogsPanel();
 }
 
 function updateBadgeCount(id, count) {
@@ -841,4 +844,96 @@ function handleAdminCloseTicket() {
 function handleLogout() {
   window.DB.signOut();
   window.location.href = 'auth.html';
+}
+
+// ── Visitor IP Activity Logs Renderer ─────────────────────────
+function renderVisitorLogsPanel() {
+  const tbody = document.getElementById('adminIpTableBody');
+  if (!tbody) return;
+
+  const logs = (window.DB.getAllVisitorLogs() || []).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  // Unique IP count calculation
+  const uniqueIPs = new Set(logs.map(l => l.ip));
+  updateBadgeCount('badgeVisitorLogs', uniqueIPs.size);
+
+  const totalEl = document.getElementById('ipStatTotalVisits');
+  const uniqueEl = document.getElementById('ipStatUniqueIPs');
+  const topLocEl = document.getElementById('ipStatTopLocation');
+
+  if (totalEl) totalEl.textContent = `${logs.length} Visits`;
+  if (uniqueEl) uniqueEl.textContent = `${uniqueIPs.size} Unique IPs`;
+
+  // Find top visitor location / country
+  if (topLocEl) {
+    const locCounts = {};
+    logs.forEach(l => {
+      const loc = l.country || 'Unknown Location';
+      locCounts[loc] = (locCounts[loc] || 0) + 1;
+    });
+    let topLoc = '-';
+    let maxC = 0;
+    for (const [loc, count] of Object.entries(locCounts)) {
+      if (count > maxC) { maxC = count; topLoc = loc; }
+    }
+    topLocEl.textContent = topLoc !== '-' ? `${topLoc} (${maxC})` : '-';
+  }
+
+  if (logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:24px;">No visitor IP logs recorded yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = logs.map(item => {
+    const userBadge = item.username && item.username !== 'Guest'
+      ? `<span class="badge badge-success" style="font-size:0.75rem;"><i class="fa-solid fa-user"></i> ${item.username}</span>`
+      : `<span class="badge" style="background:rgba(255,255,255,0.08); color:var(--text-secondary); font-size:0.75rem;"><i class="fa-solid fa-user-secret"></i> Guest</span>`;
+
+    const pathName = item.path || '/index.html';
+    const rawAgent = item.userAgent || 'Unknown Device';
+    const shortAgent = rawAgent
+      .replace('Mozilla/5.0 ', '')
+      .replace('(Windows NT 10.0; Win64; x64)', 'Windows 10')
+      .replace('(Macintosh; Intel Mac OS X 10_15_7)', 'macOS')
+      .replace('(iPhone; CPU iPhone OS 16_0 like Mac OS X)', 'iPhone')
+      .substr(0, 48);
+
+    return `
+      <tr data-ip="${(item.ip || '').toLowerCase()}" data-country="${(item.country || '').toLowerCase()}" data-user="${(item.username || '').toLowerCase()}" data-path="${(item.path || '').toLowerCase()}">
+        <td style="font-size:0.8rem; color:var(--text-secondary); white-space:nowrap;">
+          ${new Date(item.timestamp).toLocaleString()}
+        </td>
+        <td>
+          <span style="font-family:monospace; font-weight:700; color:var(--secondary); background:rgba(20,241,149,0.1); padding:4px 8px; border-radius:6px; border:1px solid rgba(20,241,149,0.2);">
+            ${item.ip}
+          </span>
+        </td>
+        <td>
+          <strong style="color:#fff;">${item.country || 'Unknown'}</strong>
+          ${item.city ? `<div style="font-size:0.75rem; color:var(--text-secondary);">${item.city}${item.region ? ', ' + item.region : ''}</div>` : ''}
+        </td>
+        <td>${userBadge}</td>
+        <td><code style="color:var(--primary); font-size:0.8rem;">${pathName}</code></td>
+        <td style="font-size:0.75rem; color:var(--text-muted);" title="${rawAgent}">${shortAgent}...</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterIpTable() {
+  const query = document.getElementById('ipSearchInput').value.toLowerCase().trim();
+  const rows = document.querySelectorAll('#adminIpTableBody tr');
+
+  rows.forEach(row => {
+    const ip = row.dataset.ip || '';
+    const country = row.dataset.country || '';
+    const user = row.dataset.user || '';
+    const path = row.dataset.path || '';
+
+    if (ip.includes(query) || country.includes(query) || user.includes(query) || path.includes(query)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
 }

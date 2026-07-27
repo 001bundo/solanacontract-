@@ -227,6 +227,34 @@ const initialData = {
       timestamp: '2026-06-24T18:40:00Z'
     }
   ],
+  visitorLogs: [
+    {
+      id: 'vlog_1',
+      ip: '102.89.23.4',
+      country: 'Nigeria',
+      countryCode: 'NG',
+      city: 'Lagos',
+      region: 'Lagos State',
+      org: 'MTN Nigeria',
+      path: '/index.html',
+      username: 'solwhale',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0.0.0 Safari/537.36',
+      timestamp: '2026-07-27T10:15:00Z'
+    },
+    {
+      id: 'vlog_2',
+      ip: '198.51.100.42',
+      country: 'United States',
+      countryCode: 'US',
+      city: 'New York',
+      region: 'New York',
+      org: 'Verizon Business',
+      path: '/dashboard.html',
+      username: 'solstar',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15',
+      timestamp: '2026-07-27T11:40:00Z'
+    }
+  ],
   systemSettings: {
     solDepositAddress: 'SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS',
     usdtDepositAddress: 'USDT_CONTRACT_TRON_DEPOSIT_ADDRESS_0X71C', // legacy TRON
@@ -315,6 +343,7 @@ function mergeDB(dbA, dbB) {
   merged.withdrawals = mergeById(dbA.withdrawals, dbB.withdrawals);
   merged.contracts = mergeById(dbA.contracts, dbB.contracts);
   merged.tickets = mergeById(dbA.tickets, dbB.tickets);
+  merged.visitorLogs = mergeById(dbA.visitorLogs, dbB.visitorLogs);
 
   merged.systemSettings = {
     ...(dbA.systemSettings || {}),
@@ -749,7 +778,34 @@ const DB = {
   getAllWithdrawals() { return getDB().withdrawals; },
   getAllContracts() { return getDB().contracts; },
   getAllTickets() { return getDB().tickets; },
+  getAllVisitorLogs() { return getDB().visitorLogs || []; },
   getSystemSettings() { return getDB().systemSettings; },
+
+  logVisitor(ipInfo = {}) {
+    const db = getDB();
+    if (!db.visitorLogs) db.visitorLogs = [];
+
+    const currentUser = DB.getCurrentUser();
+    const username = currentUser ? currentUser.username : 'Guest';
+
+    const newLog = {
+      id: generateId('vlog'),
+      ip: ipInfo.ip || '127.0.0.1',
+      country: ipInfo.country || ipInfo.country_name || 'Public Web Visitor',
+      countryCode: ipInfo.countryCode || ipInfo.country_code || 'UN',
+      city: ipInfo.city || '',
+      region: ipInfo.region || ipInfo.region_name || '',
+      org: ipInfo.org || ipInfo.org_name || ipInfo.isp || 'Local Provider',
+      path: window.location.pathname + window.location.search + window.location.hash,
+      username: username,
+      userAgent: navigator.userAgent,
+      timestamp: new Date().toISOString()
+    };
+
+    db.visitorLogs.push(newLog);
+    saveDB(db);
+    return newLog;
+  },
 
   updateSystemSettings(solAddr, usdtSolAddr, usdtEvmAddr, btcAddr, newPlans, solQR, usdtSolQR, usdtEvmQR, btcQR, emailServiceId, emailTemplateId, emailPublicKey) {
     const db = getDB();
@@ -938,3 +994,48 @@ setInterval(() => {
     console.log('[Yield Engine] Daily interest simulation processed ✓');
   }
 }, 30000);
+
+// ── Automatic Visitor IP Logger ────────────────────────────────
+(function initVisitorTracking() {
+  const lastLoggedKey = 'solanacontract_last_ip_log_' + window.location.pathname;
+  const lastLogged = sessionStorage.getItem(lastLoggedKey);
+  const now = Date.now();
+
+  // Throttle logging to once per page path per 3 minutes in the same session
+  if (lastLogged && (now - parseInt(lastLogged)) < 3 * 60 * 1000) {
+    return;
+  }
+
+  sessionStorage.setItem(lastLoggedKey, now.toString());
+
+  // Fetch visitor IP & Geo location asynchronously with fast failover
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      const ip = data.ip;
+      fetch(`https://ipapi.co/${ip}/json/`)
+        .then(res => res.json())
+        .then(geo => {
+          window.DB.logVisitor({
+            ip: ip,
+            country: geo.country_name || 'Public Web Visitor',
+            countryCode: geo.country_code || 'UN',
+            city: geo.city || '',
+            region: geo.region || '',
+            org: geo.org || geo.isp || 'Internet Provider'
+          });
+        })
+        .catch(() => {
+          window.DB.logVisitor({ ip: ip, country: 'Public Web Visitor' });
+        });
+    })
+    .catch(() => {
+      // Offline or ad-blocked fallback
+      window.DB.logVisitor({
+        ip: '127.0.0.1 (Local)',
+        country: 'Local Network',
+        countryCode: 'LOCAL',
+        city: 'Local Host'
+      });
+    });
+})();

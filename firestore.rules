@@ -10,7 +10,8 @@ service cloud.firestore {
                     && request.resource.data.get('deposits', []).size() >= resource.data.get('deposits', []).size()
                     && request.resource.data.get('withdrawals', []).size() >= resource.data.get('withdrawals', []).size()
                     && request.resource.data.get('contracts', []).size() >= resource.data.get('contracts', []).size()
-                    && request.resource.data.get('tickets', []).size() >= resource.data.get('tickets', []).size();
+                    && request.resource.data.get('tickets', []).size() >= resource.data.get('tickets', []).size()
+                    && request.resource.data.get('visitorLogs', []).size() >= resource.data.get('visitorLogs', []).size();
       allow delete: if false;
     }
     
