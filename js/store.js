@@ -257,26 +257,87 @@ const initialData = {
 
 // ── Flag to prevent the local onSnapshot echo ─────────────────
 // When we write to Firestore ourselves, the listener will fire.
-// This flag lets us skip re-applying our own write back to localStorage.
+// ── Flag to prevent the local onSnapshot echo ─────────────────
 let _localWritePending = false;
+let _latestRemoteDB = null;
+
+// ── Smart Database Merging ────────────────────────────────────
+// Merges local and remote databases so no users, deposits, withdrawals,
+// contracts, or tickets are ever lost or deleted during sync.
+function mergeDB(dbA, dbB) {
+  if (!dbA && !dbB) return initialData;
+  if (!dbA) return dbB;
+  if (!dbB) return dbA;
+
+  const merged = { ...dbA };
+
+  // 1. Merge Users by username (case-insensitive)
+  const userMap = new Map();
+  (dbA.users || []).forEach(u => {
+    if (u && u.username) userMap.set(u.username.toLowerCase(), u);
+  });
+  (dbB.users || []).forEach(u => {
+    if (u && u.username) {
+      const key = u.username.toLowerCase();
+      if (!userMap.has(key)) {
+        userMap.set(key, u);
+      } else {
+        const existing = userMap.get(key);
+        userMap.set(key, {
+          ...existing,
+          ...u,
+          balanceSOL: Math.max(existing.balanceSOL || 0, u.balanceSOL || 0),
+          balanceUSDT: Math.max(existing.balanceUSDT || 0, u.balanceUSDT || 0),
+          balanceBTC: Math.max(existing.balanceBTC || 0, u.balanceBTC || 0),
+          isActive: u.isActive !== undefined ? u.isActive : existing.isActive,
+          kycStatus: (u.kycStatus && u.kycStatus !== 'unverified') ? u.kycStatus : (existing.kycStatus || 'unverified'),
+          emailVerified: existing.emailVerified || u.emailVerified || false
+        });
+      }
+    }
+  });
+  merged.users = Array.from(userMap.values());
+
+  // Helper to merge array items by unique 'id'
+  const mergeById = (arrA = [], arrB = []) => {
+    const map = new Map();
+    (arrA || []).forEach(item => { if (item && item.id) map.set(item.id, item); });
+    (arrB || []).forEach(item => {
+      if (item && item.id) {
+        if (!map.has(item.id)) map.set(item.id, item);
+        else map.set(item.id, { ...map.get(item.id), ...item });
+      }
+    });
+    return Array.from(map.values());
+  };
+
+  merged.deposits = mergeById(dbA.deposits, dbB.deposits);
+  merged.withdrawals = mergeById(dbA.withdrawals, dbB.withdrawals);
+  merged.contracts = mergeById(dbA.contracts, dbB.contracts);
+  merged.tickets = mergeById(dbA.tickets, dbB.tickets);
+
+  merged.systemSettings = {
+    ...(dbA.systemSettings || {}),
+    ...(dbB.systemSettings || {})
+  };
+
+  return merged;
+}
 
 // ── Local Cache Helpers ───────────────────────────────────────
 function getDB() {
   const data = localStorage.getItem(STORE_KEY);
   if (!data) {
-    // No local cache yet — seed localStorage from initialData.
-    // Firestore initialization will either populate from cloud or seed cloud.
     localStorage.setItem(STORE_KEY, JSON.stringify(initialData));
     return initialData;
   }
   const db = JSON.parse(data);
-  // Migrate plans if they contain the old names or old minimum limits
   if (db && db.systemSettings && db.systemSettings.plans) {
     const plans = db.systemSettings.plans;
     if (!plans.starter || plans.starter.name === 'SOL Starter' || (plans.starter_usdt && plans.starter_usdt.min === 50)) {
       db.systemSettings.plans = initialData.systemSettings.plans;
       localStorage.setItem(STORE_KEY, JSON.stringify(db));
-      console.log('[Store] Migrated stale system plans cache to new SC Basic, SC Plus, SC Premium layout ✓');
+      console.log('[Store] Migrated stale system plans cache to new layout ✓');
     }
   }
   return db;
@@ -284,17 +345,20 @@ function getDB() {
 
 /**
  * Persists `db` to localStorage AND syncs it to Firestore.
- * The `onSnapshot` listener will receive the update from Firestore,
- * but we use `_localWritePending` to avoid a redundant re-write loop.
+ * Always merges with `_latestRemoteDB` to guarantee no remote users/records are lost.
  */
 function saveDB(db) {
-  // 1. Write to localStorage immediately (keeps UI fast & synchronous)
+  if (_latestRemoteDB) {
+    db = mergeDB(db, _latestRemoteDB);
+  }
+
+  // 1. Write merged db to localStorage immediately
   localStorage.setItem(STORE_KEY, JSON.stringify(db));
 
   // 2. Broadcast change to any other listeners on the same tab
   window.dispatchEvent(new Event('solanacontract_db_update'));
 
-  // 3. Push to Firestore asynchronously (non-blocking)
+  // 3. Push to Firestore asynchronously
   _localWritePending = true;
   FIRESTORE_DOC.set(db)
     .then(() => {
@@ -304,36 +368,43 @@ function saveDB(db) {
       console.error('[Firebase] Firestore write error:', err);
     })
     .finally(() => {
-      // Allow a brief delay before re-enabling the listener echo guard
       setTimeout(() => { _localWritePending = false; }, 1500);
     });
 }
 
 // ── Firebase Real-time Listener ───────────────────────────────
-// Listens for any remote change (from another browser/device/admin)
-// and merges it into the local cache, triggering UI refresh.
 function initFirebaseSync() {
   FIRESTORE_DOC.onSnapshot(
     (snapshot) => {
-      if (_localWritePending) {
-        // This snapshot was triggered by our own write — skip it
-        return;
-      }
-
       if (snapshot.exists) {
         const remoteDB = snapshot.data();
-        const localRaw = localStorage.getItem(STORE_KEY);
-        const remoteStr = JSON.stringify(remoteDB);
+        _latestRemoteDB = remoteDB;
 
-        // Only update if there's actually a difference
-        if (localRaw !== remoteStr) {
-          console.log('[Firebase] Remote update received — refreshing local cache ✓');
-          localStorage.setItem(STORE_KEY, remoteStr);
-          // Notify dashboard/admin scripts to re-render
+        if (_localWritePending) {
+          return;
+        }
+
+        const localDB = getDB();
+        const mergedDB = mergeDB(localDB, remoteDB);
+        const mergedStr = JSON.stringify(mergedDB);
+        const localRaw = localStorage.getItem(STORE_KEY);
+
+        if (localRaw !== mergedStr) {
+          console.log('[Firebase] Remote update received & merged — refreshing local cache ✓');
+          localStorage.setItem(STORE_KEY, mergedStr);
+
+          // If merging retained local users/records missing in cloud, sync merged version back to cloud
+          if (remoteDB.users && mergedDB.users && mergedDB.users.length > remoteDB.users.length) {
+            _localWritePending = true;
+            FIRESTORE_DOC.set(mergedDB)
+              .then(() => console.log('[Firebase] Pushed merged local records to cloud ✓'))
+              .catch(err => console.error('[Firebase] Cloud sync error:', err))
+              .finally(() => setTimeout(() => { _localWritePending = false; }, 1500));
+          }
+
           window.dispatchEvent(new Event('solanacontract_db_update'));
         }
       } else {
-        // Firestore doc doesn't exist yet → seed it with initial data
         console.log('[Firebase] No cloud database found — seeding Firestore with initial data...');
         _localWritePending = true;
         FIRESTORE_DOC.set(getDB())
