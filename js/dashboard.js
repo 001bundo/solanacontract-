@@ -120,6 +120,8 @@ function setupNavigation() {
       loadPrintLedger();
     } else if (targetTab === 'tickets') {
       loadSupportTickets();
+    } else if (targetTab === 'deposit') {
+      updateDepositDetails();
     }
   }
 
@@ -335,8 +337,10 @@ function renderRecentActivity() {
 
 // Update deposit address instructions
 function updateDepositDetails() {
-  const coin = document.getElementById('depCurrency').value;
-  const settings = window.DB.getSystemSettings();
+  const coinEl = document.getElementById('depCurrency');
+  if (!coinEl) return;
+  const coin = coinEl.value;
+  const settings = window.DB.getSystemSettings() || {};
   const uGroup = document.getElementById('usdtNetworkGroup');
 
   let address = '';
@@ -344,21 +348,22 @@ function updateDepositDetails() {
 
   if (coin === 'SOL') {
     if (uGroup) uGroup.style.display = 'none';
-    address = settings.solDepositAddress;
+    address = settings.solDepositAddress || 'SOL_CONTRACT_ADDRESS_DEMO_998877_RANDOM_KEYS';
     savedQR = settings.solDepositQR;
   } else if (coin === 'USDT') {
     if (uGroup) uGroup.style.display = 'block';
-    const net = document.getElementById('usdtNetwork').value;
+    const netEl = document.getElementById('usdtNetwork');
+    const net = netEl ? netEl.value : 'SOL';
     if (net === 'SOL') {
-      address = settings.usdtSolDepositAddress;
+      address = settings.usdtSolDepositAddress || 'USDT_SOLANA_SPL_DEPOSIT_ADDRESS_DEMO_KJSFDG';
       savedQR = settings.usdtSolDepositQR;
     } else {
-      address = settings.usdtEvmDepositAddress;
+      address = settings.usdtEvmDepositAddress || '0xUSDT_EVM_ERC20_DEPOSIT_ADDRESS_DEMO_0X71C';
       savedQR = settings.usdtEvmDepositQR;
     }
   } else if (coin === 'BTC') {
     if (uGroup) uGroup.style.display = 'none';
-    address = settings.btcDepositAddress;
+    address = settings.btcDepositAddress || '1BTC_NATIVE_DEPOSIT_ADDRESS_DEMO_KJSFDG';
     savedQR = settings.btcDepositQR;
   }
 
@@ -367,17 +372,17 @@ function updateDepositDetails() {
   const titleEl = document.getElementById('depAddressTitle');
   const scanTabNote = document.getElementById('depScanNote');
 
-  titleEl.innerHTML = `Transfer ${coin} to Target Wallet`;
-  addressInput.value = address || '';
+  if (titleEl) titleEl.innerHTML = `Transfer ${coin} to Target Wallet`;
+  if (addressInput) addressInput.value = address || '';
 
-  if (savedQR) {
-    // Use admin-uploaded QR/barcode image
-    qrImage.src = savedQR;
-    if (scanTabNote) scanTabNote.style.display = 'block';
-  } else {
-    // Fall back to auto-generated QR from address string
-    qrImage.src = address ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(address)}` : 'https://picsum.photos/150';
-    if (scanTabNote) scanTabNote.style.display = 'none';
+  if (qrImage) {
+    if (savedQR) {
+      qrImage.src = savedQR;
+      if (scanTabNote) scanTabNote.style.display = 'block';
+    } else {
+      qrImage.src = address ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(address)}` : 'https://picsum.photos/150';
+      if (scanTabNote) scanTabNote.style.display = 'none';
+    }
   }
 }
 

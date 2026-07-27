@@ -558,16 +558,41 @@ function loadPlatformSettings() {
   setupPreview(settings.btcDepositQR, 'btcQRCurrentBox', 'btcQRCurrent');
 }
 
-// Helper Promise utility to read files as Base64 data strings
+// Helper Promise utility to read and compress QR images as lightweight Base64 JPEG strings (max 300x300)
 function readQRFile(inputEl) {
   return new Promise((resolve) => {
     if (!inputEl || !inputEl.files || !inputEl.files[0]) {
       resolve(null);
       return;
     }
+    const file = inputEl.files[0];
     const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target.result);
-    reader.readAsDataURL(inputEl.files[0]);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 300;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = () => resolve(e.target.result);
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   });
 }
 

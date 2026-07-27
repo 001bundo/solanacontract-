@@ -347,7 +347,11 @@ function mergeDB(dbA, dbB) {
 
   merged.systemSettings = {
     ...(dbA.systemSettings || {}),
-    ...(dbB.systemSettings || {})
+    ...(dbB.systemSettings || {}),
+    plans: {
+      ...((dbA.systemSettings && dbA.systemSettings.plans) || {}),
+      ...((dbB.systemSettings && dbB.systemSettings.plans) || {})
+    }
   };
 
   return merged;
@@ -374,11 +378,11 @@ function getDB() {
 
 /**
  * Persists `db` to localStorage AND syncs it to Firestore.
- * Always merges with `_latestRemoteDB` to guarantee no remote users/records are lost.
+ * Merges _latestRemoteDB into db with db taking precedence for local changes.
  */
 function saveDB(db) {
   if (_latestRemoteDB) {
-    db = mergeDB(db, _latestRemoteDB);
+    db = mergeDB(_latestRemoteDB, db);
   }
 
   // 1. Write merged db to localStorage immediately
@@ -450,6 +454,15 @@ function initFirebaseSync() {
 
 // Start the real-time listener
 initFirebaseSync();
+
+// ── Native Browser Cross-Tab Listener ─────────────────────────
+// Triggers instant UI update across open tabs when localStorage changes
+window.addEventListener('storage', (e) => {
+  if (e.key === STORE_KEY && e.newValue) {
+    console.log('[Store] Cross-tab storage update detected — refreshing UI ✓');
+    window.dispatchEvent(new Event('solanacontract_db_update'));
+  }
+});
 
 // ── Main DB API Object ────────────────────────────────────────
 const DB = {
@@ -821,6 +834,9 @@ const DB = {
     if (emailServiceId !== undefined) db.systemSettings.emailjsServiceId = emailServiceId;
     if (emailTemplateId !== undefined) db.systemSettings.emailjsTemplateId = emailTemplateId;
     if (emailPublicKey !== undefined) db.systemSettings.emailjsPublicKey = emailPublicKey;
+    if (_latestRemoteDB) {
+      _latestRemoteDB.systemSettings = { ...db.systemSettings };
+    }
     saveDB(db);
   },
 
