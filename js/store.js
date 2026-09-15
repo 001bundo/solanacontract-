@@ -764,6 +764,25 @@ const DB = {
     return true;
   },
 
+  findUserByEmailOrUsername(identifier) {
+    if (!identifier) return null;
+    const db = getDB();
+    const query = identifier.trim().toLowerCase();
+    return db.users.find(u => u.username.toLowerCase() === query || u.email.toLowerCase() === query) || null;
+  },
+
+  resetPassword(identifier, newPass) {
+    const db = getDB();
+    if (!identifier || !newPass) return { success: false, message: 'Invalid arguments' };
+    const query = identifier.trim().toLowerCase();
+    const user = db.users.find(u => u.username.toLowerCase() === query || u.email.toLowerCase() === query);
+    if (!user) return { success: false, message: 'Account not found' };
+
+    user.password = newPass;
+    saveDB(db);
+    return { success: true, message: 'Password updated successfully' };
+  },
+
   submitKYC(username, country, docType, docNumber, docFile = 'id_document.png') {
     const db = getDB();
     const user = db.users.find(u => u.username === username);

@@ -196,7 +196,10 @@
           <input type="text" id="loginUser" class="form-control" placeholder="Enter username or email" required>
         </div>
         <div class="form-group">
-          <label for="loginPass"><i class="fa-solid fa-lock"></i> Password</label>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label for="loginPass" style="margin-bottom: 0;"><i class="fa-solid fa-lock"></i> Password</label>
+            <a href="#" onclick="switchTab('forgot'); return false;" style="font-size: 0.8rem; color: var(--primary); text-decoration: none; font-weight: 500;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--primary)'">Forgot password?</a>
+          </div>
           <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required>
         </div>
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
@@ -258,6 +261,72 @@
         </button>
       </form>
     </div>
+
+    <!-- Forgot Password Panel -->
+    <div class="form-panel" id="forgotPanel">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 50px; height: 50px; background: rgba(153, 69, 255, 0.12); border: 1.5px solid rgba(153, 69, 255, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.2rem; color: var(--primary);">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-bottom: 6px; color: #fff;">Reset Your Password</h3>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">Enter your registered username or email address to receive a password reset verification link.</p>
+      </div>
+
+      <!-- Step 1: Request Email Link -->
+      <form id="forgotStep1" onsubmit="handleRequestReset(event)">
+        <div class="form-group">
+          <label for="forgotIdentifier"><i class="fa-solid fa-user-circle"></i> Username or Email</label>
+          <input type="text" id="forgotIdentifier" class="form-control" placeholder="Enter username or email" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          <i class="fa-solid fa-paper-plane"></i> Send Password Reset Link
+        </button>
+      </form>
+
+      <!-- Sent Confirmation Banner (Step 1 Completed) -->
+      <div id="resetSentBanner" style="display: none; background: rgba(20, 241, 149, 0.08); border: 1px solid rgba(20, 241, 149, 0.25); border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 0.85rem; color: #14F195; text-align: center;">
+        <i class="fa-solid fa-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block;"></i>
+        <strong style="font-size: 0.95rem;">Password Reset Link Sent!</strong>
+        <p style="color: var(--text-secondary); font-size: 0.82rem; margin: 8px 0 12px; line-height: 1.4;">
+          We sent an email verification link to <strong id="sentEmailAddr" style="color: #fff;"></strong>.<br>Please check your inbox and click the verification link to change your password.
+        </p>
+        <button type="button" onclick="resetForgotForm()" class="btn" style="width: 100%; margin-top: 14px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-glass); font-size: 0.8rem;">
+          <i class="fa-solid fa-arrow-left"></i> Send to another address
+        </button>
+      </div>
+
+      <!-- Step 2: Set New Password (Opened via Verification Link) -->
+      <form id="forgotStep2" onsubmit="handleVerifyAndResetPassword(event)" style="display: none;">
+        <div id="step2BannerText" style="background: rgba(20, 241, 149, 0.08); border: 1px solid rgba(20, 241, 149, 0.25); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.82rem; color: #14F195; text-align: center;">
+          <i class="fa-solid fa-circle-check"></i> Email verified! Please enter your new password below.
+        </div>
+        <div class="form-group" id="codeGroup" style="display: none;">
+          <label for="forgotCode"><i class="fa-solid fa-shield-halved"></i> 6-Digit Verification Code</label>
+          <input type="text" id="forgotCode" class="form-control" placeholder="e.g. 849201" maxlength="6" style="letter-spacing: 4px; font-weight: 700; text-align: center;">
+          <small id="codeHint" style="display: block; margin-top: 4px; color: var(--accent); font-size: 0.78rem; text-align: right;"></small>
+        </div>
+        <div class="form-group">
+          <label for="newPass"><i class="fa-solid fa-lock"></i> New Password</label>
+          <input type="password" id="newPass" class="form-control" placeholder="Min 6 characters" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmNewPass"><i class="fa-solid fa-lock-open"></i> Confirm New Password</label>
+          <input type="password" id="confirmNewPass" class="form-control" placeholder="Re-enter new password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          <i class="fa-solid fa-check-circle"></i> Save New Password
+        </button>
+        <button type="button" onclick="resetForgotForm()" class="btn" style="width: 100%; margin-top: 8px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-glass);">
+          <i class="fa-solid fa-arrow-left"></i> Cancel / Start Over
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="#" onclick="switchTab('login'); return false;" style="font-size: 0.85rem; color: var(--text-secondary); text-decoration: none;">
+          Back to <span style="color: #fff; text-decoration: underline;">Sign In</span>
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- Admin Panel indicator badge -->
@@ -304,26 +373,66 @@
       const loginPanel = document.getElementById('loginPanel');
       const signupPanel = document.getElementById('signupPanel');
       const adminPanel = document.getElementById('adminPanel');
+      const forgotPanel = document.getElementById('forgotPanel');
 
       // Reset all
-      [loginTabBtn, signupTabBtn, adminTabBtn].forEach(b => b.classList.remove('active'));
-      [loginPanel, signupPanel, adminPanel].forEach(p => p.classList.remove('active'));
+      [loginTabBtn, signupTabBtn, adminTabBtn].forEach(b => b && b.classList.remove('active'));
+      [loginPanel, signupPanel, adminPanel, forgotPanel].forEach(p => p && p.classList.remove('active'));
 
       if (tabName === 'login') {
-        loginTabBtn.classList.add('active');
-        loginPanel.classList.add('active');
+        if (loginTabBtn) loginTabBtn.classList.add('active');
+        if (loginPanel) loginPanel.classList.add('active');
       } else if (tabName === 'signup') {
-        signupTabBtn.classList.add('active');
-        signupPanel.classList.add('active');
+        if (signupTabBtn) signupTabBtn.classList.add('active');
+        if (signupPanel) signupPanel.classList.add('active');
+      } else if (tabName === 'forgot') {
+        if (forgotPanel) forgotPanel.classList.add('active');
       } else {
-        adminTabBtn.classList.add('active');
-        adminPanel.classList.add('active');
+        if (adminTabBtn) adminTabBtn.classList.add('active');
+        if (adminPanel) adminPanel.classList.add('active');
       }
     }
 
     // Read URL query params AFTER switchTab is defined
     const params = new URLSearchParams(window.location.search);
     if (params.get('signup') === 'true') switchTab('signup');
+    if (params.get('forgot') === 'true' || params.get('reset') === 'true') switchTab('forgot');
+
+    // Forgot Password State
+    let _resetUserTarget = null;
+    let _resetToken = null;
+    let _isLinkVerified = false;
+
+    // Check if user accessed page via Email Verification Link
+    if (params.get('reset-user')) {
+      const targetUserStr = params.get('reset-user');
+      const targetUser = window.DB.findUserByEmailOrUsername(targetUserStr);
+
+      switchTab('forgot');
+
+      if (targetUser) {
+        _resetUserTarget = targetUser;
+        _isLinkVerified = true;
+
+        // Open Step 2 (Set New Password form) directly
+        const f1 = document.getElementById('forgotStep1');
+        const banner = document.getElementById('resetSentBanner');
+        const f2 = document.getElementById('forgotStep2');
+        const step2BannerText = document.getElementById('step2BannerText');
+
+        if (f1) f1.style.display = 'none';
+        if (banner) banner.style.display = 'none';
+        if (f2) f2.style.display = 'block';
+
+        if (step2BannerText) {
+          step2BannerText.innerHTML = `<i class="fa-solid fa-circle-check"></i> Email verified for <strong style="color:#fff;">${targetUser.username}</strong> (${targetUser.email}). Set your new password below.`;
+        }
+      } else {
+        const input = document.getElementById('forgotIdentifier');
+        if (input) input.value = targetUserStr;
+      }
+    }
+
     if (params.get('admin') === 'true') {
       const loginTabBtn = document.getElementById('loginTabBtn');
       const signupTabBtn = document.getElementById('signupTabBtn');
@@ -349,6 +458,107 @@
     }
     if (params.get('ref')) {
       document.getElementById('regRef').value = params.get('ref').toUpperCase();
+    }
+
+    async function sendPasswordResetEmail(username, emailAddr, token) {
+      try {
+        const settings = window.DB.getSystemSettings();
+        const serviceId = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || '';
+        const templateId = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || '';
+        const publicKey = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || '';
+
+        if (!serviceId || !templateId || !publicKey) {
+          console.warn('[EmailJS] Credentials not configured for reset email.');
+          return;
+        }
+
+        const base = window.location.href.split('?')[0];
+        const resetUrl = `${base}?reset-user=${encodeURIComponent(username)}&reset-token=${encodeURIComponent(token)}`;
+
+        const templateParams = {
+          name: username,
+          email: emailAddr,
+          verification_url: resetUrl,
+          message: `Click the verification link to set a new password: ${resetUrl}`,
+          year: new Date().getFullYear().toString()
+        };
+
+        emailjs.init({ publicKey: publicKey });
+        await emailjs.send(serviceId, templateId, templateParams);
+        console.log('[EmailJS] Reset verification link dispatched successfully ✓');
+      } catch (err) {
+        console.error('[EmailJS] Reset email error:', err);
+      }
+    }
+
+    function handleRequestReset(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('forgotIdentifier').value;
+      const user = window.DB.findUserByEmailOrUsername(identifier);
+
+      if (!user) {
+        showToast('No account found with that username or email address.', 'error');
+        return;
+      }
+
+      _resetUserTarget = user;
+      _resetToken = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+
+      const sentEmailAddr = document.getElementById('sentEmailAddr');
+      if (sentEmailAddr) sentEmailAddr.textContent = user.email;
+
+      showToast(`Password reset link sent to ${user.email}`, 'success');
+
+      // Dispatch via EmailJS non-blocking
+      sendPasswordResetEmail(user.username, user.email, _resetToken);
+
+      document.getElementById('forgotStep1').style.display = 'none';
+      document.getElementById('resetSentBanner').style.display = 'block';
+    }
+
+    function handleVerifyAndResetPassword(e) {
+      e.preventDefault();
+      if (!_resetUserTarget) {
+        showToast('Invalid or expired password reset session.', 'error');
+        return;
+      }
+
+      const newPass = document.getElementById('newPass').value;
+      const confirmPass = document.getElementById('confirmNewPass').value;
+
+      if (newPass !== confirmPass) {
+        showToast('Passwords do not match.', 'error');
+        return;
+      }
+
+      if (newPass.length < 6) {
+        showToast('Password must be at least 6 characters long.', 'error');
+        return;
+      }
+
+      const res = window.DB.resetPassword(_resetUserTarget.username, newPass);
+      if (res.success) {
+        showToast('Password reset successfully! Please sign in with your new password.', 'success');
+        const targetUsername = _resetUserTarget.username;
+        resetForgotForm();
+        switchTab('login');
+        document.getElementById('loginUser').value = targetUsername;
+        document.getElementById('loginPass').value = '';
+      } else {
+        showToast(res.message || 'Error resetting password.', 'error');
+      }
+    }
+
+    function resetForgotForm() {
+      _resetUserTarget = null;
+      _resetToken = null;
+      _isLinkVerified = false;
+      const f1 = document.getElementById('forgotStep1');
+      const banner = document.getElementById('resetSentBanner');
+      const f2 = document.getElementById('forgotStep2');
+      if (f1) { f1.reset(); f1.style.display = 'block'; }
+      if (banner) { banner.style.display = 'none'; }
+      if (f2) { f2.reset(); f2.style.display = 'none'; }
     }
 
     // Form handlers

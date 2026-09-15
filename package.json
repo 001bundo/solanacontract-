@@ -1,0 +1,10 @@
+{
+  "name": "solanacontract",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static web application",
+  "scripts": {
+    "dev": "npx serve -l 3000 .",
+    "start": "npx serve -l 3000 ."
+  }
+}
