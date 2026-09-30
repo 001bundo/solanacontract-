@@ -500,10 +500,56 @@ function renderWithdrawalsPanel(pending) {
   }).join('');
 }
 
+async function sendWithdrawalEmailNotification(withdrawalId) {
+  try {
+    const dbWths = window.DB.getAllWithdrawals();
+    const wth = dbWths.find(w => w.id === withdrawalId);
+    if (!wth) return;
+
+    const user = window.DB.getAllUsers().find(u => u.username === wth.username);
+    const recipientEmail = (user && user.email) ? user.email : '';
+    if (!recipientEmail) {
+      console.warn('[EmailJS] No recipient email found for user:', wth.username);
+      return;
+    }
+
+    const settings = window.DB.getSystemSettings();
+    const serviceId = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
+    const templateId = 'template_lgbeu4z';
+    const publicKey = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
+
+    if (!window.emailjs) {
+      console.warn('[EmailJS] EmailJS SDK is not loaded.');
+      return;
+    }
+
+    const templateParams = {
+      name: wth.username,
+      email: recipientEmail,
+      amount: wth.amount.toString(),
+      currency: wth.currency,
+      wallet_address: wth.walletAddress || 'N/A',
+      tx_hash: `TX_${Math.random().toString(36).substr(2, 12).toUpperCase()}`,
+      date: new Date().toLocaleString(),
+      year: new Date().getFullYear().toString(),
+      support_email: 'support@sol-fi.io'
+    };
+
+    window.emailjs.init({ publicKey: publicKey });
+    await window.emailjs.send(serviceId, templateId, templateParams);
+    console.log(`[EmailJS] Successful withdrawal notification sent via ${templateId} to ${recipientEmail} ✓`);
+  } catch (err) {
+    console.error('[EmailJS] Error sending withdrawal notification email:', err);
+  }
+}
+
 function approveWithdrawalDirect(id) {
+  // Capture details before status updates
+  sendWithdrawalEmailNotification(id);
+
   const success = window.DB.approveWithdrawal(id);
   if (success) {
-    showToast('Withdrawal marked as approved & processed!', 'success');
+    showToast('Withdrawal marked as approved & email notification sent!', 'success');
     initData();
   }
 }
