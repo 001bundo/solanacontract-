@@ -160,9 +160,9 @@
 
         <div class="navbar-right">
           <!-- Live node indicator status -->
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--secondary);">
+          <div class="header-status-badge" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--secondary);">
             <i class="fa-solid fa-circle" style="font-size: 0.6rem; animation: pulseGlow 1.5s infinite;"></i>
-            <span>Network Engine Online</span>
+            <span class="status-label">Network Engine Online</span>
           </div>
 
           <div class="profile-widget" style="cursor: default;">
@@ -221,14 +221,12 @@
         <!-- 2. USER DATABASE PANEL -->
         <section class="tab-panel" id="panel-users">
           <div class="glass-card">
-            <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px;">
-              <div class="search-bar-wrapper" style="flex:1; margin-bottom:0;">
+            <div class="user-panel-header">
+              <div class="search-bar-wrapper">
                 <input type="text" id="userSearchInput" class="form-control"
                   placeholder="Search members by username or email..." oninput="filterUserTable()">
               </div>
-              <button class="btn btn-secondary" onclick="openAddMemberModal()"
-                style="color:#0c0d12; white-space:nowrap; padding: 10px 20px;"><i class="fa-solid fa-user-plus"></i> Add
-                New Member</button>
+              <button class="btn btn-secondary" onclick="openAddMemberModal()"><i class="fa-solid fa-user-plus"></i> Add New Member</button>
             </div>
 
             <div class="table-responsive">

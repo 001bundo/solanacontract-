@@ -314,9 +314,9 @@ function mergeDB(dbA, dbB) {
         userMap.set(key, {
           ...existing,
           ...u,
-          balanceSOL: Math.max(existing.balanceSOL || 0, u.balanceSOL || 0),
-          balanceUSDT: Math.max(existing.balanceUSDT || 0, u.balanceUSDT || 0),
-          balanceBTC: Math.max(existing.balanceBTC || 0, u.balanceBTC || 0),
+          balanceSOL: u.balanceSOL !== undefined ? u.balanceSOL : existing.balanceSOL,
+          balanceUSDT: u.balanceUSDT !== undefined ? u.balanceUSDT : existing.balanceUSDT,
+          balanceBTC: u.balanceBTC !== undefined ? u.balanceBTC : existing.balanceBTC,
           isActive: u.isActive !== undefined ? u.isActive : existing.isActive,
           kycStatus: (u.kycStatus && u.kycStatus !== 'unverified') ? u.kycStatus : (existing.kycStatus || 'unverified'),
           emailVerified: existing.emailVerified || u.emailVerified || false
@@ -933,11 +933,23 @@ const DB = {
 
   updateUserBalance(username, currency, newAmount) {
     const db = getDB();
-    const user = db.users.find(u => u.username === username);
+    const query = username.trim().toLowerCase();
+    const user = db.users.find(u => u.username.toLowerCase() === query);
     if (!user) return false;
 
+    const val = parseFloat(newAmount);
+    if (isNaN(val)) return false;
+
     const balanceField = currency === 'SOL' ? 'balanceSOL' : (currency === 'USDT' ? 'balanceUSDT' : 'balanceBTC');
-    user[balanceField] = parseFloat(newAmount);
+    user[balanceField] = val;
+
+    if (_latestRemoteDB && _latestRemoteDB.users) {
+      const rUser = _latestRemoteDB.users.find(u => u.username.toLowerCase() === query);
+      if (rUser) {
+        rUser[balanceField] = val;
+      }
+    }
+
     saveDB(db);
     return true;
   },
@@ -954,12 +966,30 @@ const DB = {
 
   toggleUserActive(username) {
     const db = getDB();
-    const user = db.users.find(u => u.username === username);
+    const query = username.trim().toLowerCase();
+    const user = db.users.find(u => u.username.toLowerCase() === query);
     if (!user) return false;
 
     user.isActive = !user.isActive;
     saveDB(db);
     return user.isActive;
+  },
+
+  deleteUser(username) {
+    const db = getDB();
+    const query = username.trim().toLowerCase();
+    
+    const user = db.users.find(u => u.username.toLowerCase() === query);
+    if (!user || user.isAdmin) return false;
+
+    db.users = db.users.filter(u => u.username.toLowerCase() !== query);
+
+    if (_latestRemoteDB && _latestRemoteDB.users) {
+      _latestRemoteDB.users = _latestRemoteDB.users.filter(u => u.username.toLowerCase() !== query);
+    }
+
+    saveDB(db);
+    return true;
   },
 
   approveContract(contractId) {

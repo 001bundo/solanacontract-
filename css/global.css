@@ -677,3 +677,64 @@ tr:hover td {
   }
 }
 
+/* ── Admin Impersonation Top Banner Global Styles ── */
+.admin-impersonation-banner {
+  background: linear-gradient(90deg, #9945FF 0%, #00C2FF 50%, #14F195 100%);
+  color: #0c0d12;
+  padding: 8px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  box-shadow: 0 4px 15px rgba(153, 69, 255, 0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-impersonation-banner .impersonation-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.88rem;
+  gap: 12px;
+}
+
+.admin-impersonation-banner .banner-short-text {
+  display: none;
+}
+
+.admin-impersonation-banner .btn {
+  background: #0c0d12;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-impersonation-banner .btn:hover {
+  background: #181b26;
+  border-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .admin-impersonation-banner {
+    padding: 6px 12px;
+  }
+  .admin-impersonation-banner .impersonation-content {
+    font-size: 0.78rem;
+    gap: 8px;
+  }
+  .admin-impersonation-banner .banner-full-text {
+    display: none !important;
+  }
+  .admin-impersonation-banner .banner-short-text {
+    display: inline !important;
+  }
+}
+
+

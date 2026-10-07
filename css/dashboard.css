@@ -438,10 +438,78 @@
   .mini-balance {
     display: none;
   }
-  .dash-body {
-    padding: 20px;
-  }
   .dash-navbar {
-    padding: 0 20px;
+    padding: 0 14px;
+    height: 60px;
+  }
+  .navbar-left {
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+  .page-title {
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .navbar-right {
+    gap: 8px;
+  }
+  .profile-info {
+    display: none; /* Hide username & badge text on mobile so title stays on a single line */
+  }
+  .profile-widget {
+    gap: 0;
+  }
+  .avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+  .dash-body {
+    padding: 14px;
+  }
+  .overview-welcome {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+  }
+  .overview-welcome h2 {
+    font-size: 1.3rem;
+  }
+  .overview-welcome p {
+    font-size: 0.85rem;
+  }
+  .stats-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-val {
+    font-size: 1.25rem !important;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+  .dash-price-ticker-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 20px !important;
+  }
+  .price-ticker-card {
+    padding: 10px 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .dash-price-ticker-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-cards-grid {
+    grid-template-columns: 1fr !important;
   }
 }

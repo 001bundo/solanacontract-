@@ -69,11 +69,39 @@ function checkAuth() {
     window.location.href = 'auth.html';
     return;
   }
-  if (currentUser.isAdmin) {
+  const impersonator = localStorage.getItem('solanacontract_admin_impersonator');
+  if (currentUser.isAdmin && !impersonator) {
     window.location.href = 'admin.html';
     return;
   }
+  checkImpersonationBanner();
 }
+
+function checkImpersonationBanner() {
+  const impersonator = localStorage.getItem('solanacontract_admin_impersonator');
+  const banner = document.getElementById('adminImpersonationBanner');
+  const nameEl = document.getElementById('impersonatedUsername');
+  const nameMobileEl = document.getElementById('impersonatedUsernameMobile');
+  if (impersonator && banner) {
+    banner.style.display = 'block';
+    if (nameEl && currentUser) nameEl.textContent = currentUser.username;
+    if (nameMobileEl && currentUser) nameMobileEl.textContent = currentUser.username;
+  } else if (banner) {
+    banner.style.display = 'none';
+  }
+}
+
+function exitImpersonation() {
+  const impersonator = localStorage.getItem('solanacontract_admin_impersonator');
+  if (impersonator) {
+    localStorage.setItem('solanacontract_session', impersonator);
+    localStorage.removeItem('solanacontract_admin_impersonator');
+  } else {
+    localStorage.setItem('solanacontract_session', 'admin');
+  }
+  window.location.href = 'admin.html';
+}
+window.exitImpersonation = exitImpersonation;
 
 // Navigation Tabs Management
 function setupNavigation() {

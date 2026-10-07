@@ -13,6 +13,18 @@
 
 <body>
 
+  <!-- Admin Impersonation Floating Top Banner -->
+  <div id="adminImpersonationBanner" class="admin-impersonation-banner" style="display: none;">
+    <div class="impersonation-content">
+      <span>
+        <i class="fa-solid fa-user-shield"></i>
+        <span class="banner-full-text"><strong>Admin Impersonation Mode:</strong> Viewing user dashboard for <strong id="impersonatedUsername"></strong></span>
+        <span class="banner-short-text">Viewing: <strong id="impersonatedUsernameMobile"></strong></span>
+      </span>
+      <button class="btn btn-sm" onclick="exitImpersonation()"><i class="fa-solid fa-right-from-bracket"></i> Exit to Admin</button>
+    </div>
+  </div>
+
   <!-- Preloader Overlay -->
   <div id="preloader" class="preloader-overlay">
     <div class="preloader-content">

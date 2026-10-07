@@ -248,15 +248,17 @@ function renderUserDatabase(users) {
       <tr data-username="${user.username}" data-email="${user.email}">
         <td><strong>${user.username}</strong></td>
         <td style="color:var(--text-secondary); font-size:0.85rem;">${user.email}</td>
-        <td><strong style="color:var(--primary);">${user.balanceSOL.toFixed(2)} SOL</strong></td>
-        <td><strong style="color:var(--secondary);">${user.balanceUSDT.toFixed(2)} USDT</strong></td>
+        <td><strong style="color:var(--primary);">${(user.balanceSOL || 0).toFixed(2)} SOL</strong></td>
+        <td><strong style="color:var(--secondary);">${(user.balanceUSDT || 0).toFixed(2)} USDT</strong></td>
         <td><strong style="color:var(--warning);">${(user.balanceBTC || 0).toFixed(4)} BTC</strong></td>
         <td style="text-align:center;">${kycActionHtml}</td>
         <td style="text-align:center;">${user.referralsCount || 0}</td>
         <td>
           <div class="action-btn-group">
-            <button class="btn btn-primary btn-sm" onclick="openBalanceModal('${user.username}')"><i class="fa-solid fa-money-bill-transfer"></i> Edit Bal</button>
-            <label class="switch-container">
+            <button class="btn btn-primary btn-sm" onclick="openBalanceModal('${user.username}')" title="Edit balances"><i class="fa-solid fa-money-bill-transfer"></i> Edit Bal</button>
+            <button class="btn btn-outline btn-sm admin-impersonate-btn" onclick="impersonateUser('${user.username}')" title="Log in as ${user.username}"><i class="fa-solid fa-user-ninja"></i> Login as User</button>
+            <button class="btn btn-outline btn-sm admin-delete-btn" onclick="handleDeleteUser('${user.username}')" title="Delete ${user.username}"><i class="fa-solid fa-trash-can"></i></button>
+            <label class="switch-container" title="Toggle active / suspended status">
               <input type="checkbox" class="switch-checkbox" ${statusChecked} onchange="handleUserToggleActive('${user.username}')">
               <div class="toggle-switch"></div>
             </label>
@@ -266,6 +268,36 @@ function renderUserDatabase(users) {
     `;
   }).join('');
 }
+
+// Delete User Function
+function handleDeleteUser(username) {
+  if (confirm(`Are you sure you want to permanently delete user account "${username}"? This action cannot be undone.`)) {
+    const success = window.DB.deleteUser(username);
+    if (success) {
+      showToast(`User account "${username}" deleted permanently.`, 'success');
+      initData();
+    } else {
+      showToast('Failed to delete user account.', 'error');
+    }
+  }
+}
+window.handleDeleteUser = handleDeleteUser;
+
+// Impersonate User Function
+function impersonateUser(username) {
+  const current = window.DB.getCurrentUser();
+  if (current && current.isAdmin) {
+    localStorage.setItem('solanacontract_admin_impersonator', current.username);
+  } else {
+    localStorage.setItem('solanacontract_admin_impersonator', 'admin');
+  }
+  localStorage.setItem('solanacontract_session', username.toLowerCase());
+  showToast(`Logging in as ${username}...`, 'info');
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 400);
+}
+window.impersonateUser = impersonateUser;
 
 // User lookup search filter
 function filterUserTable() {
