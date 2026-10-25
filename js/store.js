@@ -333,7 +333,12 @@ function mergeDB(dbA, dbB) {
     (arrB || []).forEach(item => {
       if (item && item.id) {
         if (!map.has(item.id)) map.set(item.id, item);
-        else map.set(item.id, { ...map.get(item.id), ...item });
+        else {
+          const prev = map.get(item.id);
+          // 'completed' contracts are final: a stale copy must never revive them
+          if (prev.status === 'completed' && item.status !== 'completed') return;
+          map.set(item.id, { ...prev, ...item });
+        }
       }
     });
     return Array.from(map.values());
@@ -997,6 +1002,7 @@ const DB = {
     const contract = db.contracts.find(c => c.id === contractId);
     if (!contract || contract.status !== 'in_progress') return false;
     contract.status = 'completed';
+    contract.completedAt = new Date().toISOString();
     saveDB(db);
     return true;
   },
@@ -1012,7 +1018,7 @@ const DB = {
     const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 86 400 000 ms
 
     db.contracts.forEach(contract => {
-      if (contract.status === 'active') {
+      if (contract.status === 'active' && !contract.completedAt) {
         if (contract.daysElapsed < contract.durationDays) {
           // Verify lastPayout is a valid date to prevent NaN bypasses
           let lastPayoutMs = new Date(contract.lastPayout).getTime();
