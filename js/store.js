@@ -1003,6 +1003,13 @@ const DB = {
     if (!contract || contract.status !== 'in_progress') return false;
     contract.status = 'completed';
     contract.completedAt = new Date().toISOString();
+
+    // Release the staked principal back to the member's balance (profit was credited daily)
+    const user = db.users.find(u => u.username === contract.username);
+    if (user) {
+      const balanceField = contract.currency === 'SOL' ? 'balanceSOL' : (contract.currency === 'USDT' ? 'balanceUSDT' : 'balanceBTC');
+      user[balanceField] = (user[balanceField] || 0) + contract.amount;
+    }
     saveDB(db);
     return true;
   },
