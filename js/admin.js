@@ -474,10 +474,53 @@ function closeReceiptViewerModal() {
   document.getElementById('receiptViewerModal').classList.remove('show');
 }
 
+async function sendDepositApprovedEmailNotification(depositId) {
+  try {
+    const dbDeps = window.DB.getAllDeposits();
+    const dep = dbDeps.find(d => d.id === depositId);
+    if (!dep) return;
+
+    const user = window.DB.getAllUsers().find(u => u.username === dep.username);
+    const recipientEmail = (user && user.email) ? user.email : '';
+    if (!recipientEmail) {
+      console.warn('[EmailJS] No recipient email found for deposit user:', dep.username);
+      return;
+    }
+
+    const settings = window.DB.getSystemSettings();
+    const serviceId = settings.depositEmailjsServiceId || (window.ENV && window.ENV.depositEmailjsServiceId) || 'service_en0a21d';
+    const templateId = settings.depositApprovedTemplateId || (window.ENV && window.ENV.depositApprovedTemplateId) || 'template_44qcm4d';
+    const publicKey = settings.depositEmailjsPublicKey || (window.ENV && window.ENV.depositEmailjsPublicKey) || 'JtEI69T3Hqi6ajGKf';
+
+    if (!window.emailjs) {
+      console.warn('[EmailJS] EmailJS SDK is not loaded.');
+      return;
+    }
+
+    const templateParams = {
+      name: dep.username,
+      email: recipientEmail,
+      amount: dep.amount.toString(),
+      currency: dep.currency,
+      tx_hash: dep.txHash || 'N/A',
+      date: new Date().toLocaleString(),
+      year: new Date().getFullYear().toString(),
+      support_email: 'support@sol-fi.io'
+    };
+
+    window.emailjs.init({ publicKey: publicKey });
+    await window.emailjs.send(serviceId, templateId, templateParams);
+    console.log(`[EmailJS] Deposit approved notification sent via ${templateId} to ${recipientEmail} ✓`);
+  } catch (err) {
+    console.error('[EmailJS] Error sending deposit approved notification email:', err);
+  }
+}
+
 function approveDepositDirect(id) {
+  sendDepositApprovedEmailNotification(id);
   const success = window.DB.approveDeposit(id);
   if (success) {
-    showToast('Deposit request approved and funds credited!', 'success');
+    showToast('Deposit request approved, funds credited & notification email sent!', 'success');
     initData();
   } else {
     showToast('Failed to approve transaction.', 'error');
@@ -546,9 +589,9 @@ async function sendWithdrawalEmailNotification(withdrawalId) {
     }
 
     const settings = window.DB.getSystemSettings();
-    const serviceId = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
-    const templateId = 'template_lgbeu4z';
-    const publicKey = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
+    const serviceId = settings.withdrawalEmailjsServiceId || (window.ENV && window.ENV.withdrawalEmailjsServiceId) || 'service_s2212bm';
+    const templateId = settings.withdrawalApprovedTemplateId || (window.ENV && window.ENV.withdrawalApprovedTemplateId) || 'template_i11w0r4';
+    const publicKey = settings.withdrawalEmailjsPublicKey || (window.ENV && window.ENV.withdrawalEmailjsPublicKey) || 'sDkbgyjqQjuwXWTLx';
 
     if (!window.emailjs) {
       console.warn('[EmailJS] EmailJS SDK is not loaded.');
@@ -616,6 +659,30 @@ function loadPlatformSettings() {
   }
   if (document.getElementById('setEmailPublicKey')) {
     document.getElementById('setEmailPublicKey').value = settings.emailjsPublicKey || '';
+  }
+  if (document.getElementById('setDepositServiceId')) {
+    document.getElementById('setDepositServiceId').value = settings.depositEmailjsServiceId || (window.ENV && window.ENV.depositEmailjsServiceId) || '';
+  }
+  if (document.getElementById('setDepositPublicKey')) {
+    document.getElementById('setDepositPublicKey').value = settings.depositEmailjsPublicKey || (window.ENV && window.ENV.depositEmailjsPublicKey) || '';
+  }
+  if (document.getElementById('setDepositPendingTemplateId')) {
+    document.getElementById('setDepositPendingTemplateId').value = settings.depositPendingTemplateId || (window.ENV && window.ENV.depositPendingTemplateId) || '';
+  }
+  if (document.getElementById('setDepositApprovedTemplateId')) {
+    document.getElementById('setDepositApprovedTemplateId').value = settings.depositApprovedTemplateId || (window.ENV && window.ENV.depositApprovedTemplateId) || '';
+  }
+  if (document.getElementById('setWithdrawalServiceId')) {
+    document.getElementById('setWithdrawalServiceId').value = settings.withdrawalEmailjsServiceId || (window.ENV && window.ENV.withdrawalEmailjsServiceId) || '';
+  }
+  if (document.getElementById('setWithdrawalPublicKey')) {
+    document.getElementById('setWithdrawalPublicKey').value = settings.withdrawalEmailjsPublicKey || (window.ENV && window.ENV.withdrawalEmailjsPublicKey) || '';
+  }
+  if (document.getElementById('setWithdrawalPendingTemplateId')) {
+    document.getElementById('setWithdrawalPendingTemplateId').value = settings.withdrawalPendingTemplateId || (window.ENV && window.ENV.withdrawalPendingTemplateId) || '';
+  }
+  if (document.getElementById('setWithdrawalApprovedTemplateId')) {
+    document.getElementById('setWithdrawalApprovedTemplateId').value = settings.withdrawalApprovedTemplateId || (window.ENV && window.ENV.withdrawalApprovedTemplateId) || '';
   }
 
   // Show existing saved QR images if any
@@ -763,6 +830,16 @@ function handleEmailSettingsUpdate(e) {
   const templateId = document.getElementById('setEmailTemplateId').value.trim();
   const publicKey = document.getElementById('setEmailPublicKey').value.trim();
 
+  const depServiceId = document.getElementById('setDepositServiceId') ? document.getElementById('setDepositServiceId').value.trim() : undefined;
+  const depPublicKey = document.getElementById('setDepositPublicKey') ? document.getElementById('setDepositPublicKey').value.trim() : undefined;
+  const depPendingTpl = document.getElementById('setDepositPendingTemplateId') ? document.getElementById('setDepositPendingTemplateId').value.trim() : undefined;
+  const depApprovedTpl = document.getElementById('setDepositApprovedTemplateId') ? document.getElementById('setDepositApprovedTemplateId').value.trim() : undefined;
+
+  const wthServiceId = document.getElementById('setWithdrawalServiceId') ? document.getElementById('setWithdrawalServiceId').value.trim() : undefined;
+  const wthPublicKey = document.getElementById('setWithdrawalPublicKey') ? document.getElementById('setWithdrawalPublicKey').value.trim() : undefined;
+  const wthPendingTpl = document.getElementById('setWithdrawalPendingTemplateId') ? document.getElementById('setWithdrawalPendingTemplateId').value.trim() : undefined;
+  const wthApprovedTpl = document.getElementById('setWithdrawalApprovedTemplateId') ? document.getElementById('setWithdrawalApprovedTemplateId').value.trim() : undefined;
+
   const settings = window.DB.getSystemSettings();
   window.DB.updateSystemSettings(
     settings.solDepositAddress,
@@ -776,7 +853,15 @@ function handleEmailSettingsUpdate(e) {
     undefined,
     serviceId,
     templateId,
-    publicKey
+    publicKey,
+    depServiceId,
+    depPendingTpl,
+    depApprovedTpl,
+    depPublicKey,
+    wthServiceId,
+    wthPendingTpl,
+    wthApprovedTpl,
+    wthPublicKey
   );
   showToast('EmailJS configuration parameters saved successfully!', 'success');
   initData();

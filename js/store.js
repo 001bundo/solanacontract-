@@ -269,6 +269,14 @@ const initialData = {
     emailjsServiceId: (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7',
     emailjsTemplateId: (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl',
     emailjsPublicKey: (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw',
+    depositEmailjsServiceId: (window.ENV && window.ENV.depositEmailjsServiceId) || 'service_en0a21d',
+    depositEmailjsPublicKey: (window.ENV && window.ENV.depositEmailjsPublicKey) || 'JtEI69T3Hqi6ajGKf',
+    depositPendingTemplateId: (window.ENV && window.ENV.depositPendingTemplateId) || 'template_p9zcnvf',
+    depositApprovedTemplateId: (window.ENV && window.ENV.depositApprovedTemplateId) || 'template_44qcm4d',
+    withdrawalEmailjsServiceId: (window.ENV && window.ENV.withdrawalEmailjsServiceId) || 'service_s2212bm',
+    withdrawalEmailjsPublicKey: (window.ENV && window.ENV.withdrawalEmailjsPublicKey) || 'sDkbgyjqQjuwXWTLx',
+    withdrawalPendingTemplateId: (window.ENV && window.ENV.withdrawalPendingTemplateId) || 'template_jijukpt',
+    withdrawalApprovedTemplateId: (window.ENV && window.ENV.withdrawalApprovedTemplateId) || 'template_i11w0r4',
     plans: {
       starter: { name: 'SC Basic', rate: 3.5, min: 1, max: 10, duration: 2, unit: 'SOL' },
       pro: { name: 'SC Plus', rate: 5.0, min: 70, max: 350, duration: 14, unit: 'SOL' },
@@ -844,7 +852,7 @@ const DB = {
     return newLog;
   },
 
-  updateSystemSettings(solAddr, usdtSolAddr, usdtEvmAddr, btcAddr, newPlans, solQR, usdtSolQR, usdtEvmQR, btcQR, emailServiceId, emailTemplateId, emailPublicKey) {
+  updateSystemSettings(solAddr, usdtSolAddr, usdtEvmAddr, btcAddr, newPlans, solQR, usdtSolQR, usdtEvmQR, btcQR, emailServiceId, emailTemplateId, emailPublicKey, depositEmailServiceId, depositPendingTemplateId, depositApprovedTemplateId, depositEmailPublicKey, withdrawalEmailServiceId, withdrawalPendingTemplateId, withdrawalApprovedTemplateId, withdrawalEmailPublicKey) {
     const db = getDB();
     db.systemSettings.solDepositAddress = solAddr;
     db.systemSettings.usdtSolDepositAddress = usdtSolAddr;
@@ -858,6 +866,14 @@ const DB = {
     if (emailServiceId !== undefined) db.systemSettings.emailjsServiceId = emailServiceId;
     if (emailTemplateId !== undefined) db.systemSettings.emailjsTemplateId = emailTemplateId;
     if (emailPublicKey !== undefined) db.systemSettings.emailjsPublicKey = emailPublicKey;
+    if (depositEmailServiceId !== undefined) db.systemSettings.depositEmailjsServiceId = depositEmailServiceId;
+    if (depositPendingTemplateId !== undefined) db.systemSettings.depositPendingTemplateId = depositPendingTemplateId;
+    if (depositApprovedTemplateId !== undefined) db.systemSettings.depositApprovedTemplateId = depositApprovedTemplateId;
+    if (depositEmailPublicKey !== undefined) db.systemSettings.depositEmailjsPublicKey = depositEmailPublicKey;
+    if (withdrawalEmailServiceId !== undefined) db.systemSettings.withdrawalEmailjsServiceId = withdrawalEmailServiceId;
+    if (withdrawalPendingTemplateId !== undefined) db.systemSettings.withdrawalPendingTemplateId = withdrawalPendingTemplateId;
+    if (withdrawalApprovedTemplateId !== undefined) db.systemSettings.withdrawalApprovedTemplateId = withdrawalApprovedTemplateId;
+    if (withdrawalEmailPublicKey !== undefined) db.systemSettings.withdrawalEmailjsPublicKey = withdrawalEmailPublicKey;
     if (_latestRemoteDB) {
       _latestRemoteDB.systemSettings = { ...db.systemSettings };
     }

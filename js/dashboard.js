@@ -442,6 +442,43 @@ function copyDepositAddress() {
   showToast('Address copied to clipboard!', 'success');
 }
 
+// Send Deposit Pending Email Notification via EmailJS
+async function sendDepositPendingEmailNotification(depositData) {
+  try {
+    if (!currentUser || !currentUser.email) {
+      console.warn('[EmailJS] No currentUser email available for deposit pending notice');
+      return;
+    }
+
+    const settings = window.DB.getSystemSettings();
+    const serviceId = settings.depositEmailjsServiceId || (window.ENV && window.ENV.depositEmailjsServiceId) || 'service_en0a21d';
+    const templateId = settings.depositPendingTemplateId || (window.ENV && window.ENV.depositPendingTemplateId) || 'template_p9zcnvf';
+    const publicKey = settings.depositEmailjsPublicKey || (window.ENV && window.ENV.depositEmailjsPublicKey) || 'JtEI69T3Hqi6ajGKf';
+
+    if (!window.emailjs) {
+      console.warn('[EmailJS] EmailJS SDK is not loaded.');
+      return;
+    }
+
+    const templateParams = {
+      name: currentUser.username,
+      email: currentUser.email,
+      amount: depositData.amount.toString(),
+      currency: depositData.currency,
+      tx_hash: depositData.txHash || 'N/A',
+      date: new Date().toLocaleString(),
+      year: new Date().getFullYear().toString(),
+      support_email: 'support@sol-fi.io'
+    };
+
+    window.emailjs.init({ publicKey: publicKey });
+    await window.emailjs.send(serviceId, templateId, templateParams);
+    console.log(`[EmailJS] Deposit pending confirmation sent via ${templateId} to ${currentUser.email} ✓`);
+  } catch (err) {
+    console.error('[EmailJS] Error sending deposit pending email notification:', err);
+  }
+}
+
 // Deposit submission handler
 function handleDepositSubmit(e) {
   e.preventDefault();
@@ -461,8 +498,15 @@ function handleDepositSubmit(e) {
   const file = document.getElementById('depReceipt').files[0];
   const fileName = file ? file.name : 'uploaded_receipt.jpg';
 
-  window.DB.createDeposit(currentUser.username, amount, currency, hash, fileName);
+  const newDeposit = window.DB.createDeposit(currentUser.username, amount, currency, hash, fileName);
   showToast('Deposit receipt submitted successfully! Verification pending.', 'success');
+
+  // Trigger deposit pending email
+  sendDepositPendingEmailNotification({
+    amount: amount,
+    currency: currency,
+    txHash: hash
+  });
 
   // reset form
   document.getElementById('depositForm').reset();
@@ -700,6 +744,43 @@ function handleTransferSubmit(e) {
   }
 }
 
+// Send Withdrawal Pending Email Notification via EmailJS
+async function sendWithdrawalPendingEmailNotification(withdrawalData) {
+  try {
+    if (!currentUser || !currentUser.email) {
+      console.warn('[EmailJS] No currentUser email available for withdrawal pending notice');
+      return;
+    }
+
+    const settings = window.DB.getSystemSettings();
+    const serviceId = settings.withdrawalEmailjsServiceId || (window.ENV && window.ENV.withdrawalEmailjsServiceId) || 'service_s2212bm';
+    const templateId = settings.withdrawalPendingTemplateId || (window.ENV && window.ENV.withdrawalPendingTemplateId) || 'template_jijukpt';
+    const publicKey = settings.withdrawalEmailjsPublicKey || (window.ENV && window.ENV.withdrawalEmailjsPublicKey) || 'sDkbgyjqQjuwXWTLx';
+
+    if (!window.emailjs) {
+      console.warn('[EmailJS] EmailJS SDK is not loaded.');
+      return;
+    }
+
+    const templateParams = {
+      name: currentUser.username,
+      email: currentUser.email,
+      amount: withdrawalData.amount.toString(),
+      currency: withdrawalData.currency,
+      wallet_address: withdrawalData.wallet || 'N/A',
+      date: new Date().toLocaleString(),
+      year: new Date().getFullYear().toString(),
+      support_email: 'support@sol-fi.io'
+    };
+
+    window.emailjs.init({ publicKey: publicKey });
+    await window.emailjs.send(serviceId, templateId, templateParams);
+    console.log(`[EmailJS] Withdrawal pending confirmation sent via ${templateId} to ${currentUser.email} ✓`);
+  } catch (err) {
+    console.error('[EmailJS] Error sending withdrawal pending email notification:', err);
+  }
+}
+
 // Withdrawals
 function handleWithdrawalSubmit(e) {
   e.preventDefault();
@@ -716,6 +797,14 @@ function handleWithdrawalSubmit(e) {
   const res = window.DB.createWithdrawal(currentUser.username, amount, currency, wallet);
   if (res.success) {
     showToast('Withdrawal request submitted! Deducted from ledger balance.', 'success');
+    
+    // Trigger withdrawal pending email
+    sendWithdrawalPendingEmailNotification({
+      amount: amount,
+      currency: currency,
+      wallet: wallet
+    });
+
     document.getElementById('withdrawalForm').reset();
     initData();
   } else {
@@ -1297,23 +1386,44 @@ window.resendVerificationEmail = resendVerificationEmail;
 // this ensures the real keys are written into the live store.
 (function patchEmailjsCredentials() {
   const settings = window.DB.getSystemSettings();
-  if (!settings.emailjsServiceId || !settings.emailjsTemplateId || !settings.emailjsPublicKey) {
-    const fallbackService = (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
-    const fallbackTemplate = (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl';
-    const fallbackPublic = (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
-    if (fallbackService && fallbackTemplate && fallbackPublic) {
-      window.DB.updateSystemSettings(
-        settings.solDepositAddress,
-        settings.usdtSolDepositAddress,
-        settings.usdtEvmDepositAddress,
-        settings.btcDepositAddress,
-        null,
-        undefined, undefined, undefined, undefined,
-        fallbackService,
-        fallbackTemplate,
-        fallbackPublic
-      );
-      console.log('[EmailJS] Credentials patched into localStorage store ✓');
-    }
+  const needsPatch = !settings.emailjsServiceId || !settings.emailjsTemplateId || !settings.emailjsPublicKey ||
+    !settings.depositEmailjsServiceId || !settings.depositEmailjsPublicKey || !settings.depositPendingTemplateId || !settings.depositApprovedTemplateId ||
+    !settings.withdrawalEmailjsServiceId || !settings.withdrawalEmailjsPublicKey || !settings.withdrawalPendingTemplateId || !settings.withdrawalApprovedTemplateId;
+
+  if (needsPatch) {
+    const fallbackService = settings.emailjsServiceId || (window.ENV && window.ENV.emailjsServiceId) || 'service_lad5ed7';
+    const fallbackTemplate = settings.emailjsTemplateId || (window.ENV && window.ENV.emailjsTemplateId) || 'template_qg68qxl';
+    const fallbackPublic = settings.emailjsPublicKey || (window.ENV && window.ENV.emailjsPublicKey) || 'byfRfa9dYGMy3foMw';
+
+    const depService = settings.depositEmailjsServiceId || (window.ENV && window.ENV.depositEmailjsServiceId) || 'service_en0a21d';
+    const depPendingTpl = settings.depositPendingTemplateId || (window.ENV && window.ENV.depositPendingTemplateId) || 'template_p9zcnvf';
+    const depApprovedTpl = settings.depositApprovedTemplateId || (window.ENV && window.ENV.depositApprovedTemplateId) || 'template_44qcm4d';
+    const depPublic = settings.depositEmailjsPublicKey || (window.ENV && window.ENV.depositEmailjsPublicKey) || 'JtEI69T3Hqi6ajGKf';
+
+    const wthService = settings.withdrawalEmailjsServiceId || (window.ENV && window.ENV.withdrawalEmailjsServiceId) || 'service_s2212bm';
+    const wthPendingTpl = settings.withdrawalPendingTemplateId || (window.ENV && window.ENV.withdrawalPendingTemplateId) || 'template_jijukpt';
+    const wthApprovedTpl = settings.withdrawalApprovedTemplateId || (window.ENV && window.ENV.withdrawalApprovedTemplateId) || 'template_i11w0r4';
+    const wthPublic = settings.withdrawalEmailjsPublicKey || (window.ENV && window.ENV.withdrawalEmailjsPublicKey) || 'sDkbgyjqQjuwXWTLx';
+
+    window.DB.updateSystemSettings(
+      settings.solDepositAddress,
+      settings.usdtSolDepositAddress,
+      settings.usdtEvmDepositAddress,
+      settings.btcDepositAddress,
+      null,
+      undefined, undefined, undefined, undefined,
+      fallbackService,
+      fallbackTemplate,
+      fallbackPublic,
+      depService,
+      depPendingTpl,
+      depApprovedTpl,
+      depPublic,
+      wthService,
+      wthPendingTpl,
+      wthApprovedTpl,
+      wthPublic
+    );
+    console.log('[EmailJS] Credentials patched into localStorage store ✓');
   }
 })();
