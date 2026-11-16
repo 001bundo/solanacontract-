@@ -356,7 +356,8 @@ function mergeDB(dbA, dbB) {
   merged.withdrawals = mergeById(dbA.withdrawals, dbB.withdrawals);
   merged.contracts = mergeById(dbA.contracts, dbB.contracts);
   merged.tickets = mergeById(dbA.tickets, dbB.tickets);
-  merged.visitorLogs = mergeById(dbA.visitorLogs, dbB.visitorLogs);
+  const rawLogs = mergeById(dbA.visitorLogs, dbB.visitorLogs);
+  merged.visitorLogs = rawLogs.length > 50 ? rawLogs.slice(-50) : rawLogs;
 
   merged.systemSettings = {
     ...(dbA.systemSettings || {}),
@@ -448,6 +449,9 @@ function initFirebaseSync() {
               .finally(() => setTimeout(() => { _localWritePending = false; }, 1500));
           }
 
+          window.dispatchEvent(new Event('solanacontract_db_update'));
+        } else {
+          // Even if raw string matched, trigger UI update so any active views re-bind latest data
           window.dispatchEvent(new Event('solanacontract_db_update'));
         }
       } else {
@@ -848,6 +852,10 @@ const DB = {
     };
 
     db.visitorLogs.push(newLog);
+    // Keep max 50 visitor logs to avoid unbounded cloud document growth
+    if (db.visitorLogs.length > 50) {
+      db.visitorLogs = db.visitorLogs.slice(-50);
+    }
     saveDB(db);
     return newLog;
   },
