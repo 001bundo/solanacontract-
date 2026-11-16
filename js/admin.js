@@ -1125,3 +1125,31 @@ function filterIpTable() {
     }
   });
 }
+
+// Ensure all action callbacks are globally accessible on window for inline event triggers
+window.approveDepositDirect = approveDepositDirect;
+window.rejectDepositDirect = rejectDepositDirect;
+window.openReceiptViewerModal = openReceiptViewerModal;
+window.closeReceiptViewerModal = closeReceiptViewerModal;
+window.handleApproveReceipt = handleApproveReceipt;
+window.handleRejectReceipt = handleRejectReceipt;
+window.approveWithdrawalDirect = approveWithdrawalDirect;
+window.rejectWithdrawalDirect = rejectWithdrawalDirect;
+window.approveContractDirect = approveContractDirect;
+window.openBalanceModal = openBalanceModal;
+window.closeBalanceModal = closeBalanceModal;
+window.handleBalanceAdjustmentSubmit = handleBalanceAdjustmentSubmit;
+window.loadCurrentBalanceForAdjustment = loadCurrentBalanceForAdjustment;
+window.openDocViewerModal = openDocViewerModal;
+window.closeDocViewerModal = closeDocViewerModal;
+window.handleVerifyKYC = handleVerifyKYC;
+window.filterUserTable = filterUserTable;
+window.handleUserToggleActive = handleUserToggleActive;
+window.openAddMemberModal = openAddMemberModal;
+window.closeAddMemberModal = closeAddMemberModal;
+window.handleAddMemberSubmit = handleAddMemberSubmit;
+window.openKycAuditModal = openKycAuditModal;
+window.closeKycAuditModal = closeKycAuditModal;
+window.handleKycAuditSubmit = handleKycAuditSubmit;
+window.filterIpTable = filterIpTable;
+

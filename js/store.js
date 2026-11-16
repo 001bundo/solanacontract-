@@ -399,6 +399,11 @@ function saveDB(db) {
     db = mergeDB(_latestRemoteDB, db);
   }
 
+  // Ensure _latestRemoteDB keeps up with local mutation before network roundtrip
+  if (_latestRemoteDB) {
+    _latestRemoteDB = JSON.parse(JSON.stringify(db));
+  }
+
   // 1. Write merged db to localStorage immediately
   localStorage.setItem(STORE_KEY, JSON.stringify(db));
 
@@ -440,8 +445,15 @@ function initFirebaseSync() {
           console.log('[Firebase] Remote update received & merged — refreshing local cache ✓');
           localStorage.setItem(STORE_KEY, mergedStr);
 
-          // If merging retained local users/records missing in cloud, sync merged version back to cloud
-          if (remoteDB.users && mergedDB.users && mergedDB.users.length > remoteDB.users.length) {
+          // If merging retained local records (users, deposits, withdrawals, contracts, tickets) missing in cloud, sync merged version back to cloud
+          const hasNewLocalData =
+            (mergedDB.users && remoteDB.users && mergedDB.users.length > remoteDB.users.length) ||
+            (mergedDB.deposits && remoteDB.deposits && mergedDB.deposits.length > remoteDB.deposits.length) ||
+            (mergedDB.withdrawals && remoteDB.withdrawals && mergedDB.withdrawals.length > remoteDB.withdrawals.length) ||
+            (mergedDB.contracts && remoteDB.contracts && mergedDB.contracts.length > remoteDB.contracts.length) ||
+            (mergedDB.tickets && remoteDB.tickets && mergedDB.tickets.length > remoteDB.tickets.length);
+
+          if (hasNewLocalData) {
             _localWritePending = true;
             FIRESTORE_DOC.set(mergedDB)
               .then(() => console.log('[Firebase] Pushed merged local records to cloud ✓'))
